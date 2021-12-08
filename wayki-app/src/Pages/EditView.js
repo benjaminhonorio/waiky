@@ -90,9 +90,9 @@ export default function EditView() {
               <Col sm="10">
                 <Form.Control
                   placeholder="Av. Buenos Aires 328"
-                  aria-describedby="passwordHelpBlock"
+                  aria-describedby="opcion"
                 />
-                <Form.Text id="passwordHelpBlock" muted>
+                <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
                   (o {<Link to="/">ubicar en el mapa)</Link>}
                 </Form.Text>
