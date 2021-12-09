@@ -1,9 +1,16 @@
-import React from "react";
-import { Form, Card, Button, Container, Col, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { BsGeoAltFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import Map from "../Components/Map";
 
 export default function EditView() {
+  const [showMap, setShowMap] = useState(false);
+
+  const handleCloseMap = () => setShowMap(false);
+  const handleShowMap = () => setShowMap(true);
+
+  const mapURL =
+    "https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBN79o66J0uzzF3g3ViCUc4CowEBgeEzwc";
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
@@ -94,7 +101,12 @@ export default function EditView() {
                 />
                 <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
-                  (o {<Link to="/">ubicar en el mapa)</Link>}
+                  (o{" "}
+                  {
+                    <Button variant="link" onClick={handleShowMap}>
+                      ubicar en el mapa)
+                    </Button>
+                  }
                 </Form.Text>
               </Col>
             </Form.Group>
@@ -112,7 +124,9 @@ export default function EditView() {
                 Fotos:
               </Form.Label>
               <Col sm="10">
-                <Link to="/">Sube una o varias fotos</Link>
+                <Form.Group controlId="formFileMultiple" className="mb-3">
+                  <Form.Control type="file" multiple />
+                </Form.Group>
               </Col>
             </Form.Group>
 
@@ -122,6 +136,27 @@ export default function EditView() {
           </Form>
         </Col>
       </Row>
+      <Modal show={showMap} onHide={handleCloseMap}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Map
+            googleMapURL={mapURL}
+            containerElement={<div style={{ height: "350px" }} />}
+            mapElement={<div style={{ height: "100%" }} />}
+            loadingElement={<div style={{ height: `100%` }} />}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseMap}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleCloseMap}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }

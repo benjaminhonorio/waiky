@@ -10,7 +10,18 @@ export default function MapView() {
       <Row className="justify-content-center">
         <Col lg={8}>
           <Form>
-            <h2>Publicación</h2>
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by name, location, color, etc"
+                aria-label="Search bar"
+                aria-describedby="basic-addon2"
+              />
+              <button className="btn btn-outline-secondary" type="button">
+                Search
+              </button>
+            </div>
             <br />
             <Map
               googleMapURL={mapURL}
