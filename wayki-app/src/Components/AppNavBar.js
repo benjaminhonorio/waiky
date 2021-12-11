@@ -1,6 +1,7 @@
-import { Container, Nav, Navbar, Button } from "react-bootstrap";
-import { BsHouse, BsMap } from "react-icons/bs";
-import WaykiLogo from "../logo.png";
+import { Container, Nav, Navbar, Button } from 'react-bootstrap';
+import { BsHouse, BsMap } from 'react-icons/bs';
+import WaykiLogo from '../logo.png';
+import { Link } from 'react-router-dom';
 
 export default function AppNavBar() {
   return (
@@ -28,7 +29,7 @@ export default function AppNavBar() {
               Map
             </Nav.Link>
           </Nav>
-          <Button className="mx-2" variant="primary">
+          <Button className="mx-2" variant="primary" as={Link} to="/login">
             Login
           </Button>
         </Navbar.Collapse>
