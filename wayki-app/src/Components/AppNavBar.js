@@ -24,7 +24,7 @@ export default function AppNavBar() {
               <BsHouse className="mx-2 d-inline-block  align-baseline" />
               Home
             </Nav.Link>
-            <Nav.Link href="/map">
+            <Nav.Link href="/mapview">
               <BsMap className="mx-2 d-inline-block  align-baseline" />
               Map
             </Nav.Link>
