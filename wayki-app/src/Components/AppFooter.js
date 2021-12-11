@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 export default function AppFooter() {
   const links = ["About", "Map", "Login"];
   return (
-    <Row className="bg-light text-center text-black-50 py-4 mx-0">
+    <Row className="mt-auto bg-light text-center text-black-50 py-4 mx-0">
       <Container>
         <Row>
           <Col xs={12} sm={3}>
