@@ -1,3 +1,4 @@
 export default {
-  mapsKey: 'AIzaSyBN79o66J0uzzF3g3ViCUc4CowEBgeEzwc'
-}
+  mapsKey:
+    "https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBN79o66J0uzzF3g3ViCUc4CowEBgeEzwc",
+};

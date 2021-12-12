@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { BsGeoAltFill } from "react-icons/bs";
 import Map from "../Components/Map";
+import credentials from "../Components/credentials";
 
 export default function EditView() {
   const [showMap, setShowMap] = useState(false);
@@ -9,8 +10,8 @@ export default function EditView() {
   const handleCloseMap = () => setShowMap(false);
   const handleShowMap = () => setShowMap(true);
 
-  const mapURL =
-    "https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBN79o66J0uzzF3g3ViCUc4CowEBgeEzwc";
+  const mapURL = credentials.mapsKey;
+
   return (
     <Container className="my-5">
       <Row className="justify-content-center">

@@ -1,7 +1,7 @@
-import { Container, Nav, Navbar, Button } from 'react-bootstrap';
-import { BsHouse, BsMap } from 'react-icons/bs';
-import WaykiLogo from '../logo.png';
-import { Link } from 'react-router-dom';
+import { Container, Nav, Navbar, Button } from "react-bootstrap";
+import { BsHouse, BsMap } from "react-icons/bs";
+import WaykiLogo from "../logo.png";
+import { Link } from "react-router-dom";
 
 export default function AppNavBar() {
   return (
@@ -24,7 +24,7 @@ export default function AppNavBar() {
               <BsHouse className="mx-2 d-inline-block  align-baseline" />
               Home
             </Nav.Link>
-            <Nav.Link href="/mapview">
+            <Nav.Link href="/map">
               <BsMap className="mx-2 d-inline-block  align-baseline" />
               Map
             </Nav.Link>
