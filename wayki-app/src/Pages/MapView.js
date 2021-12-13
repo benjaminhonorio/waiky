@@ -1,10 +1,10 @@
 import React from "react";
 import { Form, Container, Col, Row } from "react-bootstrap";
 import Map from "../Components/Map";
+import credentials from "../Components/credentials";
 
 export default function MapView() {
-  const mapURL =
-    "https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBN79o66J0uzzF3g3ViCUc4CowEBgeEzwc";
+  const mapURL = credentials.mapsKey;
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
@@ -25,7 +25,7 @@ export default function MapView() {
             <br />
             <Map
               googleMapURL={mapURL}
-              containerElement={<div style={{ height: "350px" }} />}
+              containerElement={<div style={{ height: "550px" }} />}
               mapElement={<div style={{ height: "100%" }} />}
               loadingElement={<div style={{ height: `100%` }} />}
             />
