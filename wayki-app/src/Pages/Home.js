@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Row,
   Card,
@@ -7,13 +8,26 @@ import {
   Image,
   Container,
 } from "react-bootstrap";
-import pic from "../dog.jpg";
+import axios from "axios";
+import { formatDistance } from "date-fns";
+import { es } from "date-fns/locale";
+
 import WaykiLogo from "../logoH.png";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
 
 export default function Home() {
-  const posts = Array.from(Array(12).keys());
+  const [posts, setPosts] = useState([]);
+
+  const hook = () => {
+    // La url luego se reemplazaria por el endpoint de nuestra API para los posts
+    axios.get("http://localhost:3001/posts").then((response) => {
+      setPosts(response.data);
+    });
+  };
+
+  useEffect(hook, []);
+
   return (
     <Container className="text-center" fluid>
       <Row>
@@ -52,17 +66,26 @@ export default function Home() {
       <Row className="row d-flex justify-content-center py-3">
         <h2>Publications</h2>
         <Row className="d-flex justify-content-center row-cols-auto">
-          {posts.map(function (_, i) {
+          {posts.map(({ id, titulo, fecha, fotos }) => {
             return (
-              <Col key={i} className="py-2">
+              <Col key={id} className="py-2">
                 <Card style={{ width: "18rem" }}>
-                  <Card.Img variant="top" src={pic} />
+                  <Card.Img
+                    style={{ height: "300px", objectFit: "cover" }}
+                    variant="top"
+                    src={fotos[0]}
+                  />
                   <Card.Body>
-                    <Card.Title>Post Title</Card.Title>
+                    <Card.Title>{titulo}</Card.Title>
                     <Card.Text>
-                      Hace 10 minutos
+                      Hace{" "}
+                      {fecha
+                        ? formatDistance(new Date(), new Date(fecha), {
+                            locale: es,
+                          })
+                        : ""}
                     </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
+                    <Button variant="primary">Contactarse</Button>
                   </Card.Body>
                 </Card>
               </Col>
