@@ -1,25 +1,25 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 export default function AppFooter() {
-  const links = ["About", "Map", "Login"];
+  const links = [
+    { showName: "Home", link: "/" },
+    { showName: "About", link: "/#about" },
+    { showName: "Map", link: "/map" },
+    { showName: "Login", link: "/login" },
+  ];
   return (
     <Row className="mt-auto bg-light text-center text-black-50 py-4 mx-0">
       <Container>
         <Row>
-          <Col xs={12} sm={3}>
-            <a className="text-black-50 text-decoration-none" href="/">
-              Home
-            </a>
-          </Col>
-          {links.map((link) => {
+          {links.map((navLink) => {
             return (
-              <Col xs={12} sm={3}>
-                <a
+              <Col key={navLink.showName} xs={12} sm={3}>
+                <Button variant="link"
                   className="text-black-50 text-decoration-none"
-                  href={`/${link.toLowerCase()}`}
+                  href={`${navLink.link}`}
                 >
-                  {link}
-                </a>
+                  {navLink.showName}
+                </Button>
               </Col>
             );
           })}
