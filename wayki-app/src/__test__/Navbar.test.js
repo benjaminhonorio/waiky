@@ -1,13 +1,12 @@
+import React from 'react';
 import { mount } from 'enzyme';
-import Navbar from '../Components/AppNavBar'
+import AppNavBar from '../Components/AppNavBar';
 
-describe('<Navbar />', () => {
-  const navbar = mount(<Navbar />)
+describe('AppNavBar', () => {
+  const navbar = mount(<AppNavBar />);
 
-  test('render title', ()=> {
-    const text = navbar.find('navbar').text()
-    expect(text).toEqual('Home')
-  })
-  
-})
-
+  test('render title', () => {
+    const text = navbar.find('Button').text();
+    expect(text).toEqual('Login');
+  });
+});
