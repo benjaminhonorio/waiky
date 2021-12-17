@@ -28,7 +28,7 @@ export default function AppNavBar() {
               Map
             </Nav.Link>
           </Nav>
-          <Button className="mx-2" variant="primary">
+          <Button className="mx-2" variant="primary" href="/login">
             Login
           </Button>
         </Navbar.Collapse>

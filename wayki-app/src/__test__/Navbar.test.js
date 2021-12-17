@@ -9,4 +9,10 @@ describe('AppNavBar', () => {
     const text = navbar.find('Button').text();
     expect(text).toEqual('Login');
   });
+
+  test('render title', () => {
+    const text = navbar.find('Button').text();
+    expect(text).toEqual('Login');
+  });
+  
 });
