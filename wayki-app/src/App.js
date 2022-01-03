@@ -7,6 +7,7 @@ import EditView from "./Pages/EditView";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import MapView from "./Pages/MapView";
+import ProfileView from "./Pages/ProfileView";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/map" element={<MapView />} />
+        <Route path="/profile" element={<ProfileView />} />
       </Routes>
       <AppFooter />
     </>
