@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { BsGeoAltFill } from "react-icons/bs";
 import Map from "../Components/Map";
-import credentials from "../Components/credentials";
+// import credentials from "../Components/credentials";
 
 export default function EditView() {
   const [showMap, setShowMap] = useState(false);
@@ -10,7 +10,7 @@ export default function EditView() {
   const handleCloseMap = () => setShowMap(false);
   const handleShowMap = () => setShowMap(true);
 
-  const mapURL = credentials.mapsKey;
+  // const mapURL = credentials.mapsKey;
 
   return (
     <Container className="my-5">
@@ -53,7 +53,7 @@ export default function EditView() {
                     Sexo:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Control placeholder="máximo 10 palabras" />
+                    <Form.Control />
                   </Col>
                 </Form.Group>
               </Col>
@@ -139,14 +139,16 @@ export default function EditView() {
       </Row>
       <Modal show={showMap} onHide={handleCloseMap}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>
+            Ubica un punto referencial donde se extravió tu mascota
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Map
-            googleMapURL={mapURL}
-            containerElement={<div style={{ height: "350px" }} />}
-            mapElement={<div style={{ height: "100%" }} />}
-            loadingElement={<div style={{ height: `100%` }} />}
+          // googleMapURL={mapURL}
+          // containerElement={<div style={{ height: "350px" }} />}
+          // mapElement={<div style={{ height: "100%" }} />}
+          // loadingElement={<div style={{ height: `100%` }} />}
           />
         </Modal.Body>
         <Modal.Footer>
