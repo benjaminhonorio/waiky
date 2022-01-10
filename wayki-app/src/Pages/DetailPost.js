@@ -1,15 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 
 import Comments from '../Components/Comments';
 import Gallery from '../Components/Gallery';
 import InfoPostDetails from '../Components/InfoPostDetails';
 
+import { useParams } from 'react-router-dom';
+
+import axios from 'axios';
+
 export default function DetailPost() {
   const [show, setShow] = useState(false);
-
+  const [dataPost, setDataPost] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/posts/${id}`)
+      .then((response) => setDataPost(response.data));
+  });
 
   return (
     <div>
@@ -17,10 +29,10 @@ export default function DetailPost() {
         <Row>
           <Row>
             <Col lg={6} md={6} xs={12}>
-              <Gallery />
+              <Gallery dataPost={dataPost} />
             </Col>
             <Col lg={6} md={6} xs={12}>
-              <InfoPostDetails />
+              <InfoPostDetails dataPost={dataPost} />
             </Col>
           </Row>
 
@@ -40,8 +52,6 @@ export default function DetailPost() {
             <Col>
               <iframe
                 src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                frameborder="0"
-                allowfullscreen
                 title="Map"
                 width="600"
                 height="200"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 
-const Gallery = () => {
+const Gallery = ({ dataPost }) => {
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => {
@@ -13,7 +13,7 @@ const Gallery = () => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://cdn.pixabay.com/photo/2021/12/21/14/47/castle-6885449_960_720.jpg"
+          src={dataPost.fotos}
           alt="First slide"
         />
         <Carousel.Caption>
@@ -24,7 +24,7 @@ const Gallery = () => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://cdn.pixabay.com/photo/2021/12/23/16/38/animal-6889575_960_720.jpg"
+          src={dataPost.fotos}
           alt="Second slide"
         />
 
@@ -36,7 +36,7 @@ const Gallery = () => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://cdn.pixabay.com/photo/2021/12/19/10/42/old-6880626_960_720.jpg"
+          src={dataPost.fotos}
           alt="Third slide"
         />
 

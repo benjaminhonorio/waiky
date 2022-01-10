@@ -21,31 +21,31 @@ export default function Login() {
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
-    console.log(username);
   };
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    console.log(password);
   };
 
   return (
     <Container className="my-5">
       <Row className="justify-content-center text-center">
         <Col lg={6}>
-          <Form.Group onSubmit={handleForm}>
-            <img alt="logo" src={WaykiLogo} className="w-50" />
-            <FloatingLabel
-              controlId="floatingInput"
-              label="Escribe tu usuario"
-              className="my-3"
-            >
-              <Form.Control
-                type="name"
-                placeholder="name@example.com"
-                onChange={handleUsername}
-              />
-            </FloatingLabel>
+          <Form onSubmit={handleForm}>
+            <Form.Group>
+              <img alt="logo" src={WaykiLogo} className="w-50" />
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Escribe tu usuario"
+                className="my-3"
+              >
+                <Form.Control
+                  type="name"
+                  placeholder="name@example.com"
+                  onChange={handleUsername}
+                />
+              </FloatingLabel>
+            </Form.Group>
             <FloatingLabel
               controlId="floatingPassword"
               label="Escribe tu contraseña"
@@ -69,7 +69,7 @@ export default function Login() {
             <Button variant="primary" type="submit" className="my-4" size="lg">
               Iniciar sesión
             </Button>
-          </Form.Group>
+          </Form>
         </Col>
       </Row>
       <Form.Group
