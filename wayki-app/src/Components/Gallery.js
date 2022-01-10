@@ -1,105 +1,54 @@
-import { Col } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Carousel } from 'react-bootstrap';
 
-export default function Gallery() {
+const Gallery = () => {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
   return (
-    <>
-      {' '}
-      <Col
-        lg={6}
-        md={12}
-        xs={12}
-        id="carouselBasicExample"
-        className="carousel slide carousel-fade"
-        data-mdb-ride="carousel"
-      >
-        <div className="carousel-indicators">
-          <button
-            type="button"
-            data-mdb-target="#carouselBasicExample"
-            data-mdb-slide-to="0"
-            className="active"
-            aria-current="true"
-            aria-label="Slide 1"
-          ></button>
-          <button
-            type="button"
-            data-mdb-target="#carouselBasicExample"
-            data-mdb-slide-to="1"
-            aria-label="Slide 2"
-          ></button>
-          <button
-            type="button"
-            data-mdb-target="#carouselBasicExample"
-            data-mdb-slide-to="2"
-            aria-label="Slide 3"
-          ></button>
-        </div>
+    <Carousel activeIndex={index} onSelect={handleSelect}>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="https://cdn.pixabay.com/photo/2021/12/21/14/47/castle-6885449_960_720.jpg"
+          alt="First slide"
+        />
+        <Carousel.Caption>
+          <h3>First slide label</h3>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="https://cdn.pixabay.com/photo/2021/12/23/16/38/animal-6889575_960_720.jpg"
+          alt="Second slide"
+        />
 
-        <div className="carousel-inner">
-          <div className="carousel-item active">
-            <img
-              src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg"
-              className="d-block w-100"
-              alt="..."
-            />
-            <div className="carousel-caption d-none d-md-block">
-              <h5>1 imagen</h5>
-              <p>Mascota XXX</p>
-            </div>
-          </div>
+        <Carousel.Caption>
+          <h3>Second slide label</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="https://cdn.pixabay.com/photo/2021/12/19/10/42/old-6880626_960_720.jpg"
+          alt="Third slide"
+        />
 
-          <div className="carousel-item">
-            <img
-              src="https://mdbootstrap.com/img/Photos/Slides/img%20(22).jpg"
-              className="d-block w-100"
-              alt="..."
-            />
-            <div className="carousel-caption d-none d-md-block">
-              <h5>Second slide label</h5>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="https://mdbootstrap.com/img/Photos/Slides/img%20(23).jpg"
-              className="d-block w-100"
-              alt="..."
-            />
-            <div className="carousel-caption d-none d-md-block">
-              <h5>Third slide label</h5>
-              <p>
-                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <button
-          className="carousel-control-prev"
-          type="button"
-          data-mdb-target="#carouselBasicExample"
-          data-mdb-slide="prev"
-        >
-          <span
-            className="carousel-control-prev-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Previous</span>
-        </button>
-        <button
-          className="carousel-control-next"
-          type="button"
-          data-mdb-target="#carouselBasicExample"
-          data-mdb-slide="next"
-        >
-          <span
-            className="carousel-control-next-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Next</span>
-        </button>
-      </Col>
-    </>
+        <Carousel.Caption>
+          <h3>Third slide label</h3>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel>
   );
-}
+};
+
+export default Gallery;

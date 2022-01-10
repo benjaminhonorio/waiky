@@ -5,14 +5,8 @@ import AppNavBar from '../Components/AppNavBar';
 describe('AppNavBar', () => {
   const navbar = mount(<AppNavBar />);
 
-  test('render title', () => {
+  test('test button', () => {
     const text = navbar.find('Button').text();
     expect(text).toEqual('Login');
   });
-
-  test('render title', () => {
-    const text = navbar.find('Button').text();
-    expect(text).toEqual('Login');
-  });
-  
 });

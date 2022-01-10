@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Button,
   FloatingLabel,
@@ -10,24 +12,49 @@ import { Link } from 'react-router-dom';
 import WaykiLogo from '../logoH.png';
 
 export default function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleForm = (e) => {
+    e.preventDefault();
+  };
+
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
+    console.log(username);
+  };
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+    console.log(password);
+  };
+
   return (
     <Container className="my-5">
       <Row className="justify-content-center text-center">
         <Col lg={6}>
-          <Form.Group>
+          <Form.Group onSubmit={handleForm}>
             <img alt="logo" src={WaykiLogo} className="w-50" />
             <FloatingLabel
               controlId="floatingInput"
               label="Escribe tu usuario"
               className="my-3"
             >
-              <Form.Control type="name" placeholder="name@example.com" />
+              <Form.Control
+                type="name"
+                placeholder="name@example.com"
+                onChange={handleUsername}
+              />
             </FloatingLabel>
             <FloatingLabel
               controlId="floatingPassword"
               label="Escribe tu contraseña"
             >
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={handlePassword}
+              />
             </FloatingLabel>
             <div className="my-3">
               <Col
