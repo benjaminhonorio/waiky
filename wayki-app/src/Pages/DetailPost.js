@@ -34,8 +34,7 @@ export default function DetailPost() {
                 nisi ut aliquip ex ea commodo consequat.
               </p>
               <Button onClick={handleShow} className="my-3">
-                {' '}
-                Ver mapa en detalle{' '}
+                Ver mapa en detalle
               </Button>
             </Col>
             <Col>
