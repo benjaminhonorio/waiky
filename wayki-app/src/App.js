@@ -7,6 +7,8 @@ import EditView from "./Pages/EditView";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import MapView from "./Pages/MapView";
+import PasswordRecovery from "./Pages/PasswordRecovery";
+import PasswordReset from "./Pages/PasswordReset";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/map" element={<MapView />} />
+        <Route path="/password_recovery" element={<PasswordRecovery />} />
+        <Route path="/password_reset" element={<PasswordReset />} />
       </Routes>
       <AppFooter />
     </>
