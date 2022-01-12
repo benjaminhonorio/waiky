@@ -1,29 +1,30 @@
 import React from 'react';
 import { Col, Button } from 'react-bootstrap';
 
-export default function InfoPostDetails({ dataPost }) {
+export default function InfoPostDetails({ data }) {
   return (
     <>
       <Col className="jumbotron">
-        <h1 className="display-4">{dataPost.titulo}</h1>
-        <h4> {dataPost.tipo_mascota} </h4>
+        <h1 className="display-4">{data.titulo}</h1>
+        <h4> {data.tipo_mascota} </h4>
         <div className="d-inline">
           <span>
             <strong> Sexo: </strong>
+            {data.caracteristicas['sexo']}
           </span>
         </div>
         <div className="d-inline px-4">
           <span>
             <strong> Color: </strong>
-            {/* {dataPost.caracteristicas['color']} */}
+            {data.caracteristicas['color']}
           </span>
         </div>
         <p>
-          <strong> Fecha de publicacion: </strong> {dataPost.fecha}
+          <strong> Fecha de publicacion: </strong> {data.fecha}
         </p>
         <hr className="my-4" />
         <h4> Descripcion </h4>
-        <p className="text-secondary">{dataPost.descripcion}</p>
+        <p className="text-secondary">{data.descripcion}</p>
         <hr className="my-4" />
         <p>
           <Button variant="primary" size="lg">

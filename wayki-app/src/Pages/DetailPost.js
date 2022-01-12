@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 
 import Comments from '../Components/Comments';
@@ -7,21 +7,18 @@ import InfoPostDetails from '../Components/InfoPostDetails';
 
 import { useParams } from 'react-router-dom';
 
-import axios from 'axios';
+export default function DetailPost({ dataPost }) {
+  console.log('DetailPost');
+  console.log(dataPost);
 
-export default function DetailPost() {
   const [show, setShow] = useState(false);
-  const [dataPost, setDataPost] = useState([]);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const { id } = useParams();
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3001/posts/${id}`)
-      .then((response) => setDataPost(response.data));
-  });
+  const data = dataPost?.find((p) => p.id === id);
+  console.log(data);
 
   return (
     <div>
@@ -29,10 +26,10 @@ export default function DetailPost() {
         <Row>
           <Row>
             <Col lg={6} md={6} xs={12}>
-              <Gallery dataPost={dataPost} />
+              <Gallery data={data} />
             </Col>
             <Col lg={6} md={6} xs={12}>
-              <InfoPostDetails dataPost={dataPost} />
+              <InfoPostDetails data={data} />
             </Col>
           </Row>
 

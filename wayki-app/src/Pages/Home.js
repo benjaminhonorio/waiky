@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   Row,
   Card,
@@ -7,32 +6,22 @@ import {
   Button,
   Image,
   Container,
-} from "react-bootstrap";
-import axios from "axios";
-import { formatDistance } from "date-fns";
-import { es } from "date-fns/locale";
+} from 'react-bootstrap';
+import { formatDistance } from 'date-fns';
+import { es } from 'date-fns/locale';
 
-import WaykiLogo from "../logoH.png";
-import Map from "../Components/Map";
-import credentials from "../Components/credentials";
+import WaykiLogo from '../logoH.png';
+import Map from '../Components/Map';
+import credentials from '../Components/credentials';
 
-export default function Home() {
-  const [posts, setPosts] = useState([]);
+import { Link } from 'react-router-dom';
 
-  const hook = () => {
-    // La url luego se reemplazaria por el endpoint de nuestra API para los posts
-    axios.get("http://localhost:3001/posts").then((response) => {
-      setPosts(response.data);
-    });
-  };
-
-  useEffect(hook, []);
-
+export default function Home({ posts }) {
   return (
     <Container className="text-center" fluid>
       <Row>
         <Col
-          style={{ marginTop: "-56px" }}
+          style={{ marginTop: '-56px' }}
           className="d-flex flex-column justify-content-center align-items-center vh-100"
         >
           <Col xs={10} sm={8}>
@@ -57,9 +46,9 @@ export default function Home() {
         <Col className="col-12 col-md-6">
           <Map
             googleMapURL={credentials.mapsKey}
-            containerElement={<div style={{ height: "94vh" }} />}
-            mapElement={<div style={{ height: "100%" }} />}
-            loadingElement={<div style={{ height: "100%" }} />}
+            containerElement={<div style={{ height: '94vh' }} />}
+            mapElement={<div style={{ height: '100%' }} />}
+            loadingElement={<div style={{ height: '100%' }} />}
           />
         </Col>
       </Row>
@@ -69,23 +58,25 @@ export default function Home() {
           {posts.map(({ id, titulo, fecha, fotos }) => {
             return (
               <Col key={id} className="py-2">
-                <Card style={{ width: "18rem" }}>
+                <Card style={{ width: '18rem' }}>
                   <Card.Img
-                    style={{ height: "300px", objectFit: "cover" }}
+                    style={{ height: '300px', objectFit: 'cover' }}
                     variant="top"
                     src={fotos[0]}
                   />
                   <Card.Body>
                     <Card.Title>{titulo}</Card.Title>
                     <Card.Text>
-                      Hace{" "}
+                      Hace{' '}
                       {fecha
                         ? formatDistance(new Date(), new Date(fecha), {
                             locale: es,
                           })
-                        : ""}
+                        : ''}
                     </Card.Text>
-                    <Button variant="primary">Contactarse</Button>
+                    <Button variant="primary" as={Link} to={`/post/${id}`}>
+                      Contactarse
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
