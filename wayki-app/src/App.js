@@ -14,32 +14,18 @@ import MapView from './Pages/MapView';
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
-
-  // useEffect(() => {
-  //   console.log('Use Effect');
-  //   axios
-  //     .get('http://localhost:3001/posts')
-  //     .then((response) => setDataPost(response.data));
-  // }, []);
-
-  // console.log('App');
-  // console.log(dataPost);
-
-  const getProducts = () => {
-    return axios.get('http://localhost:3001/posts');
-  };
+  const [dataUsers, setDataUsers] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      localStorage.clear();
-      try {
-        const { data } = await getProducts();
-        setDataPost(data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
+    axios
+      .get('http://localhost:3001/posts')
+      .then((response) => setDataPost(response.data));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/users')
+      .then((response) => setDataUsers(response.data));
   }, []);
 
   return (
@@ -52,7 +38,7 @@ function App() {
           path="/post/:id"
           element={<DetailPost dataPost={dataPost} />}
         ></Route>
-        <Route path="/login" element={<Login />}></Route>
+        <Route path="/login" element={<Login dataUsers={dataUsers} />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/map" element={<MapView />}></Route>
       </Routes>

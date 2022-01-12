@@ -9,6 +9,7 @@ import {
   Col,
   Form,
   Row,
+  Alert,
 } from 'react-bootstrap';
 import WaykiLogo from '../logoH.png';
 
@@ -17,7 +18,9 @@ export default function SignUp() {
 
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  // const [validPassword, setValidPassword] = useState('');
+  const [validPassword, setValidPassword] = useState('');
+  const [alert, setAlert] = useState(false);
+  const [validUsername, setValidUsername] = useState(false);
   // const [users, setUsers] = useState([]);
 
   const handleForm = (e) => {
@@ -26,9 +29,15 @@ export default function SignUp() {
       username: newUsername,
       password: newPassword,
     };
-    axios.post(url, newObject).then((response) => response.data);
-    // setNewUsername('');
-    // setNewPassword('');
+    newPassword === validPassword
+      ? axios.post(url, newObject).then((response) => response.data)
+      : setAlert(true);
+    // ) : (
+    //   <Alert variant="danger"> Password is incorrect. Try again! </Alert>
+    // );
+    setValidUsername(!newUsername);
+    setNewUsername('');
+    setNewPassword('');
   };
 
   const handleNewUsername = (e) => {
@@ -39,12 +48,38 @@ export default function SignUp() {
     setNewPassword(e.target.value);
   };
 
-  // const handleValidPassword = (e) => {
-  //   setValidPassword(e.target.value);
-  // };
+  const handleValidPassword = (e) => {
+    setValidPassword(e.target.value);
+  };
 
   return (
     <Container className="my-5">
+      {alert && (
+        <Alert
+          variant="danger"
+          onClose={() => {
+            setAlert(false);
+          }}
+          dismissible
+        >
+          <Alert.Heading>Clave Incorrecta!</Alert.Heading>
+          <p>Ingresa nuevamente la clave.</p>
+        </Alert>
+      )}
+
+      {validUsername && (
+        <Alert
+          variant="danger"
+          onClose={() => {
+            setAlert(false);
+          }}
+          dismissible
+        >
+          <Alert.Heading>No hay username</Alert.Heading>
+          <p>Ingresa un username valido</p>
+        </Alert>
+      )}
+
       <Row className="justify-content-center text-center">
         <Col lg={6}>
           <img alt="logo" src={WaykiLogo} className="w-50" />
@@ -71,7 +106,7 @@ export default function SignUp() {
                   onChange={handleNewPassword}
                 />
               </FloatingLabel>
-              {/* <FloatingLabel
+              <FloatingLabel
                 controlId="floatingPassword"
                 label="Ingresa tu contraseña nuevamente "
               >
@@ -80,7 +115,7 @@ export default function SignUp() {
                   placeholder="Password"
                   onChange={handleValidPassword}
                 />
-              </FloatingLabel> */}
+              </FloatingLabel>
               <Button
                 variant="primary"
                 type="submit"

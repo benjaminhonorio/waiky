@@ -11,12 +11,18 @@ import {
 import { Link } from 'react-router-dom';
 import WaykiLogo from '../logoH.png';
 
-export default function Login() {
+export default function Login({ dataUsers }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [validLogin, setValidLogin] = useState(false);
 
   const handleForm = (e) => {
     e.preventDefault();
+    console.log(dataUsers);
+    const lala = dataUsers.find(
+      (i) => i.username === username && i.password === password
+    );
+    setValidLogin(!!lala);
   };
 
   const handleUsername = (e) => {
@@ -29,6 +35,7 @@ export default function Login() {
 
   return (
     <Container className="my-5">
+      {validLogin && setValidLogin(false)}
       <Row className="justify-content-center text-center">
         <Col lg={6}>
           <Form onSubmit={handleForm}>

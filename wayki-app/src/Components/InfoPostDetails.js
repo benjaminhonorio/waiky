@@ -5,7 +5,7 @@ export default function InfoPostDetails({ data }) {
   return (
     <>
       <Col className="jumbotron">
-        <h1 className="display-4">{data.titulo}</h1>
+        <h2>{data.titulo}</h2>
         <h4> {data.tipo_mascota} </h4>
         <div className="d-inline">
           <span>

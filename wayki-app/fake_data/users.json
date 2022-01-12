@@ -1,19 +1,14 @@
 {
   "users": [
     {
-      "username": "Michael",
-      "password": "927e3822d",
+      "username": "michael97",
+      "password": "hola",
       "id": 1
     },
     {
-      "username": "Sandra",
-      "password": "ksjdakjsd",
+      "username": "michael42",
+      "password": "jeje2",
       "id": 2
-    },
-    {
-      "username": "Michael",
-      "password": "9999",
-      "id": 3
     }
   ]
 }
