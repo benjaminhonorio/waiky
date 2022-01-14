@@ -19,10 +19,10 @@ export default function Login({ dataUsers }) {
   const handleForm = (e) => {
     e.preventDefault();
     console.log(dataUsers);
-    const lala = dataUsers.find(
+    const validate = dataUsers.find(
       (i) => i.username === username && i.password === password
     );
-    setValidLogin(!!lala);
+    setValidLogin(!!validate);
   };
 
   const handleUsername = (e) => {

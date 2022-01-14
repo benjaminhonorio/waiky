@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 
 import axios from 'axios';
 
+import { Placeholder } from 'react-bootstrap';
+
 import { Routes, Route } from 'react-router-dom';
 import AppNavBar from './Components/AppNavBar';
 import AppFooter from './Components/AppFooter';
@@ -36,7 +38,19 @@ function App() {
         <Route path="/edit" element={<EditView />}></Route>
         <Route
           path="/post/:id"
-          element={<DetailPost dataPost={dataPost} />}
+          element={
+            dataPost.length ? (
+              <DetailPost dataPost={dataPost} />
+            ) : (
+              <p>
+                {setTimeout(() => {
+                  <p>
+                    <Placeholder md={12} xs={12} />
+                  </p>;
+                }, 10000)}
+              </p>
+            )
+          }
         ></Route>
         <Route path="/login" element={<Login dataUsers={dataUsers} />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
