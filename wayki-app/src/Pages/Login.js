@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Button,
   FloatingLabel,
@@ -9,25 +11,57 @@ import {
 import { Link } from 'react-router-dom';
 import WaykiLogo from '../logoH.png';
 
-export default function Login() {
+export default function Login({ dataUsers }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [validLogin, setValidLogin] = useState(false);
+
+  const handleForm = (e) => {
+    e.preventDefault();
+    console.log(dataUsers);
+    const validate = dataUsers.find(
+      (i) => i.username === username && i.password === password
+    );
+    setValidLogin(!!validate);
+  };
+
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
   return (
     <Container className="my-5">
+      {validLogin && setValidLogin(false)}
       <Row className="justify-content-center text-center">
         <Col lg={6}>
-          <Form.Group>
-            <img alt="logo" src={WaykiLogo} className="w-50" />
-            <FloatingLabel
-              controlId="floatingInput"
-              label="Escribe tu usuario"
-              className="my-3"
-            >
-              <Form.Control type="name" placeholder="name@example.com" />
-            </FloatingLabel>
+          <Form onSubmit={handleForm}>
+            <Form.Group>
+              <img alt="logo" src={WaykiLogo} className="w-50" />
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Escribe tu usuario"
+                className="my-3"
+              >
+                <Form.Control
+                  type="name"
+                  placeholder="name@example.com"
+                  onChange={handleUsername}
+                />
+              </FloatingLabel>
+            </Form.Group>
             <FloatingLabel
               controlId="floatingPassword"
               label="Escribe tu contraseña"
             >
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={handlePassword}
+              />
             </FloatingLabel>
             <div className="my-3">
               <Col
@@ -42,7 +76,7 @@ export default function Login() {
             <Button variant="primary" type="submit" className="my-4" size="lg">
               Iniciar sesión
             </Button>
-          </Form.Group>
+          </Form>
         </Col>
       </Row>
       <Form.Group
@@ -54,3 +88,4 @@ export default function Login() {
     </Container>
   );
 }
+
