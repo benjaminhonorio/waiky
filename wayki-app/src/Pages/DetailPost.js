@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
+import { useState, useEffect } from "react";
+import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
-import Comments from '../Components/Comments';
-import Gallery from '../Components/Gallery';
-import InfoPostDetails from '../Components/InfoPostDetails';
+import Comments from "../Components/Comments";
+import Gallery from "../Components/Gallery";
+import InfoPostDetails from "../Components/InfoPostDetails";
 
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 export default function DetailPost({ dataPost }) {
   const [show, setShow] = useState(false);
@@ -16,6 +16,10 @@ export default function DetailPost({ dataPost }) {
   const { id } = useParams();
   const data = dataPost?.find((p) => p.id === id);
   console.log(data);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div>
@@ -85,4 +89,3 @@ export default function DetailPost({ dataPost }) {
     </div>
   );
 }
-
