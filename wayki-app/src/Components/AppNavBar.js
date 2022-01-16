@@ -12,7 +12,7 @@ export default function AppNavBar() {
   return (
     <Navbar bg="dark" variant="dark" expand="md">
       <Container fluid>
-        <Navbar.Brand href="/">
+        <Navbar.Brand as={Link} to="/">
           <img
             alt="logo"
             src={WaykiLogo}
@@ -25,11 +25,11 @@ export default function AppNavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="/">
+            <Nav.Link as={Link} to="/">
               <BsHouse className="mx-2 d-inline-block  align-baseline" />
               Inicio
             </Nav.Link>
-            <Nav.Link href="/map">
+            <Nav.Link as={Link} to="/map">
               <BsMap className="mx-2 d-inline-block  align-baseline" />
               Mapa
             </Nav.Link>

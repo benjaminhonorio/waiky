@@ -1,5 +1,5 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
-
+import { Link } from "react-router-dom";
 export default function AppFooter() {
   const links = [
     { showName: "Inicio", link: "/" },
@@ -17,7 +17,8 @@ export default function AppFooter() {
                 <Button
                   variant="link"
                   className="text-black-50 text-decoration-none"
-                  href={`${navLink.link}`}
+                  as={Link}
+                  to={`${navLink.link}`}
                 >
                   {navLink.showName}
                 </Button>

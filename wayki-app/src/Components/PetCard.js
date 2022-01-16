@@ -1,8 +1,9 @@
 import { Card, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { formatDistance } from "date-fns";
 import { es } from "date-fns/locale";
 
-export default function PetCard({id, fotos, titulo, fecha}) {
+export default function PetCard({ id, fotos, titulo, fecha }) {
   return (
     <Col key={id} className="py-2">
       <div
@@ -34,7 +35,9 @@ export default function PetCard({id, fotos, titulo, fecha}) {
                 })
               : ""}
           </Card.Text>
-          <Button variant="primary">Contactarse</Button>
+          <Button as={Link} to={`/post/${id}`} variant="primary">
+            Contactarse
+          </Button>
         </Card.Body>
       </div>
     </Col>
