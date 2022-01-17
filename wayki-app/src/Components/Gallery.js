@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Carousel } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Carousel } from "react-bootstrap";
 
 const Gallery = ({ data }) => {
   const [index, setIndex] = useState(0);
@@ -40,4 +40,3 @@ const Gallery = ({ data }) => {
 };
 
 export default Gallery;
-

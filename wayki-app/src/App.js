@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-import { Routes, Route } from 'react-router-dom';
-import AppNavBar from './Components/AppNavBar';
-import AppFooter from './Components/AppFooter';
-import Home from './Pages/Home';
-import DetailPost from './Pages/DetailPost';
-import EditView from './Pages/EditView';
-import Login from './Pages/Login';
-import SignUp from './Pages/SignUp';
-import MapView from './Pages/MapView';
-import PasswordRecovery from './Pages/PasswordRecovery';
-import PasswordReset from './Pages/PasswordReset';
+import { Routes, Route } from "react-router-dom";
+import AppNavBar from "./Components/AppNavBar";
+import AppFooter from "./Components/AppFooter";
+import Home from "./Pages/Home";
+import DetailPost from "./Pages/DetailPost";
+import EditView from "./Pages/EditView";
+import Login from "./Pages/Login";
+import SignUp from "./Pages/SignUp";
+import MapView from "./Pages/MapView";
+import PasswordRecovery from "./Pages/PasswordRecovery";
+import PasswordReset from "./Pages/PasswordReset";
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
@@ -19,13 +19,13 @@ function App() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/posts')
+      .get("http://localhost:3001/posts")
       .then((response) => setDataPost(response.data));
   }, []);
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/users')
+      .get("http://localhost:3001/users")
       .then((response) => setDataUsers(response.data));
   }, []);
 

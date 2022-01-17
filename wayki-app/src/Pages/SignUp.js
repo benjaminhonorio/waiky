@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import axios from 'axios';
+import axios from "axios";
 
 import {
   Button,
@@ -10,15 +10,15 @@ import {
   Form,
   Row,
   Alert,
-} from 'react-bootstrap';
-import WaykiLogo from '../logoH.png';
+} from "react-bootstrap";
+import WaykiLogo from "../logoH.png";
 
 export default function SignUp() {
-  const url = 'http://localhost:3001/users';
+  const url = "http://localhost:3003/api/v1/users";
 
-  const [newUsername, setNewUsername] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [validPassword, setValidPassword] = useState('');
+  const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [validPassword, setValidPassword] = useState("");
   const [alert, setAlert] = useState(false);
   const [validUsername, setValidUsername] = useState(false);
   // const [users, setUsers] = useState([]);
@@ -27,7 +27,7 @@ export default function SignUp() {
     e.preventDefault();
     const newObject = {
       username: newUsername,
-      password: newPassword,
+      pwd: newPassword,
     };
     newPassword === validPassword
       ? axios.post(url, newObject).then((response) => response.data)
@@ -36,8 +36,8 @@ export default function SignUp() {
     //   <Alert variant="danger"> Password is incorrect. Try again! </Alert>
     // );
     setValidUsername(!newUsername);
-    setNewUsername('');
-    setNewPassword('');
+    setNewUsername("");
+    setNewPassword("");
   };
 
   const handleNewUsername = (e) => {

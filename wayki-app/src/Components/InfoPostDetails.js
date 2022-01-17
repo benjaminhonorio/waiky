@@ -1,5 +1,5 @@
-import React from 'react';
-import { Col, Button } from 'react-bootstrap';
+import React from "react";
+import { Col, Button } from "react-bootstrap";
 
 export default function InfoPostDetails({ data }) {
   return (
@@ -10,13 +10,13 @@ export default function InfoPostDetails({ data }) {
         <div className="d-inline">
           <span>
             <strong> Sexo: </strong>
-            {data.caracteristicas['sexo']}
+            {data.caracteristicas["sexo"]}
           </span>
         </div>
         <div className="d-inline px-4">
           <span>
             <strong> Color: </strong>
-            {data.caracteristicas['color']}
+            {data.caracteristicas["color"]}
           </span>
         </div>
         <p>
@@ -35,4 +35,3 @@ export default function InfoPostDetails({ data }) {
     </>
   );
 }
-
