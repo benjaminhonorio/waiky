@@ -65,10 +65,10 @@ export default function Home() {
         />
         <Col className="col-12 col-md-6">
           <Map
-          // googleMapURL={credentials.mapsKey}
-          // containerElement={<div style={{ height: "94vh" }} />}
-          // mapElement={<div style={{ height: "100%" }} />}
-          // loadingElement={<div style={{ height: "100%" }} />}
+            googleMapURL={credentials.mapsKey}
+            containerElement={<div style={{ height: "94vh" }} />}
+            mapElement={<div style={{ height: "100%" }} />}
+            loadingElement={<div style={{ height: "100%" }} />}
           />
         </Col>
       </Row>

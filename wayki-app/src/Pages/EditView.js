@@ -2,15 +2,28 @@ import React, { useState } from "react";
 import { Form, Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { BsGeoAltFill } from "react-icons/bs";
 import Map from "../Components/Map";
-// import credentials from "../Components/credentials";
+import credentials from "../Components/credentials";
 
 export default function EditView() {
   const [showMap, setShowMap] = useState(false);
 
   const handleCloseMap = () => setShowMap(false);
   const handleShowMap = () => setShowMap(true);
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [userInfo, setuserInfo] = useState({
+    file: [],
+    filepreview: null,
+  });
 
-  // const mapURL = credentials.mapsKey;
+  const handleInputChange = (event) => {
+    setIsUploaded(true);
+    setuserInfo({
+      ...userInfo,
+      file: event.target.files[0],
+      filepreview: URL.createObjectURL(event.target.files[0]),
+    });
+  };
+  const mapURL = credentials.mapsKey;
 
   return (
     <Container className="my-5">
@@ -145,10 +158,10 @@ export default function EditView() {
         </Modal.Header>
         <Modal.Body>
           <Map
-          // googleMapURL={mapURL}
-          // containerElement={<div style={{ height: "350px" }} />}
-          // mapElement={<div style={{ height: "100%" }} />}
-          // loadingElement={<div style={{ height: `100%` }} />}
+            googleMapURL={mapURL}
+            containerElement={<div style={{ height: "350px" }} />}
+            mapElement={<div style={{ height: "100%" }} />}
+            loadingElement={<div style={{ height: `100%` }} />}
           />
         </Modal.Body>
         <Modal.Footer>
