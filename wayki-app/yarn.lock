@@ -14782,8 +14782,11 @@ prop-types-extra@^1.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> b79fa24 (add profile page)
+=======
+>>>>>>> b79fa2428aa2a0d6b15ab1fc050da0b1609ac9c8
 prop-types@^15.5.8:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
@@ -14794,10 +14797,13 @@ prop-types@^15.5.8:
     react-is "^16.13.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 8109e91 (add ProfileView)
 =======
 >>>>>>> b79fa24 (add profile page)
+=======
+>>>>>>> b79fa2428aa2a0d6b15ab1fc050da0b1609ac9c8
 prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
@@ -15177,8 +15183,11 @@ react-error-overlay@^6.0.9:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> b79fa24 (add profile page)
+=======
+>>>>>>> b79fa2428aa2a0d6b15ab1fc050da0b1609ac9c8
 react-google-maps@^9.4.5:
   version "9.4.5"
   resolved "https://registry.yarnpkg.com/react-google-maps/-/react-google-maps-9.4.5.tgz#920c199bdc925e0ce93880edffb09428d263aafa"
