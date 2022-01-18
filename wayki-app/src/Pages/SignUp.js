@@ -14,7 +14,7 @@ import {
 import WaykiLogo from "../logoH.png";
 
 export default function SignUp() {
-  const url = "http://localhost:3003/api/v1/users";
+  const url = `${process.env.REACT_APP_BASE_API_URL}/api/v1/users`;
 
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");

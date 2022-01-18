@@ -14,18 +14,19 @@ export default function Home() {
   const [searchValue, setSearchValue] = useState("");
 
   const getPosts = () => {
-    // La url luego se reemplazaria por el endpoint de nuestra API para los posts
-    axios.get("http://localhost:3001/posts").then((response) => {
-      setPosts(response.data);
-      setFilteredPosts(response.data);
-    });
+    axios
+      .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`)
+      .then((response) => {
+        setPosts(response.data);
+        setFilteredPosts(response.data);
+      });
   };
 
   useEffect(getPosts, []);
 
   // Filtro basico para los posts mostrados
   const handleSearch = (event) => {
-    console.log(event);
+    // console.log(event);
     event.preventDefault();
     const searchInput = event.target.value;
     setSearchValue(searchInput);

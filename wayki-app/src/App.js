@@ -19,13 +19,13 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/posts")
+      .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`)
       .then((response) => setDataPost(response.data));
   }, []);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/users")
+      .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/users`)
       .then((response) => setDataUsers(response.data));
   }, []);
 
