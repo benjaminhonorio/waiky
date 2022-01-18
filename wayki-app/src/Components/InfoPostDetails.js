@@ -10,7 +10,7 @@ export default function InfoPostDetails({ data }) {
         <div className="d-inline">
           <span>
             <strong> Sexo: </strong>
-            {data.caracteristicas["sexo"]}
+            {data.caracteristicas["sexo"] === "M" ? "Macho" : "Hembra"}
           </span>
         </div>
         <div className="d-inline px-4">
@@ -20,7 +20,8 @@ export default function InfoPostDetails({ data }) {
           </span>
         </div>
         <p>
-          <strong> Fecha de publicacion: </strong> {data.fecha}
+          <strong> Fecha de publicacion: </strong>{" "}
+          {new Date(data.createdAt).toLocaleDateString()}
         </p>
         <hr className="my-4" />
         <h4> Descripcion </h4>

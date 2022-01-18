@@ -8,7 +8,7 @@ export default function AppNavBar() {
   // Por defecto false si el usuario no esta logueado
   // Temporalmente asigno true al dar click en boton Login (para efectos de visualizar la barra de navegacion con el usuario logueado)
   // Asi mismo al dar click en salir (al final del dropdown del Usuario) se asigna false
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <Navbar bg="dark" variant="dark" expand="md">
       <Container fluid>
