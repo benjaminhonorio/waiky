@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Form, Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { BsGeoAltFill } from "react-icons/bs";
@@ -10,13 +11,43 @@ export default function EditView() {
   const handleCloseMap = () => setShowMap(false);
   const handleShowMap = () => setShowMap(true);
 
+  // TODO: create object from Form and send to db
+  const newPost = {
+    caracteristicas: {
+      edad: "6 meses",
+      color: "marron",
+      sexo: "M",
+      tamaño: "XS",
+    },
+    ubicacion: {
+      referencia: "Mercado Buenos Aires",
+      lat: -9.127000168554577,
+      lng: -78.52001851957706,
+    },
+    titulo: "Gatito perdido",
+    tipo: "gato",
+    etiquetas: ["gato", "bebe", "ayuda"],
+    descripcion:
+      "voluptatem sed natus perspiciatis qui enim aut ut ipsum repellat occaecati eveniet aliquam accusamus ipsum delectus corrupti veniam inventore tenetur est totam voluptas culpa nihil eius et dolore molestiae laborum quis quos ut eos dolorem occaecati alias sed voluptates hic delectus velit consequatur",
+    foto_principal: 0,
+    fotos: ["https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg"],
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.elements);
+    axios
+      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
+      .then((response) => response.data);
+  };
+
   const mapURL = credentials.mapsKey;
 
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
         <Col lg={8}>
-          <Form>
+          <Form onSubmit={onSubmit}>
             <h2>Publicación</h2>
             <br />
             <Form.Group as={Row} className="mb-3">
@@ -24,7 +55,11 @@ export default function EditView() {
                 Título:
               </Form.Label>
               <Col sm="10">
-                <Form.Control placeholder="máximo 3 palabras" />
+                <Form.Control
+                  placeholder="máximo 3 palabras"
+                  type="text"
+                  name="titulo"
+                />
               </Col>
             </Form.Group>
 
@@ -33,7 +68,11 @@ export default function EditView() {
                 Especie:
               </Form.Label>
               <Col sm="10">
-                <Form.Control placeholder="p.e.j: perro, gato,conejo, etc" />
+                <Form.Control
+                  placeholder="p.e.j: perro, gato,conejo, etc"
+                  type="text"
+                  name="tipo"
+                />
               </Col>
             </Form.Group>
 
@@ -42,7 +81,11 @@ export default function EditView() {
                 Etiquetas:
               </Form.Label>
               <Col sm="10">
-                <Form.Control placeholder="máximo 10 palabras" />
+                <Form.Control
+                  placeholder="máximo 10 palabras"
+                  type="text"
+                  name="etiquetas"
+                />
               </Col>
             </Form.Group>
 
@@ -53,7 +96,11 @@ export default function EditView() {
                     Sexo:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Control placeholder="máximo 10 palabras" />
+                    <Form.Control
+                      placeholder="máximo 10 palabras"
+                      type="text"
+                      name="sexo"
+                    />
                   </Col>
                 </Form.Group>
               </Col>
@@ -63,7 +110,11 @@ export default function EditView() {
                     Color:
                   </Form.Label>
                   <Col sm="10">
-                    <Form.Control placeholder="máximo 10 palabras" />
+                    <Form.Control
+                      placeholder="máximo 10 palabras"
+                      type="text"
+                      name="color"
+                    />
                   </Col>
                 </Form.Group>
               </Col>
@@ -76,7 +127,11 @@ export default function EditView() {
                     Tamaño:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Control placeholder="pequeño, mediano, grande" />
+                    <Form.Control
+                      placeholder="pequeño, mediano, grande"
+                      type="text"
+                      name="tamaño"
+                    />
                   </Col>
                 </Form.Group>
               </Col>
@@ -86,7 +141,11 @@ export default function EditView() {
                     Edad:
                   </Form.Label>
                   <Col sm="10">
-                    <Form.Control placeholder="3 años, adulto" />
+                    <Form.Control
+                      placeholder="3 años, adulto"
+                      type="text"
+                      name="edad"
+                    />
                   </Col>
                 </Form.Group>
               </Col>
@@ -99,6 +158,8 @@ export default function EditView() {
                 <Form.Control
                   placeholder="Av. Buenos Aires 328"
                   aria-describedby="opcion"
+                  type="text"
+                  name="referencia"
                 />
                 <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
@@ -116,7 +177,12 @@ export default function EditView() {
                 Descripción:
               </Form.Label>
               <Col sm="10">
-                <Form.Control as="textarea" rows={3} />
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  type="text"
+                  name="descripcion"
+                />
               </Col>
             </Form.Group>
 
@@ -126,13 +192,13 @@ export default function EditView() {
               </Form.Label>
               <Col sm="10">
                 <Form.Group controlId="formFileMultiple" className="mb-3">
-                  <Form.Control type="file" multiple />
+                  <Form.Control type="file" multiple name="fotos" />
                 </Form.Group>
               </Col>
             </Form.Group>
 
             <Button variant="primary" type="submit">
-              Sign In
+              Guardar
             </Button>
           </Form>
         </Col>
