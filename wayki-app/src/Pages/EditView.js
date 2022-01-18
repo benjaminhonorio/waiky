@@ -10,6 +10,11 @@ export default function EditView() {
 
   const handleCloseMap = () => setShowMap(false);
   const handleShowMap = () => setShowMap(true);
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [userInfo, setuserInfo] = useState({
+    file: [],
+    filepreview: null,
+  });
 
   // TODO: create object from Form and send to db
   const newPost = {
@@ -205,7 +210,9 @@ export default function EditView() {
       </Row>
       <Modal show={showMap} onHide={handleCloseMap}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>
+            Ubica un punto referencial donde se extravió tu mascota
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Map

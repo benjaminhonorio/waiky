@@ -12,6 +12,7 @@ import SignUp from "./Pages/SignUp";
 import MapView from "./Pages/MapView";
 import PasswordRecovery from "./Pages/PasswordRecovery";
 import PasswordReset from "./Pages/PasswordReset";
+import ProfileView from "./Pages/ProfileView";
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
@@ -44,6 +45,7 @@ function App() {
         <Route path="/map" element={<MapView />} />
         <Route path="/password_recovery" element={<PasswordRecovery />} />
         <Route path="/password_reset" element={<PasswordReset />} />
+        <Route path="/profile" element={<ProfileView />} />
       </Routes>
       <AppFooter />
     </>

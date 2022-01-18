@@ -1,14 +1,33 @@
 import React from "react";
-import { GoogleMap, withScriptjs, withGoogleMap } from "react-google-maps";
+import {
+  GoogleMap,
+  withScriptjs,
+  withGoogleMap,
+  InfoWindow,
+  // Marker
+} from "react-google-maps";
 
-const Map = (props) => {
+function Map() {
   return (
-    <GoogleMap
-      defaultZoom={12}
-      defaultCenter={{ lat: -12.0464, lng: -77.0428 }}
-      defaultOptions={{ disableDefaultUI: true }}
-    ></GoogleMap>
+    <div>
+      <GoogleMap
+        defaultZoom={15}
+        defaultCenter={{ lat: -12.0464, lng: -77.0428 }}
+        defaultOptions={{ disableDefaultUI: true }}
+      >
+        {/* {props.destinosCompleto.map((marker) => {
+          return (
+            <Marker
+              key={marker.id}
+              position={{ lat: parseFloat(marker.latitud), lng: parseFloat(marker.longitud) }}
+              title={marker.nombre}
+            />
+          )
+        })} */}
+      </GoogleMap>
+    </div>
   );
-};
+}
 
-export default withScriptjs(withGoogleMap(Map));
+const MapWrapper = withScriptjs(withGoogleMap(Map));
+export default MapWrapper;
