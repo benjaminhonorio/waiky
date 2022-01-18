@@ -9,7 +9,20 @@ export default function EditView() {
 
   const handleCloseMap = () => setShowMap(false);
   const handleShowMap = () => setShowMap(true);
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [userInfo, setuserInfo] = useState({
+    file: [],
+    filepreview: null,
+  });
 
+  const handleInputChange = (event) => {
+    setIsUploaded(true);
+    setuserInfo({
+      ...userInfo,
+      file: event.target.files[0],
+      filepreview: URL.createObjectURL(event.target.files[0]),
+    });
+  };
   const mapURL = credentials.mapsKey;
 
   return (
@@ -53,7 +66,7 @@ export default function EditView() {
                     Sexo:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Control placeholder="máximo 10 palabras" />
+                    <Form.Control />
                   </Col>
                 </Form.Group>
               </Col>
@@ -139,7 +152,9 @@ export default function EditView() {
       </Row>
       <Modal show={showMap} onHide={handleCloseMap}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>
+            Ubica un punto referencial donde se extravió tu mascota
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Map
