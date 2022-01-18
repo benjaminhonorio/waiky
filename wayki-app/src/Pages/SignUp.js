@@ -27,7 +27,7 @@ export default function SignUp() {
     e.preventDefault();
     const newObject = {
       username: newUsername,
-      pwd: newPassword,
+      password: newPassword,
     };
     newPassword === validPassword
       ? axios.post(url, newObject).then((response) => response.data)

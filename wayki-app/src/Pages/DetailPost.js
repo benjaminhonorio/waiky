@@ -15,7 +15,6 @@ export default function DetailPost({ dataPost }) {
 
   const { id } = useParams();
   const data = dataPost?.find((p) => p.id === id);
-  console.log(data);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -37,12 +36,7 @@ export default function DetailPost({ dataPost }) {
           <Row className="align-items-center my-4 border p-3">
             <Col lg={6} md={12} xs={12}>
               <h4> Ultima ubicacion </h4>
-              <p className="text-secondary">
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-              </p>
+              <p className="text-secondary">{data.ubicacion.referencia}</p>
               <Button onClick={handleShow} className="my-3">
                 Ver mapa en detalle
               </Button>
