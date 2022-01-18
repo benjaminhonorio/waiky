@@ -10,11 +10,6 @@ export default function EditView() {
 
   const handleCloseMap = () => setShowMap(false);
   const handleShowMap = () => setShowMap(true);
-  const [isUploaded, setIsUploaded] = useState(false);
-  const [userInfo, setuserInfo] = useState({
-    file: [],
-    filepreview: null,
-  });
 
   // TODO: create object from Form and send to db
   const newPost = {
