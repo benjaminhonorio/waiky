@@ -17,6 +17,7 @@ export default function SignUp() {
   const url = `${process.env.REACT_APP_BASE_API_URL}/api/v1/users`;
 
   const [newUsername, setNewUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [validPassword, setValidPassword] = useState("");
   const [alert, setAlert] = useState(false);
@@ -27,7 +28,8 @@ export default function SignUp() {
     e.preventDefault();
     const newObject = {
       username: newUsername,
-      password: newPassword,
+      pwd: newPassword,
+      email: email,
     };
     newPassword === validPassword
       ? axios.post(url, newObject).then((response) => response.data)
@@ -38,10 +40,15 @@ export default function SignUp() {
     setValidUsername(!newUsername);
     setNewUsername("");
     setNewPassword("");
+    setEmail("");
   };
 
   const handleNewUsername = (e) => {
     setNewUsername(e.target.value);
+  };
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
   };
 
   const handleNewPassword = (e) => {
@@ -93,6 +100,17 @@ export default function SignUp() {
                   type="name"
                   placeholder="name@example.com"
                   onChange={handleNewUsername}
+                />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Ingresa tu correo electronico"
+                className="my-3"
+              >
+                <Form.Control
+                  type="email"
+                  placeholder="name@example.com"
+                  onChange={handleEmail}
                 />
               </FloatingLabel>
               <FloatingLabel
