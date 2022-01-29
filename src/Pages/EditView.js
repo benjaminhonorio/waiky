@@ -1,18 +1,49 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { Form, Button, Container, Col, Row, Modal } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Container,
+  Col,
+  Row,
+  Modal,
+  Image,
+} from "react-bootstrap";
+import axios from "axios";
+import profileIcon from "../blank-profile.png";
 import { BsGeoAltFill } from "react-icons/bs";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
 
-export default function EditView() {
+export default function EditView(dataPost) {
+  const [title, setTitle] = useState("");
+  const [type, setType] = useState("");
+  const [hashtags, setHashtags] = useState("");
+  const [gender, setGender] = useState("");
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const [age, setAge] = useState("");
+  const [ubication, setUbication] = useState("");
+  const [description, setDescription] = useState("");
+  const [photos, setPhotos] = useState("");
   const [showMap, setShowMap] = useState(false);
-
+  const [isUploaded, setIsUploaded] = useState(false);
   const handleCloseMap = () => setShowMap(false);
   const handleShowMap = () => setShowMap(true);
-
+  const [userInfo, setuserInfo] = useState({
+    file: [],
+    filepreview: null,
+  });
+  const handleInputChange = (event) => {
+    setIsUploaded(true);
+    setuserInfo({
+      ...userInfo,
+      file: event.target.files[0],
+      filepreview: URL.createObjectURL(event.target.files[0]),
+    });
+  };
   // TODO: create object from Form and send to db
   const newPost = {
+    id: Math.random() * 100,
     caracteristicas: {
       edad: "6 meses",
       color: "marron",
@@ -33,12 +64,78 @@ export default function EditView() {
     fotos: ["https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg"],
   };
 
-  const onSubmit = (e) => {
+  const ValidateForm = (e) => {
+    let isValid = true;
+    let alertText = "";
+    if (title === "") {
+      isValid = false;
+      alertText = "Completar título de publicación";
+    }
+    if (type === "") {
+      isValid = false;
+      alertText = "Completar especie de mascota";
+    }
+    if (hashtags === "") {
+      isValid = false;
+      alertText = "Completar etiquetas de publicación";
+    }
+    if (gender === "") {
+      isValid = false;
+      alertText = "Completar sexo de mascota";
+    }
+    if (color === "") {
+      isValid = false;
+      alertText = "Completar color de mascota";
+    }
+    if (size === "") {
+      isValid = false;
+      alertText = "Completar tamaño de mascota";
+    }
+    if (age === "") {
+      isValid = false;
+      alertText = "Completar edad de mascota";
+    }
+    if (ubication === "") {
+      isValid = false;
+      alertText = "Completar ubicación de mascota";
+    }
+    if (description === "") {
+      isValid = false;
+      alertText = "Completar descripción de publicación";
+    }
+    if (isValid === false) {
+      alert(alertText);
+    }
+    return isValid;
+  };
+
+  const onSubmitForm = (e) => {
     e.preventDefault();
     console.log(e.target.elements);
-    axios
-      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
-      .then((response) => response.data);
+    if (ValidateForm(e) === true) {
+      newPost.id = Math.random() * 100;
+      newPost.titulo = title;
+      newPost.tipo = type;
+      newPost.etiquetas = hashtags;
+      newPost.descripcion = description;
+      newPost.foto_principal = 0;
+      newPost.fotos = [
+        "https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg",
+      ];
+      newPost.caracteristicas.edad = age;
+      newPost.caracteristicas.color = color;
+      newPost.caracteristicas.sexo = gender;
+      newPost.caracteristicas.tamaño = size;
+      newPost.ubicacion.referencia = ubication;
+      newPost.ubicacion.lat = -9.127000168554577;
+      newPost.ubicacion.lng = -78.52001851957706;
+
+      console.log("este es mi nuevo post", newPost);
+      axios
+        .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
+        .then((response) => response.data);
+      setTitle("");
+    }
   };
 
   const mapURL = credentials.mapsKey;
@@ -46,10 +143,10 @@ export default function EditView() {
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
-        <Col lg={8}>
-          <Form onSubmit={onSubmit}>
-            <h2>Publicación</h2>
-            <br />
+        <h2>Publicación</h2>
+
+        <Col lg={7} className="mt-5">
+          <Form onSubmit={onSubmitForm}>
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm="2">
                 Título:
@@ -59,6 +156,7 @@ export default function EditView() {
                   placeholder="máximo 3 palabras"
                   type="text"
                   name="titulo"
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -72,6 +170,7 @@ export default function EditView() {
                   placeholder="p.e.j: perro, gato,conejo, etc"
                   type="text"
                   name="tipo"
+                  onChange={(e) => setType(e.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -85,6 +184,7 @@ export default function EditView() {
                   placeholder="máximo 10 palabras"
                   type="text"
                   name="etiquetas"
+                  onChange={(e) => setHashtags(e.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -96,11 +196,11 @@ export default function EditView() {
                     Sexo:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Control
-                      placeholder="máximo 10 palabras"
-                      type="text"
-                      name="sexo"
-                    />
+                    <Form.Select onChange={(e) => setGender(e.target.value)}>
+                      <option></option>
+                      <option value="H">Hembra</option>
+                      <option value="M">Macho</option>
+                    </Form.Select>
                   </Col>
                 </Form.Group>
               </Col>
@@ -114,6 +214,7 @@ export default function EditView() {
                       placeholder="máximo 10 palabras"
                       type="text"
                       name="color"
+                      onChange={(e) => setColor(e.target.value)}
                     />
                   </Col>
                 </Form.Group>
@@ -127,11 +228,14 @@ export default function EditView() {
                     Tamaño:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Control
-                      placeholder="pequeño, mediano, grande"
-                      type="text"
-                      name="tamaño"
-                    />
+                    <Form.Select onChange={(e) => setSize(e.target.value)}>
+                      <option></option>
+                      <option value="xs">xs</option>
+                      <option value="s">s</option>
+                      <option value="m">m</option>
+                      <option value="l">l</option>
+                      <option value="xl">xl</option>
+                    </Form.Select>
                   </Col>
                 </Form.Group>
               </Col>
@@ -145,6 +249,7 @@ export default function EditView() {
                       placeholder="3 años, adulto"
                       type="text"
                       name="edad"
+                      onChange={(e) => setAge(e.target.value)}
                     />
                   </Col>
                 </Form.Group>
@@ -157,9 +262,9 @@ export default function EditView() {
               <Col sm="10">
                 <Form.Control
                   placeholder="Av. Buenos Aires 328"
-                  aria-describedby="opcion"
                   type="text"
                   name="referencia"
+                  onChange={(e) => setUbication(e.target.value)}
                 />
                 <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
@@ -182,6 +287,7 @@ export default function EditView() {
                   rows={3}
                   type="text"
                   name="descripcion"
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -192,7 +298,11 @@ export default function EditView() {
               </Form.Label>
               <Col sm="10">
                 <Form.Group controlId="formFileMultiple" className="mb-3">
-                  <Form.Control type="file" multiple name="fotos" />
+                  <input
+                    type="file"
+                    accept=".jpg,.jpeg,.gif,.png"
+                    onChange={handleInputChange}
+                  />
                 </Form.Group>
               </Col>
             </Form.Group>
@@ -201,6 +311,29 @@ export default function EditView() {
               Guardar
             </Button>
           </Form>
+        </Col>
+        <Col lg={4} md={{ span: 1, offset: 1 }} className="mt-5">
+          <figure>
+            {!isUploaded ? (
+              <>
+                <Image
+                  width={300}
+                  height={200}
+                  draggable={"false"}
+                  src={profileIcon}
+                  alt="UploadImage"
+                />
+              </>
+            ) : (
+              <img
+                width={300}
+                height={200}
+                draggable={"false"}
+                src={userInfo.filepreview}
+                alt="UploadImage"
+              />
+            )}
+          </figure>
         </Col>
       </Row>
       <Modal show={showMap} onHide={handleCloseMap}>
