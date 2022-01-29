@@ -5,9 +5,6 @@ import { BsHouse, BsMap, BsPersonCircle } from "react-icons/bs";
 import WaykiLogo from "../logo.png";
 
 export default function AppNavBar() {
-  // Por defecto false si el usuario no esta logueado
-  // Temporalmente asigno true al dar click en boton Login (para efectos de visualizar la barra de navegacion con el usuario logueado)
-  // Asi mismo al dar click en salir (al final del dropdown del Usuario) se asigna false
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <Navbar bg="dark" variant="dark" expand="md">
@@ -46,11 +43,15 @@ export default function AppNavBar() {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu variant="dark">
-                    <Dropdown.Item href="#/action-1">Mi Perfil</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
+                    <Dropdown.Item as={Link} to="/profile">
+                      Mi Perfil
+                    </Dropdown.Item>
+                    {/* TODO: publications page */}
+                    <Dropdown.Item as={Link} to="">
                       Mis Publicaciones
                     </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
+                    {/* TODO: favorites page */}
+                    <Dropdown.Item as={Link} to="">
                       Mis Favoritos
                     </Dropdown.Item>
                     <Dropdown.Divider />
