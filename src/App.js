@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -23,7 +22,7 @@ function App() {
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`)
-      .then((response) => setDataPost(response.data));
+      .then((response) => setDataPost(response.data.data));
   }, []);
 
   return (
@@ -31,17 +30,15 @@ function App() {
       <AuthProvider>
         <AppNavBar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home posts={dataPost} />} />
           <Route path="/edit" element={<EditView />} />
           <Route
             path="/post/:id"
-            element={
-              dataPost.length ? <DetailPost dataPost={dataPost} /> : null
-            }
+            element={dataPost.length && <DetailPost dataPost={dataPost} />}
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/map" element={<MapView />} />
+          <Route path="/map" element={<MapView posts={dataPost} />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
           <Route path="/password_reset" element={<PasswordReset />} />
           <Route

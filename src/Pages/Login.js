@@ -29,7 +29,7 @@ export default function Login() {
     };
 
     axios
-      .post(`http://localhost:3003/api/v1/users/login`, newUserLogin)
+      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/users/login`, newUserLogin)
       .then(({ data }) => {
         if (data.error) {
           setData(data);
