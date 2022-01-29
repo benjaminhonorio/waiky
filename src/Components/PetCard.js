@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDistance } from "date-fns";
 import { es } from "date-fns/locale";
 
-export default function PetCard({ id, fotos, titulo, fecha }) {
+export default function PetCard({ id, photos, title, date }) {
   return (
     <Col key={id} className="py-2">
       <div
@@ -23,14 +23,14 @@ export default function PetCard({ id, fotos, titulo, fecha }) {
             objectFit: "cover",
           }}
           variant="top"
-          src={fotos[0]}
+          src={photos[0]}
         />
         <Card.Body className="d-flex flex-column justify-content-center">
-          <Card.Title>{titulo}</Card.Title>
+          <Card.Title>{title}</Card.Title>
           <Card.Text>
             Hace{" "}
-            {fecha
-              ? formatDistance(new Date(), new Date(fecha), {
+            {date
+              ? formatDistance(new Date(), new Date(date), {
                   locale: es,
                 })
               : ""}

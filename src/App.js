@@ -23,7 +23,7 @@ function App() {
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`)
-      .then((response) => setDataPost(response.data));
+      .then((response) => setDataPost(response.data.data));
   }, []);
 
   return (
@@ -35,9 +35,7 @@ function App() {
           <Route path="/edit" element={<EditView />} />
           <Route
             path="/post/:id"
-            element={
-              dataPost.length ? <DetailPost dataPost={dataPost} /> : null
-            }
+            element={dataPost.length && <DetailPost dataPost={dataPost} />}
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
@@ -56,6 +54,7 @@ function App() {
         </Routes>
         <AppFooter />
       </AuthProvider>
+      <AppNavBar />
     </>
   );
 }

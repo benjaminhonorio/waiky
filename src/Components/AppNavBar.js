@@ -53,8 +53,13 @@ export default function AppNavBar() {
                     <Dropdown.Item as={Link} to="/profile">
                       Mi Perfil
                     </Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
+                    {/* TODO: publications page */}
+                    <Dropdown.Item as={Link} to="">
                       Mis Publicaciones
+                    </Dropdown.Item>
+                    {/* TODO: favorites page */}
+                    <Dropdown.Item as={Link} to="">
+                      Mis Favoritos
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item onClick={() => setIsLoggedIn(auth.logout())}>
