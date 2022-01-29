@@ -5,18 +5,18 @@ export default function InfoPostDetails({ data }) {
   return (
     <>
       <Col className="jumbotron">
-        <h2>{data.titulo}</h2>
-        <h4> {data.tipo_mascota} </h4>
+        <h2>{data.title}</h2>
+        <h4> {data.type} </h4>
         <div className="d-inline">
           <span>
             <strong> Sexo: </strong>
-            {data.caracteristicas["sexo"] === "M" ? "Macho" : "Hembra"}
+            {data.characteristics["sex"] === "M" ? "Macho" : "Hembra"}
           </span>
         </div>
         <div className="d-inline px-4">
           <span>
             <strong> Color: </strong>
-            {data.caracteristicas["color"]}
+            {data.characteristics["color"]}
           </span>
         </div>
         <p>
@@ -25,7 +25,7 @@ export default function InfoPostDetails({ data }) {
         </p>
         <hr className="my-4" />
         <h4> Descripcion </h4>
-        <p className="text-secondary">{data.descripcion}</p>
+        <p className="text-secondary">{data.description}</p>
         <hr className="my-4" />
         <p>
           <Button variant="primary" size="lg">

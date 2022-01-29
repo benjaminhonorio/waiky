@@ -7,14 +7,14 @@ export default function Publicaciones({ posts }) {
       <h2 className="pt-4">Publicaciones</h2>
       {posts.length ? (
         <Row className="d-flex justify-content-center row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
-          {posts.map(({ id, titulo, createdAt: fecha, fotos }) => {
+          {posts.map(({ id, title, createdAt: date, photos }) => {
             return (
               <PetCard
                 key={id}
                 id={id}
-                titulo={titulo}
-                fotos={fotos}
-                fecha={fecha}
+                title={title}
+                photos={photos}
+                date={date}
               />
             );
           })}

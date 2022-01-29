@@ -1,8 +1,8 @@
-import { Col, Form, Image, Button } from "react-bootstrap";
+import { Col, Image } from "react-bootstrap";
 
 import WaykiLogo from "../logoH.png";
 
-export default function Hero({ searchValue, handleSearch, handleSubmit }) {
+export default function Hero() {
   return (
     <Col
       style={{ marginTop: "-56px" }}
@@ -12,23 +12,8 @@ export default function Hero({ searchValue, handleSearch, handleSubmit }) {
         <Image src={WaykiLogo} alt="logo" fluid />
       </Col>
       <p className="h4 fw-light">
-        Busca y encuentra mascotas perdidas en tu zona
+        Ayudemos a las mascotas a volver a sus hogares
       </p>
-      <Form className="col-12 col-sm-10" onSubmit={handleSubmit}>
-        <Form.Group className="input-group mb-3">
-          <Form.Control
-            type="text"
-            className="form-control"
-            placeholder="Busca por nombre, ubicacion, color, etc"
-            aria-label="Search bar"
-            value={searchValue}
-            onChange={handleSearch}
-          />
-        </Form.Group>
-        <Button variant="primary">
-          Buscar Ahora
-        </Button>
-      </Form>
     </Col>
   );
 }
