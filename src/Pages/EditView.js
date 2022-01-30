@@ -16,6 +16,7 @@ import credentials from "../Components/credentials";
 
 export default function EditView(dataPost) {
   const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [hashtags, setHashtags] = useState("");
   const [gender, setGender] = useState("");
@@ -44,24 +45,28 @@ export default function EditView(dataPost) {
   // TODO: create object from Form and send to db
   const newPost = {
     id: Math.random() * 100,
-    caracteristicas: {
-      edad: "6 meses",
-      color: "marron",
-      sexo: "M",
-      tamaño: "XS",
+    characteristics: {
+      name: "Fido",
+      age: "2 años",
+      color: "blanco",
+      sex: "M",
+      size: "XL",
     },
-    ubicacion: {
-      referencia: "Mercado Buenos Aires",
-      lat: -9.127000168554577,
-      lng: -78.52001851957706,
+    location: {
+      reference: "Plaza Mayor de Nuevo Chimbote",
+      coordinates: [-78.52001851957706, -9.127000168554577],
     },
-    titulo: "Gatito perdido",
-    tipo: "gato",
-    etiquetas: ["gato", "bebe", "ayuda"],
-    descripcion:
-      "voluptatem sed natus perspiciatis qui enim aut ut ipsum repellat occaecati eveniet aliquam accusamus ipsum delectus corrupti veniam inventore tenetur est totam voluptas culpa nihil eius et dolore molestiae laborum quis quos ut eos dolorem occaecati alias sed voluptates hic delectus velit consequatur",
-    foto_principal: 0,
-    fotos: ["https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg"],
+    title: "Perro labrador perdido",
+    type: "perro",
+    tags: ["perro", "labrador", "ayuda"],
+    description:
+      "quidem molestiae nostrum voluptas velit error similique debitis et nihil hic et at provident aut quo facilis et quae ullam sint velit et rerum non ipsa iure cupiditate adipisci earum reprehenderit aspernatur veri",
+    mainPhoto: 0,
+    photos: [
+      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
+      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
+      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
+    ],
   };
 
   const ValidateForm = (e) => {
@@ -115,6 +120,7 @@ export default function EditView(dataPost) {
     if (ValidateForm(e) === true) {
       newPost.id = Math.random() * 100;
       newPost.titulo = title;
+
       newPost.tipo = type;
       newPost.etiquetas = hashtags;
       newPost.descripcion = description;
@@ -122,7 +128,7 @@ export default function EditView(dataPost) {
       newPost.fotos = [
         "https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg",
       ];
-      newPost.caracteristicas.edad = age;
+      newPost.characteristics.newPost.caracteristicas.edad = age;
       newPost.caracteristicas.color = color;
       newPost.caracteristicas.sexo = gender;
       newPost.caracteristicas.tamaño = size;
@@ -157,6 +163,19 @@ export default function EditView(dataPost) {
                   type="text"
                   name="titulo"
                   onChange={(e) => setTitle(e.target.value)}
+                />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="2">
+                Nombre:
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  placeholder=""
+                  type="text"
+                  name="titulo"
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -246,7 +265,7 @@ export default function EditView(dataPost) {
                   </Form.Label>
                   <Col sm="10">
                     <Form.Control
-                      placeholder="3 años, adulto"
+                      placeholder="3 años"
                       type="text"
                       name="edad"
                       onChange={(e) => setAge(e.target.value)}
