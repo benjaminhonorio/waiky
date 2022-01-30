@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
-import profileIcon from "../blank-profile-picture-gb20c8aff5_640.png";
+import profileIcon from "../blank-profile.png";
 
-export default function Profile() {
+export default function ProfileEdit() {
   const [name, setName] = useState("");
   const [correo, setCorreo] = useState("");
   const [telephone, setTelephone] = useState("");
