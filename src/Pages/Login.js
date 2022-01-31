@@ -1,6 +1,7 @@
 import { useState } from "react";
-
+import axios from "axios";
 import {
+  Alert,
   Button,
   FloatingLabel,
   Container,
@@ -8,21 +9,44 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import WaykiLogo from "../logoH.png";
+import useAuth from "../auth/useAuth";
 
-export default function Login({ dataUsers }) {
+export default function Login() {
+  const navigate = useNavigate();
+  const auth = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [validLogin, setValidLogin] = useState(false);
+  const [data, setData] = useState({});
+  const [alert, setAlert] = useState();
 
   const handleForm = (e) => {
     e.preventDefault();
-    console.log(dataUsers);
-    const validate = dataUsers.find(
-      (i) => i.username === username && i.password === password
-    );
-    setValidLogin(!!validate);
+    const newUserLogin = {
+      username: username,
+      pwd: password,
+    };
+
+    axios
+      .post(
+        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/login`,
+        newUserLogin
+      )
+      .then(({ data }) => {
+        if (data.error) {
+          setData(data);
+          setAlert(data.error);
+        } else {
+          auth.login(data.token, data.username);
+          const user = {
+            token: `${data.token}`,
+            username: `${data.username}`,
+          };
+          sessionStorage.setItem("jwt", JSON.stringify(user));
+          navigate("/");
+        }
+      });
   };
 
   const handleUsername = (e) => {
@@ -35,7 +59,18 @@ export default function Login({ dataUsers }) {
 
   return (
     <Container className="my-5">
-      {validLogin && setValidLogin(false)}
+      {alert && (
+        <Alert
+          variant="danger"
+          onClose={() => {
+            setAlert(false);
+          }}
+          dismissible
+        >
+          <p>{data.message}</p>
+        </Alert>
+      )}
+      <p> {data.error} </p>
       <Row className="justify-content-center text-center">
         <Col lg={6}>
           <Form onSubmit={handleForm}>
@@ -48,7 +83,7 @@ export default function Login({ dataUsers }) {
               >
                 <Form.Control
                   type="name"
-                  placeholder="name@example.com"
+                  placeholder="Username"
                   onChange={handleUsername}
                 />
               </FloatingLabel>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
@@ -12,36 +13,56 @@ import {
   Alert,
 } from "react-bootstrap";
 import WaykiLogo from "../logoH.png";
+import useAuth from "../auth/useAuth";
 
 export default function SignUp() {
-  const url = `${process.env.REACT_APP_BASE_API_URL}/api/v1/users`;
-
+  const navigate = useNavigate();
   const [newUsername, setNewUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [validPassword, setValidPassword] = useState("");
-  const [alert, setAlert] = useState(false);
-  const [validUsername, setValidUsername] = useState(false);
-  // const [users, setUsers] = useState([]);
+  const [alert, setAlert] = useState();
+  const [data, setData] = useState({});
+  const auth = useAuth();
 
   const handleForm = (e) => {
     e.preventDefault();
+
     const newObject = {
       username: newUsername,
-      password: newPassword,
+      pwd: newPassword,
+      validPwd: validPassword,
+      email: email,
     };
-    newPassword === validPassword
-      ? axios.post(url, newObject).then((response) => response.data)
-      : setAlert(true);
-    // ) : (
-    //   <Alert variant="danger"> Password is incorrect. Try again! </Alert>
-    // );
-    setValidUsername(!newUsername);
-    setNewUsername("");
-    setNewPassword("");
+
+    axios
+      .post(
+        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/signup`,
+        newObject
+      )
+      .then(({ data }) => {
+        if (data.error) {
+          setData(data);
+          setAlert(data.error);
+          console.log(data);
+        } else {
+          auth.login(data.token, data.username);
+          const user = {
+            token: `${data.token}`,
+            username: `${data.username}`,
+          };
+          sessionStorage.setItem("jwt", JSON.stringify(user));
+          navigate("/profile");
+        }
+      });
   };
 
   const handleNewUsername = (e) => {
     setNewUsername(e.target.value);
+  };
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
   };
 
   const handleNewPassword = (e) => {
@@ -62,21 +83,7 @@ export default function SignUp() {
           }}
           dismissible
         >
-          <Alert.Heading>Clave Incorrecta!</Alert.Heading>
-          <p>Ingresa nuevamente la clave.</p>
-        </Alert>
-      )}
-
-      {validUsername && (
-        <Alert
-          variant="danger"
-          onClose={() => {
-            setAlert(false);
-          }}
-          dismissible
-        >
-          <Alert.Heading>No hay username</Alert.Heading>
-          <p>Ingresa un username valido</p>
+          <p>{data.message}</p>
         </Alert>
       )}
 
@@ -93,6 +100,17 @@ export default function SignUp() {
                   type="name"
                   placeholder="name@example.com"
                   onChange={handleNewUsername}
+                />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Ingresa tu correo electronico"
+                className="my-3"
+              >
+                <Form.Control
+                  type="email"
+                  placeholder="name@example.com"
+                  onChange={handleEmail}
                 />
               </FloatingLabel>
               <FloatingLabel

@@ -1,23 +1,31 @@
 import React from "react";
-import { GoogleMap, withScriptjs, withGoogleMap } from "react-google-maps";
+import {
+  GoogleMap,
+  withScriptjs,
+  withGoogleMap,
+  Marker,
+} from "react-google-maps";
 
-function Map() {
+function Map({ center, posts }) {
   return (
     <div>
       <GoogleMap
-        defaultZoom={15}
-        defaultCenter={{ lat: -12.0464, lng: -77.0428 }}
+        defaultZoom={12}
+        center={center}
         defaultOptions={{ disableDefaultUI: true }}
       >
-        {/* {props.destinosCompleto.map((marker) => {
+        {posts.map((post) => {
           return (
             <Marker
-              key={marker.id}
-              position={{ lat: parseFloat(marker.latitud), lng: parseFloat(marker.longitud) }}
-              title={marker.nombre}
+              key={post.id}
+              position={{
+                lat: parseFloat(post.location.coordinates[1]),
+                lng: parseFloat(post.location.coordinates[0]),
+              }}
+              title={post.nombre}
             />
-          )
-        })} */}
+          );
+        })}
       </GoogleMap>
     </div>
   );

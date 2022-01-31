@@ -12,42 +12,62 @@ import SignUp from "./Pages/SignUp";
 import MapView from "./Pages/MapView";
 import PasswordRecovery from "./Pages/PasswordRecovery";
 import PasswordReset from "./Pages/PasswordReset";
-import Profile from "./Pages/Profile";
+import ProfileView from "./Pages/ProfileView";
+import PrivateRoute from "./Pages/PrivateRoute";
+import RedirectUser from "./Pages/RedirectUser";
+import AuthProvider from "./auth/AuthProvider";
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
-  const [dataUsers, setDataUsers] = useState([]);
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`)
-      .then((response) => setDataPost(response.data));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/users`)
-      .then((response) => setDataUsers(response.data));
+      .then((response) => setDataPost(response.data.data));
   }, []);
 
   return (
     <>
-      <AppNavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/edit" element={<EditView />} />
-        <Route
-          path="/post/:id"
-          element={dataPost.length ? <DetailPost dataPost={dataPost} /> : null}
-        />
-        <Route path="/login" element={<Login dataUsers={dataUsers} />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/map" element={<MapView />} />
-        <Route path="/password_recovery" element={<PasswordRecovery />} />
-        <Route path="/password_reset" element={<PasswordReset />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-      <AppFooter />
+      <AuthProvider>
+        <AppNavBar />
+        <Routes>
+          <Route path="/" element={<Home posts={dataPost} />} />
+          <Route path="/edit" element={<EditView />} />
+          <Route
+            path="/post/:id"
+            element={dataPost.length && <DetailPost dataPost={dataPost} />}
+          />
+          <Route
+            path="/login"
+            element={
+              <RedirectUser>
+                <Login />
+              </RedirectUser>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <RedirectUser>
+                <SignUp />
+              </RedirectUser>
+            }
+          />
+          <Route path="/map" element={<MapView posts={dataPost} />} />
+          <Route path="/password_recovery" element={<PasswordRecovery />} />
+          <Route path="/password_reset" element={<PasswordReset />} />
+          <Route
+            exact
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfileView />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+        <AppFooter />
+      </AuthProvider>
     </>
   );
 }
