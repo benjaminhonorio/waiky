@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import profileIcon from "../blank-profile.png";
 import { BsGeoAltFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
 
@@ -18,14 +19,14 @@ export default function EditView(dataPost) {
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
-  const [hashtags, setHashtags] = useState("");
+  const [hashtags, setHashtags] = useState([]);
   const [gender, setGender] = useState("");
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [age, setAge] = useState("");
   const [ubication, setUbication] = useState("");
   const [description, setDescription] = useState("");
-  const [photos, setPhotos] = useState("");
+  const [photos, setPhotos] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const handleCloseMap = () => setShowMap(false);
@@ -34,6 +35,8 @@ export default function EditView(dataPost) {
     file: [],
     filepreview: null,
   });
+  let navigate = useNavigate();
+
   const handleInputChange = (event) => {
     setIsUploaded(true);
     setuserInfo({
@@ -119,28 +122,34 @@ export default function EditView(dataPost) {
     console.log(e.target.elements);
     if (ValidateForm(e) === true) {
       newPost.id = Math.random() * 100;
-      newPost.titulo = title;
+      newPost.title = title;
 
-      newPost.tipo = type;
-      newPost.etiquetas = hashtags;
-      newPost.descripcion = description;
-      newPost.foto_principal = 0;
-      newPost.fotos = [
+      newPost.type = type;
+      newPost.tags = hashtags.split(" ");
+      newPost.description = description;
+      newPost.mainPhoto = 0;
+      newPost.photos = [
         "https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg",
       ];
-      newPost.characteristics.newPost.caracteristicas.edad = age;
-      newPost.caracteristicas.color = color;
-      newPost.caracteristicas.sexo = gender;
-      newPost.caracteristicas.tamaño = size;
-      newPost.ubicacion.referencia = ubication;
-      newPost.ubicacion.lat = -9.127000168554577;
-      newPost.ubicacion.lng = -78.52001851957706;
+      newPost.characteristics.name = name;
+      newPost.characteristics.age = age;
+      newPost.characteristics.color = color;
+      newPost.characteristics.sex = gender;
+      newPost.characteristics.size = size;
+      newPost.location.reference = ubication;
+      newPost.location.coordinates = [-78.52001851957706, -9.127000168554577];
 
       console.log("este es mi nuevo post", newPost);
       axios
         .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
-        .then((response) => response.data);
-      setTitle("");
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("response", response);
+            navigate(`/post/${response.data.data.id}`);
+          } else {
+            alert("La publicacion no se guardó, intentelo nuevamente");
+          }
+        });
     }
   };
 
@@ -249,11 +258,11 @@ export default function EditView(dataPost) {
                   <Col sm="8">
                     <Form.Select onChange={(e) => setSize(e.target.value)}>
                       <option></option>
-                      <option value="xs">xs</option>
-                      <option value="s">s</option>
-                      <option value="m">m</option>
-                      <option value="l">l</option>
-                      <option value="xl">xl</option>
+                      <option value="XS">xs</option>
+                      <option value="S">s</option>
+                      <option value="M">m</option>
+                      <option value="L">l</option>
+                      <option value="XL">xl</option>
                     </Form.Select>
                   </Col>
                 </Form.Group>
