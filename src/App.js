@@ -14,7 +14,9 @@ import PasswordRecovery from "./Pages/PasswordRecovery";
 import PasswordReset from "./Pages/PasswordReset";
 import ProfileView from "./Pages/ProfileView";
 import PrivateRoute from "./Pages/PrivateRoute";
+import RedirectUser from "./Pages/RedirectUser";
 import AuthProvider from "./auth/AuthProvider";
+import useAuth from "./auth/useAuth";
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
@@ -36,8 +38,22 @@ function App() {
             path="/post/:id"
             element={dataPost.length && <DetailPost dataPost={dataPost} />}
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/login"
+            element={
+              <RedirectUser>
+                <Login />
+              </RedirectUser>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <RedirectUser>
+                <SignUp />
+              </RedirectUser>
+            }
+          />
           <Route path="/map" element={<MapView posts={dataPost} />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
           <Route path="/password_reset" element={<PasswordReset />} />

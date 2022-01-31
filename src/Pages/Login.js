@@ -29,14 +29,21 @@ export default function Login() {
     };
 
     axios
-      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/users/login`, newUserLogin)
+      .post(
+        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/login`,
+        newUserLogin
+      )
       .then(({ data }) => {
         if (data.error) {
           setData(data);
           setAlert(data.error);
         } else {
           auth.login(data.token, data.username);
-          sessionStorage.setItem("jwt", data.token);
+          const user = {
+            token: `${data.token}`,
+            username: `${data.username}`,
+          };
+          sessionStorage.setItem("jwt", JSON.stringify(user));
           navigate("/");
         }
       });

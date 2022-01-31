@@ -3,8 +3,8 @@ import { useState, createContext } from "react";
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [userLogin, setUserLogin] = useState(() =>
-    sessionStorage.getItem("jwt")
+  const [userLogin, setUserLogin] = useState(
+    JSON.parse(sessionStorage.getItem("jwt"))
   );
 
   const contextValue = {

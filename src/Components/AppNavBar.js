@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Container, Nav, Navbar, Button, Dropdown } from "react-bootstrap";
 import { BsHouse, BsMap, BsPersonCircle } from "react-icons/bs";
@@ -10,6 +10,8 @@ export default function AppNavBar() {
   // Temporalmente asigno true al dar click en boton Login (para efectos de visualizar la barra de navegacion con el usuario logueado)
   // Asi mismo al dar click en salir (al final del dropdown del Usuario) se asigna false
   const auth = useAuth();
+
+  console.log(auth.userLogin);
 
   const [isLoggedIn, setIsLoggedIn] = useState(!!auth.userLogin);
 
@@ -38,7 +40,7 @@ export default function AppNavBar() {
                 <BsMap className="mx-2 d-inline-block  align-baseline" />
                 Mapa
               </Nav.Link>
-              {isLoggedIn ? (
+              {!!auth.userLogin ? (
                 <>
                   <Dropdown>
                     <Dropdown.Toggle
@@ -64,7 +66,10 @@ export default function AppNavBar() {
                       </Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item
-                        onClick={() => setIsLoggedIn(auth.logout())}
+                        onClick={() => {
+                          setIsLoggedIn(auth.logout());
+                          sessionStorage.clear();
+                        }}
                       >
                         Cerrar Sesión
                       </Dropdown.Item>
