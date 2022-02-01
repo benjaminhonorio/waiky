@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import profileIcon from "../blank-profile.png";
-
+import useAuth from "../auth/useAuth";
 export default function ProfileEdit() {
   const [name, setName] = useState("");
   const [correo, setCorreo] = useState("");
@@ -14,7 +14,7 @@ export default function ProfileEdit() {
     file: [],
     filepreview: null,
   });
-
+  const auth = useAuth();
   const handleInputChange = (event) => {
     setIsUploaded(true);
     setuserInfo({
