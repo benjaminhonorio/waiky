@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
 
-export default function EditView(dataPost) {
+export default function EditView({ posts, setDataPost }) {
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
@@ -144,7 +144,8 @@ export default function EditView(dataPost) {
         .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
         .then((response) => {
           if (response.status === 201) {
-            console.log("response", response);
+            console.log("response");
+            setDataPost(posts.concat(response.data.data));
             navigate(`/post/${response.data.data.id}`);
           } else {
             alert("La publicacion no se guardó, intentelo nuevamente");
@@ -294,7 +295,7 @@ export default function EditView(dataPost) {
                   name="referencia"
                   onChange={(e) => setUbication(e.target.value)}
                 />
-                <Form.Text id="opcion" muted>
+                {/* <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
                   (o{" "}
                   {
@@ -302,7 +303,7 @@ export default function EditView(dataPost) {
                       ubicar en el mapa)
                     </Button>
                   }
-                </Form.Text>
+                </Form.Text> */}
               </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">

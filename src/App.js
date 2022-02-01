@@ -12,7 +12,7 @@ import SignUp from "./Pages/SignUp";
 import MapView from "./Pages/MapView";
 import PasswordRecovery from "./Pages/PasswordRecovery";
 import PasswordReset from "./Pages/PasswordReset";
-import ProfileView from "./Pages/ProfileView";
+import Profile from "./Pages/Profile";
 import PrivateRoute from "./Pages/PrivateRoute";
 import RedirectUser from "./Pages/RedirectUser";
 import AuthProvider from "./auth/AuthProvider";
@@ -32,7 +32,14 @@ function App() {
         <AppNavBar />
         <Routes>
           <Route path="/" element={<Home posts={dataPost} />} />
-          <Route path="/edit" element={<EditView />} />
+          <Route
+            path="/edit"
+            element={
+              <PrivateRoute>
+                <EditView posts={dataPost} setDataPost={setDataPost} />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/post/:id"
             element={dataPost.length && <DetailPost dataPost={dataPost} />}
@@ -61,7 +68,7 @@ function App() {
             path="/profile"
             element={
               <PrivateRoute>
-                <ProfileView />
+                <Profile />
               </PrivateRoute>
             }
           />

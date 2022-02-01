@@ -11,8 +11,6 @@ export default function AppNavBar() {
   // Asi mismo al dar click en salir (al final del dropdown del Usuario) se asigna false
   const auth = useAuth();
 
-  console.log(auth.userLogin);
-
   const [isLoggedIn, setIsLoggedIn] = useState(!!auth.userLogin);
 
   return (
