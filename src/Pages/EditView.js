@@ -11,20 +11,22 @@ import {
 import axios from "axios";
 import profileIcon from "../blank-profile.png";
 import { BsGeoAltFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
 
-export default function EditView(dataPost) {
+export default function EditView({ posts, setDataPost }) {
   const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
   const [type, setType] = useState("");
-  const [hashtags, setHashtags] = useState("");
+  const [hashtags, setHashtags] = useState([]);
   const [gender, setGender] = useState("");
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [age, setAge] = useState("");
   const [ubication, setUbication] = useState("");
   const [description, setDescription] = useState("");
-  const [photos, setPhotos] = useState("");
+  const [photos, setPhotos] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const handleCloseMap = () => setShowMap(false);
@@ -33,6 +35,8 @@ export default function EditView(dataPost) {
     file: [],
     filepreview: null,
   });
+  let navigate = useNavigate();
+
   const handleInputChange = (event) => {
     setIsUploaded(true);
     setuserInfo({
@@ -44,24 +48,28 @@ export default function EditView(dataPost) {
   // TODO: create object from Form and send to db
   const newPost = {
     id: Math.random() * 100,
-    caracteristicas: {
-      edad: "6 meses",
-      color: "marron",
-      sexo: "M",
-      tamaño: "XS",
+    characteristics: {
+      name: "Fido",
+      age: "2 años",
+      color: "blanco",
+      sex: "M",
+      size: "XL",
     },
-    ubicacion: {
-      referencia: "Mercado Buenos Aires",
-      lat: -9.127000168554577,
-      lng: -78.52001851957706,
+    location: {
+      reference: "Plaza Mayor de Nuevo Chimbote",
+      coordinates: [-78.52001851957706, -9.127000168554577],
     },
-    titulo: "Gatito perdido",
-    tipo: "gato",
-    etiquetas: ["gato", "bebe", "ayuda"],
-    descripcion:
-      "voluptatem sed natus perspiciatis qui enim aut ut ipsum repellat occaecati eveniet aliquam accusamus ipsum delectus corrupti veniam inventore tenetur est totam voluptas culpa nihil eius et dolore molestiae laborum quis quos ut eos dolorem occaecati alias sed voluptates hic delectus velit consequatur",
-    foto_principal: 0,
-    fotos: ["https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg"],
+    title: "Perro labrador perdido",
+    type: "perro",
+    tags: ["perro", "labrador", "ayuda"],
+    description:
+      "quidem molestiae nostrum voluptas velit error similique debitis et nihil hic et at provident aut quo facilis et quae ullam sint velit et rerum non ipsa iure cupiditate adipisci earum reprehenderit aspernatur veri",
+    mainPhoto: 0,
+    photos: [
+      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
+      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
+      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
+    ],
   };
 
   const ValidateForm = (e) => {
@@ -114,27 +122,35 @@ export default function EditView(dataPost) {
     console.log(e.target.elements);
     if (ValidateForm(e) === true) {
       newPost.id = Math.random() * 100;
-      newPost.titulo = title;
-      newPost.tipo = type;
-      newPost.etiquetas = hashtags;
-      newPost.descripcion = description;
-      newPost.foto_principal = 0;
-      newPost.fotos = [
+      newPost.title = title;
+
+      newPost.type = type;
+      newPost.tags = hashtags.split(" ");
+      newPost.description = description;
+      newPost.mainPhoto = 0;
+      newPost.photos = [
         "https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg",
       ];
-      newPost.caracteristicas.edad = age;
-      newPost.caracteristicas.color = color;
-      newPost.caracteristicas.sexo = gender;
-      newPost.caracteristicas.tamaño = size;
-      newPost.ubicacion.referencia = ubication;
-      newPost.ubicacion.lat = -9.127000168554577;
-      newPost.ubicacion.lng = -78.52001851957706;
+      newPost.characteristics.name = name;
+      newPost.characteristics.age = age;
+      newPost.characteristics.color = color;
+      newPost.characteristics.sex = gender;
+      newPost.characteristics.size = size;
+      newPost.location.reference = ubication;
+      newPost.location.coordinates = [-78.52001851957706, -9.127000168554577];
 
       console.log("este es mi nuevo post", newPost);
       axios
         .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
-        .then((response) => response.data);
-      setTitle("");
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("response");
+            setDataPost(posts.concat(response.data.data));
+            navigate(`/post/${response.data.data.id}`);
+          } else {
+            alert("La publicacion no se guardó, intentelo nuevamente");
+          }
+        });
     }
   };
 
@@ -157,6 +173,19 @@ export default function EditView(dataPost) {
                   type="text"
                   name="titulo"
                   onChange={(e) => setTitle(e.target.value)}
+                />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="2">
+                Nombre:
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  placeholder=""
+                  type="text"
+                  name="titulo"
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -230,11 +259,11 @@ export default function EditView(dataPost) {
                   <Col sm="8">
                     <Form.Select onChange={(e) => setSize(e.target.value)}>
                       <option></option>
-                      <option value="xs">xs</option>
-                      <option value="s">s</option>
-                      <option value="m">m</option>
-                      <option value="l">l</option>
-                      <option value="xl">xl</option>
+                      <option value="XS">xs</option>
+                      <option value="S">s</option>
+                      <option value="M">m</option>
+                      <option value="L">l</option>
+                      <option value="XL">xl</option>
                     </Form.Select>
                   </Col>
                 </Form.Group>
@@ -246,7 +275,7 @@ export default function EditView(dataPost) {
                   </Form.Label>
                   <Col sm="10">
                     <Form.Control
-                      placeholder="3 años, adulto"
+                      placeholder="3 años"
                       type="text"
                       name="edad"
                       onChange={(e) => setAge(e.target.value)}
@@ -266,7 +295,7 @@ export default function EditView(dataPost) {
                   name="referencia"
                   onChange={(e) => setUbication(e.target.value)}
                 />
-                <Form.Text id="opcion" muted>
+                {/* <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
                   (o{" "}
                   {
@@ -274,7 +303,7 @@ export default function EditView(dataPost) {
                       ubicar en el mapa)
                     </Button>
                   }
-                </Form.Text>
+                </Form.Text> */}
               </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
