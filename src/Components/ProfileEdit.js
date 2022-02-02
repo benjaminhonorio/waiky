@@ -23,7 +23,11 @@ export default function ProfileEdit() {
       filepreview: URL.createObjectURL(event.target.files[0]),
     });
   };
-
+  const newProfile = {
+    name: name,
+    telephone: telephone,
+    bio: bio,
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     let isValid = true;
@@ -47,15 +51,12 @@ export default function ProfileEdit() {
     if (!isValid) return;
 
     try {
-      const response = await axios.post("/contacto/", {
-        id: Math.random() * 100,
-        nick: nick,
-        nombre: name,
-        correo: correo,
-        telefono: telephone,
-        bio: bio,
-      });
-      console.log("response", response);
+      const response = await axios.axios.put(
+        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.id}`userUpdate,
+        newProfile
+      );
+
+    
       setNick("");
       setName("");
       setCorreo("");

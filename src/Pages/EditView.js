@@ -119,7 +119,7 @@ export default function EditView({ posts, setDataPost }) {
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    console.log(e.target.elements);
+
     if (ValidateForm(e) === true) {
       newPost.id = Math.random() * 100;
       newPost.title = title;
@@ -139,12 +139,10 @@ export default function EditView({ posts, setDataPost }) {
       newPost.location.reference = ubication;
       newPost.location.coordinates = [-78.52001851957706, -9.127000168554577];
 
-      console.log("este es mi nuevo post", newPost);
       axios
         .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
         .then((response) => {
           if (response.status === 201) {
-            console.log("response");
             setDataPost(posts.concat(response.data.data));
             navigate(`/post/${response.data.data.id}`);
           } else {
