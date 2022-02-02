@@ -22,39 +22,43 @@ export default function SignUp() {
   const [newPassword, setNewPassword] = useState("");
   const [validPassword, setValidPassword] = useState("");
   const [alert, setAlert] = useState();
-  const [data, setData] = useState({});
+  const [message, setMessage] = useState();
   const auth = useAuth();
 
   const handleForm = (e) => {
     e.preventDefault();
 
-    const newObject = {
-      username: newUsername,
-      pwd: newPassword,
-      validPwd: validPassword,
-      email: email,
-    };
+    if (newPassword === validPassword) {
+      const newObject = {
+        username: newUsername,
+        pwd: newPassword,
+        email: email,
+      };
 
-    axios
-      .post(
-        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/signup`,
-        newObject
-      )
-      .then(({ data }) => {
-        if (data.error) {
-          setData(data);
-          setAlert(data.error);
-          console.log(data);
-        } else {
-          auth.login(data.token, data.username);
-          const user = {
-            token: `${data.token}`,
-            username: `${data.username}`,
-          };
-          sessionStorage.setItem("jwt", JSON.stringify(user));
-          navigate("/profile");
-        }
-      });
+      axios
+        .post(
+          `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/signup`,
+          newObject
+        )
+        .then(({ data }) => {
+          if (data.error) {
+            setMessage(data.message);
+            setAlert(data.error);
+            console.log(data);
+          } else {
+            auth.login(data.token, data.username);
+            const user = {
+              token: `${data.token}`,
+              username: `${data.username}`,
+            };
+            sessionStorage.setItem("jwt", JSON.stringify(user));
+            navigate("/profile");
+          }
+        });
+    } else {
+      setAlert(true);
+      setMessage("Las contraseñas no coinciden");
+    }
   };
 
   const handleNewUsername = (e) => {
@@ -83,7 +87,7 @@ export default function SignUp() {
           }}
           dismissible
         >
-          <p>{data.message}</p>
+          <p>{message}</p>
         </Alert>
       )}
 

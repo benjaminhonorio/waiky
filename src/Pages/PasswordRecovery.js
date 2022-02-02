@@ -1,19 +1,13 @@
-import { useState } from "react";
-import { Container, Button, Form } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 export default function PasswordRecovery() {
-  const [correo, setCorreo] = useState("**************@gmail.com");
   return (
     <Container className="my-5">
       <h1>Recuperación de contraseña</h1>
       <p>
-        Enviaremos los detalles de recuperación de contraseña a tu correo{" "}
-        <span>{correo}</span>
+        Hemos enviado a tu correo el paso a seguir para hacer el cambio de
+        contraseña.
+        <strong> Porfavor revisa tu bandeja de entrada o Spam </strong>
       </p>
-      <Form className="col-md-4">
-        <Button variant="primary" type="submit">
-          Enviar
-        </Button>
-      </Form>
     </Container>
   );
 }

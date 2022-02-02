@@ -12,7 +12,10 @@ import SignUp from "./Pages/SignUp";
 import MapView from "./Pages/MapView";
 import PasswordRecovery from "./Pages/PasswordRecovery";
 import PasswordReset from "./Pages/PasswordReset";
+import NotFound from "./Pages/NotFound";
+import EmailRecovery from "./Pages/EmailRecovery";
 import Profile from "./Pages/Profile";
+import PasswordChanged from "./Pages/PasswordChanged";
 import PrivateRoute from "./Pages/PrivateRoute";
 import RedirectUser from "./Pages/RedirectUser";
 import AuthProvider from "./auth/AuthProvider";
@@ -62,7 +65,23 @@ function App() {
           />
           <Route path="/map" element={<MapView posts={dataPost} />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
-          <Route path="/password_reset" element={<PasswordReset />} />
+          <Route path="/password_reset/:id" element={<PasswordReset />} />
+          <Route
+            path="/password_changed"
+            element={
+              <RedirectUser>
+                <PasswordChanged />
+              </RedirectUser>
+            }
+          />
+          <Route
+            path="/email_recovery"
+            element={
+              <RedirectUser>
+                <EmailRecovery />
+              </RedirectUser>
+            }
+          />
           <Route
             exact
             path="/profile"
@@ -72,6 +91,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <AppFooter />
       </AuthProvider>
