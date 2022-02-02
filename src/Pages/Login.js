@@ -106,7 +106,14 @@ export default function Login() {
               >
                 Regístrate
               </Col>
-              <Col className="my-1 text-primary">¿Olvidaste tu contraseña?</Col>
+              <br />
+              <Col
+                className="text-decoration-none text-primary"
+                as={Link}
+                to="/email_recovery"
+              >
+                ¿Olvidaste tu contraseña?
+              </Col>
             </div>
             <Button variant="primary" type="submit" className="my-4" size="lg">
               Iniciar sesión
