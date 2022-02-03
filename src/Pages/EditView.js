@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-bootstrap";
 import axios from "axios";
-import profileIcon from "../blank-profile.png";
+import profileIcon from "../pet_placeholder.png";
 import { BsGeoAltFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
