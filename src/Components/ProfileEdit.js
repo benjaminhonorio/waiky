@@ -33,10 +33,12 @@ export default function ProfileEdit() {
       email: auth.userLogin.email,
       telephone: telephone,
       bio: bio,
+      token: auth.userLogin.token,
     };
+    console.log(auth.userLogin);
     axios
       .put(
-        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.id}`,
+        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile`,
         newProfile
       )
       .then((response) => console.log(response.data));
@@ -61,7 +63,7 @@ export default function ProfileEdit() {
               Correo:
             </Form.Label>
             <Col sm="10">
-              <Form.Control placeholder={auth.userLogin.email} disabled />
+              <Form.Label>{auth.userLogin.email}</Form.Label>
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -121,7 +123,7 @@ export default function ProfileEdit() {
           </figure>
         </Col>
       </Row>
-      <Button class="btn btn-dark mb-6" variant="primary" type="submit">
+      <Button className="btn btn-dark mb-6" variant="primary" type="submit">
         Guardar
       </Button>
       <br />
