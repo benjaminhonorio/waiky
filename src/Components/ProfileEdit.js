@@ -3,18 +3,19 @@ import axios from "axios";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import profileIcon from "../blank-profile.png";
 import useAuth from "../auth/useAuth";
+
 export default function ProfileEdit() {
+  const auth = useAuth();
   const [name, setName] = useState("");
-  const [correo, setCorreo] = useState("");
   const [telephone, setTelephone] = useState("");
   const [bio, setBio] = useState("");
-  const [nick, setNick] = useState("");
+
   const [isUploaded, setIsUploaded] = useState(false);
   const [userInfo, setuserInfo] = useState({
     file: [],
     filepreview: null,
   });
-  const auth = useAuth();
+
   const handleInputChange = (event) => {
     setIsUploaded(true);
     setuserInfo({
@@ -23,64 +24,30 @@ export default function ProfileEdit() {
       filepreview: URL.createObjectURL(event.target.files[0]),
     });
   };
-  const newProfile = {
-    name: name,
-    telephone: telephone,
-    bio: bio,
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let isValid = true;
-
-    if (nick === "") {
-      isValid = false;
-      alert("prueba");
-    }
-    if (name === "") {
-      isValid = false;
-    }
-    if (correo === "") {
-      isValid = false;
-    }
-    if (telephone === "") {
-      isValid = false;
-    }
-    if (bio === "") {
-      isValid = false;
-    }
-    if (!isValid) return;
-
-    try {
-      const response = await axios.axios.put(
-        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.id}`userUpdate,
+    const newProfile = {
+      username: auth.userLogin.username,
+      name: name,
+      email: auth.userLogin.email,
+      telephone: telephone,
+      bio: bio,
+    };
+    axios
+      .put(
+        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.id}`,
         newProfile
-      );
-
-    
-      setNick("");
-      setName("");
-      setCorreo("");
-      setTelephone("");
-      setBio("");
-    } catch (error) {
-      console.error("error", error);
-    }
+      )
+      .then((response) => console.log(response.data));
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2>Mi Perfil</h2>
+      <h2>Hello {auth.userLogin.username}</h2>
       <br />
       <Row className="align-items-center my-4 sm-8 ">
         <Col lg={6} md={12} xs={12}>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm="2">
-              Nick:
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control onChange={(e) => setNick(e.target.value)} />
-            </Col>
-          </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm="2">
               Nombre:
@@ -94,7 +61,7 @@ export default function ProfileEdit() {
               Correo:
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={(e) => setCorreo(e.target.value)} />
+              <Form.Control placeholder={auth.userLogin.email} disabled />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
