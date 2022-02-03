@@ -78,12 +78,7 @@ export default function ProfileEdit() {
               Correo:
             </Form.Label>
             <Col sm="10">
-<<<<<<< HEAD
-              {/* <Form.Label>{}</Form.Label> */}
               <Form.Control value={auth.userLogin.email} disabled />
-=======
-              <Form.Control placeholder={auth.userLogin.email} disabled />
->>>>>>> 51e2d58651706481be7075596296ad0ab57ff3ca
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
