@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import profileIcon from "../blank-profile.png";
@@ -14,6 +14,18 @@ export default function ProfileEdit() {
   const [userInfo, setuserInfo] = useState({
     file: [],
     filepreview: null,
+  });
+
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.token}`
+      )
+      .then((response) => {
+        setName(response.data.data.name);
+        setTelephone(response.data.data.number);
+        setBio(response.data.data.bio);
+      });
   });
 
   const handleInputChange = (event) => {
@@ -55,7 +67,10 @@ export default function ProfileEdit() {
               Nombre:
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={(e) => setName(e.target.value)} />
+              <Form.Control
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -63,7 +78,8 @@ export default function ProfileEdit() {
               Correo:
             </Form.Label>
             <Col sm="10">
-              <Form.Label>{auth.userLogin.email}</Form.Label>
+              {/* <Form.Label>{}</Form.Label> */}
+              <Form.Control value={auth.userLogin.email} disabled />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -71,7 +87,10 @@ export default function ProfileEdit() {
               Teléfono:
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={(e) => setTelephone(e.target.value)} />
+              <Form.Control
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -80,6 +99,7 @@ export default function ProfileEdit() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
+                value={bio}
                 as="textarea"
                 rows={3}
                 onChange={(e) => setBio(e.target.value)}
