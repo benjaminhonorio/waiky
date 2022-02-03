@@ -9,7 +9,7 @@ export default function ProfileEdit() {
   const [name, setName] = useState("");
   const [telephone, setTelephone] = useState("");
   const [bio, setBio] = useState("");
-
+  const [email, setEmail] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
   const [userInfo, setuserInfo] = useState({
     file: [],
@@ -17,16 +17,27 @@ export default function ProfileEdit() {
   });
 
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.token}`
-      )
-      .then((response) => {
-        setName(response.data.data.name);
-        setTelephone(response.data.data.number);
-        setBio(response.data.data.bio);
-      });
-  });
+    if (auth && auth.userLogin && auth.userLogin.token) {
+      axios
+        .get(
+          `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.token}`
+        )
+        .then((response) => {
+          if (response.data.data.name) {
+            setName(response.data.data.name);
+          }
+          if (response.data.data.number) {
+            setTelephone(response.data.data.number);
+          }
+          if (response.data.data.bio) {
+            setBio(response.data.data.bio);
+          }
+          if (response.data.data.email) {
+            setEmail(response.data.data.email);
+          }
+        });
+    }
+  }, [auth]);
 
   const handleInputChange = (event) => {
     setIsUploaded(true);
@@ -38,6 +49,7 @@ export default function ProfileEdit() {
   };
 
   const handleSubmit = async (e) => {
+    console.log(name);
     e.preventDefault();
     const newProfile = {
       username: auth.userLogin.username,
@@ -78,7 +90,7 @@ export default function ProfileEdit() {
               Correo:
             </Form.Label>
             <Col sm="10">
-              <Form.Control value={auth.userLogin.email} disabled />
+              <Form.Control value={email} disabled />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
