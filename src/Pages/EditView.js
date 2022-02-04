@@ -46,6 +46,7 @@ export default function EditView({ posts, setDataPost }) {
 
   const handleInputChange = ({ target }) => {
     setFormValues((state) => ({ ...state, [target.name]: target.value }));
+  };
 
   // Upload images and display them
   const handlePhotoChange = ({ target }) => {
@@ -82,7 +83,7 @@ export default function EditView({ posts, setDataPost }) {
           alert("La publicacion no se guardó, intentelo nuevamente");
         }
       });
-    };
+  };
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
@@ -300,7 +301,7 @@ export default function EditView({ posts, setDataPost }) {
                 />
               </>
             ) : (
-              formValues.photos.map((photo) => {
+              formValues.photos.mapw((photo) => {
                 return (
                   <img
                     key={photo.match(/([a-zA-Z0-9]+.jpg)/)[0]}
