@@ -1,26 +1,46 @@
 import React from "react";
-import { Row, Col } from "react-bootstrap";
+import { Card, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { formatDistance } from "date-fns";
+import { es } from "date-fns/locale";
 
-export default function Comments() {
+export default function Publications({ id, title, date, photos }) {
   return (
-    <Row className="border-top p-4">
-      <Col className="me-auto">
-        <Row>
-          <Col>
-            <h4> John Doe </h4>
-            <p> August 4 </p>
-            &#9733;&#9733;&#9733;&#9733;&#9734;
-          </Col>
-        </Row>
-      </Col>
-      <Col>
-        <p>
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-      </Col>
-    </Row>
+    <Col key={id} className="py-2">
+      <div
+        className="d-flex flex-row flex-md-column"
+        style={{
+          wordWrap: "break-word",
+          backgroundColor: "#fff",
+          backgroundClip: "border-box",
+          border: "1px solid rgba(0,0,0,.125)",
+          borderRadius: "0.25rem",
+        }}
+      >
+        <Card.Img
+          style={{
+            minWidth: "50%",
+            height: "300px",
+            objectFit: "cover",
+          }}
+          variant="top"
+          src={photos[0]}
+        />
+        <Card.Body className="d-flex flex-column justify-content-center">
+          <Card.Title>{title}</Card.Title>
+          <Card.Text>
+            Hace{" "}
+            {date
+              ? formatDistance(new Date(), new Date(date), {
+                  locale: es,
+                })
+              : ""}
+          </Card.Text>
+          <Button as={Link} to={`/post/${id}`} variant="primary">
+            Ver
+          </Button>
+        </Card.Body>
+      </div>
+    </Col>
   );
 }

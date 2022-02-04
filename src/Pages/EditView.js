@@ -9,160 +9,88 @@ import {
   Image,
 } from "react-bootstrap";
 import axios from "axios";
-import profileIcon from "../blank-profile.png";
-import { BsGeoAltFill } from "react-icons/bs";
+import { BsGeoAltFill } from "react-icons/bs"; // will be used in location input
+import profileIcon from "../pet_placeholder.png";
 import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
+import useAuth from "../auth/useAuth";
 
 export default function EditView({ posts, setDataPost }) {
-  const [title, setTitle] = useState("");
-  const [name, setName] = useState("");
-  const [type, setType] = useState("");
-  const [hashtags, setHashtags] = useState([]);
-  const [gender, setGender] = useState("");
-  const [color, setColor] = useState("");
-  const [size, setSize] = useState("");
-  const [age, setAge] = useState("");
-  const [ubication, setUbication] = useState("");
-  const [description, setDescription] = useState("");
-  const [photos, setPhotos] = useState([]);
+  const [location, setLocation] = useState(""); // will be receive location from map
+  const auth = useAuth();
   const [showMap, setShowMap] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
-  const handleCloseMap = () => setShowMap(false);
-  const handleShowMap = () => setShowMap(true);
-  const [userInfo, setuserInfo] = useState({
-    file: [],
-    filepreview: null,
-  });
+  const handleMap = () => setShowMap(!showMap);
+
   let navigate = useNavigate();
 
-  const handleInputChange = (event) => {
-    setIsUploaded(true);
-    setuserInfo({
-      ...userInfo,
-      file: event.target.files[0],
-      filepreview: URL.createObjectURL(event.target.files[0]),
-    });
-  };
-  // TODO: create object from Form and send to db
-  const newPost = {
-    id: Math.random() * 100,
-    characteristics: {
-      name: "Fido",
-      age: "2 años",
-      color: "blanco",
-      sex: "M",
-      size: "XL",
-    },
-    location: {
-      reference: "Plaza Mayor de Nuevo Chimbote",
-      coordinates: [-78.52001851957706, -9.127000168554577],
-    },
-    title: "Perro labrador perdido",
-    type: "perro",
-    tags: ["perro", "labrador", "ayuda"],
-    description:
-      "quidem molestiae nostrum voluptas velit error similique debitis et nihil hic et at provident aut quo facilis et quae ullam sint velit et rerum non ipsa iure cupiditate adipisci earum reprehenderit aspernatur veri",
-    mainPhoto: 0,
-    photos: [
-      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
-      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
-      "https://images.dog.ceo/breeds/bluetick/n02088632_2870.jpg",
-    ],
-  };
+  const [formValues, setFormValues] = useState({
+    title: "",
+    name: "",
+    type: "",
+    hashtags: "",
+    sex: "",
+    color: "",
+    size: "",
+    age: "",
+    reference: "",
+    description: "",
+    photos: [],
+  });
 
-  const ValidateForm = (e) => {
-    let isValid = true;
-    let alertText = "";
-    if (title === "") {
-      isValid = false;
-      alertText = "Completar título de publicación";
-    }
-    if (type === "") {
-      isValid = false;
-      alertText = "Completar especie de mascota";
-    }
-    if (hashtags === "") {
-      isValid = false;
-      alertText = "Completar etiquetas de publicación";
-    }
-    if (gender === "") {
-      isValid = false;
-      alertText = "Completar sexo de mascota";
-    }
-    if (color === "") {
-      isValid = false;
-      alertText = "Completar color de mascota";
-    }
-    if (size === "") {
-      isValid = false;
-      alertText = "Completar tamaño de mascota";
-    }
-    if (age === "") {
-      isValid = false;
-      alertText = "Completar edad de mascota";
-    }
-    if (ubication === "") {
-      isValid = false;
-      alertText = "Completar ubicación de mascota";
-    }
-    if (description === "") {
-      isValid = false;
-      alertText = "Completar descripción de publicación";
-    }
-    if (isValid === false) {
-      alert(alertText);
-    }
-    return isValid;
-  };
-
-  const onSubmitForm = (e) => {
-    e.preventDefault();
-    console.log(e.target.elements);
-    if (ValidateForm(e) === true) {
-      newPost.id = Math.random() * 100;
-      newPost.title = title;
-
-      newPost.type = type;
-      newPost.tags = hashtags.split(" ");
-      newPost.description = description;
-      newPost.mainPhoto = 0;
-      newPost.photos = [
-        "https://images.dog.ceo/breeds/basenji/n02110806_6035.jpg",
-      ];
-      newPost.characteristics.name = name;
-      newPost.characteristics.age = age;
-      newPost.characteristics.color = color;
-      newPost.characteristics.sex = gender;
-      newPost.characteristics.size = size;
-      newPost.location.reference = ubication;
-      newPost.location.coordinates = [-78.52001851957706, -9.127000168554577];
-
-      console.log("este es mi nuevo post", newPost);
-      axios
-        .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
-        .then((response) => {
-          if (response.status === 201) {
-            console.log("response");
-            setDataPost(posts.concat(response.data.data));
-            navigate(`/post/${response.data.data.id}`);
-          } else {
-            alert("La publicacion no se guardó, intentelo nuevamente");
-          }
-        });
-    }
-  };
-
+  // TODO: move to configs
+  const uploadURL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL;
+  const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
   const mapURL = credentials.mapsKey;
 
+  const handleInputChange = ({ target }) => {
+    setFormValues((state) => ({ ...state, [target.name]: target.value }));
+
+  // Upload images and display them
+  const handlePhotoChange = ({ target }) => {
+    const formData = new FormData();
+    let files = target.files;
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
+      axios.post(uploadURL, formData).then((response) => {
+        console.log(response);
+        setFormValues((previousFormValues) => ({
+          ...previousFormValues,
+          photos: previousFormValues.photos.concat(response.data.url),
+        }));
+        setIsUploaded(true);
+      });
+    }
+  };
+
+  // TODO: Submit to backend
+  const onSubmitForm = (e) => {
+    e.preventDefault();
+    // TODO: Build object
+    const newPost = {};
+    axios
+      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
+      .then((response) => {
+        if (response.status === 201) {
+          console.log("response");
+          setDataPost(posts.concat(response.data.data));
+          navigate(`/post/${response.data.data.id}`);
+        } else {
+          alert("La publicacion no se guardó, intentelo nuevamente");
+        }
+      });
+    };
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
-        <h2>Publicación</h2>
+        {/* TODO: Change title if its creation or edition of info */}
+        <h2>{auth.userLogin.username}, crea una publicación </h2>
 
         <Col lg={7} className="mt-5">
-          <Form onSubmit={onSubmitForm}>
+          <Form onSubmit={onSubmitForm} noValidate autoComplete="off">
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm="2">
                 Título:
@@ -171,8 +99,9 @@ export default function EditView({ posts, setDataPost }) {
                 <Form.Control
                   placeholder="máximo 3 palabras"
                   type="text"
-                  name="titulo"
-                  onChange={(e) => setTitle(e.target.value)}
+                  name="title"
+                  onChange={handleInputChange}
+                  value={formValues.title}
                 />
               </Col>
             </Form.Group>
@@ -184,8 +113,9 @@ export default function EditView({ posts, setDataPost }) {
                 <Form.Control
                   placeholder=""
                   type="text"
-                  name="titulo"
-                  onChange={(e) => setName(e.target.value)}
+                  name="name"
+                  onChange={handleInputChange}
+                  value={formValues.name}
                 />
               </Col>
             </Form.Group>
@@ -198,8 +128,9 @@ export default function EditView({ posts, setDataPost }) {
                 <Form.Control
                   placeholder="p.e.j: perro, gato,conejo, etc"
                   type="text"
-                  name="tipo"
-                  onChange={(e) => setType(e.target.value)}
+                  name="type"
+                  onChange={handleInputChange}
+                  value={formValues.type}
                 />
               </Col>
             </Form.Group>
@@ -212,8 +143,9 @@ export default function EditView({ posts, setDataPost }) {
                 <Form.Control
                   placeholder="máximo 10 palabras"
                   type="text"
-                  name="etiquetas"
-                  onChange={(e) => setHashtags(e.target.value)}
+                  name="tags"
+                  onChange={handleInputChange}
+                  value={formValues.tags}
                 />
               </Col>
             </Form.Group>
@@ -225,8 +157,12 @@ export default function EditView({ posts, setDataPost }) {
                     Sexo:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Select onChange={(e) => setGender(e.target.value)}>
-                      <option></option>
+                    <Form.Select
+                      name="sex"
+                      onChange={handleInputChange}
+                      value={formValues.sex}
+                    >
+                      <option value="">Selecciona una opción</option>
                       <option value="H">Hembra</option>
                       <option value="M">Macho</option>
                     </Form.Select>
@@ -240,10 +176,11 @@ export default function EditView({ posts, setDataPost }) {
                   </Form.Label>
                   <Col sm="10">
                     <Form.Control
-                      placeholder="máximo 10 palabras"
+                      placeholder="negro"
                       type="text"
                       name="color"
-                      onChange={(e) => setColor(e.target.value)}
+                      onChange={handleInputChange}
+                      value={formValues.color}
                     />
                   </Col>
                 </Form.Group>
@@ -257,13 +194,17 @@ export default function EditView({ posts, setDataPost }) {
                     Tamaño:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Select onChange={(e) => setSize(e.target.value)}>
-                      <option></option>
-                      <option value="XS">xs</option>
-                      <option value="S">s</option>
-                      <option value="M">m</option>
-                      <option value="L">l</option>
-                      <option value="XL">xl</option>
+                    <Form.Select
+                      name="size"
+                      onChange={handleInputChange}
+                      value={formValues.size}
+                    >
+                      <option value="">Selecciona una opción</option>
+                      <option value="XS">petite</option>
+                      <option value="S">pequeño</option>
+                      <option value="M">mediano</option>
+                      <option value="L">grande</option>
+                      <option value="XL">extra-grande</option>
                     </Form.Select>
                   </Col>
                 </Form.Group>
@@ -277,8 +218,9 @@ export default function EditView({ posts, setDataPost }) {
                     <Form.Control
                       placeholder="3 años"
                       type="text"
-                      name="edad"
-                      onChange={(e) => setAge(e.target.value)}
+                      name="age"
+                      onChange={handleInputChange}
+                      value={formValues.age}
                     />
                   </Col>
                 </Form.Group>
@@ -292,9 +234,11 @@ export default function EditView({ posts, setDataPost }) {
                 <Form.Control
                   placeholder="Av. Buenos Aires 328"
                   type="text"
-                  name="referencia"
-                  onChange={(e) => setUbication(e.target.value)}
+                  name="reference"
+                  onChange={handleInputChange}
+                  value={formValues.reference}
                 />
+                {/* TODO: Change libraries and allow the user to pin a location on map show */}
                 {/* <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
                   (o{" "}
@@ -315,8 +259,9 @@ export default function EditView({ posts, setDataPost }) {
                   as="textarea"
                   rows={3}
                   type="text"
-                  name="descripcion"
-                  onChange={(e) => setDescription(e.target.value)}
+                  name="description"
+                  onChange={handleInputChange}
+                  value={formValues.description}
                 />
               </Col>
             </Form.Group>
@@ -329,8 +274,10 @@ export default function EditView({ posts, setDataPost }) {
                 <Form.Group controlId="formFileMultiple" className="mb-3">
                   <input
                     type="file"
+                    name="photos"
                     accept=".jpg,.jpeg,.gif,.png"
-                    onChange={handleInputChange}
+                    onChange={handlePhotoChange}
+                    multiple
                   />
                 </Form.Group>
               </Col>
@@ -346,32 +293,36 @@ export default function EditView({ posts, setDataPost }) {
             {!isUploaded ? (
               <>
                 <Image
-                  width={300}
-                  height={200}
+                  width={200}
                   draggable={"false"}
                   src={profileIcon}
                   alt="UploadImage"
                 />
               </>
             ) : (
-              <img
-                width={300}
-                height={200}
-                draggable={"false"}
-                src={userInfo.filepreview}
-                alt="UploadImage"
-              />
+              formValues.photos.map((photo) => {
+                return (
+                  <img
+                    key={photo.match(/([a-zA-Z0-9]+.jpg)/)[0]}
+                    width={200}
+                    draggable={"false"}
+                    src={photo}
+                    alt="UploadImage"
+                  />
+                );
+              })
             )}
           </figure>
         </Col>
       </Row>
-      <Modal show={showMap} onHide={handleCloseMap}>
+      <Modal show={showMap} onHide={handleMap}>
         <Modal.Header closeButton>
           <Modal.Title>
             Ubica un punto referencial donde se extravió tu mascota
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {/* TODO: Replace map from another library */}
           <Map
             googleMapURL={mapURL}
             containerElement={<div style={{ height: "350px" }} />}
@@ -380,10 +331,10 @@ export default function EditView({ posts, setDataPost }) {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseMap}>
+          <Button variant="secondary" onClick={handleMap}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseMap}>
+          <Button variant="primary" onClick={handleMap}>
             Save Changes
           </Button>
         </Modal.Footer>
