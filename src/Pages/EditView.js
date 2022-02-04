@@ -9,14 +9,16 @@ import {
   Image,
 } from "react-bootstrap";
 import axios from "axios";
-import profileIcon from "../blank-profile.png";
+import profileIcon from "../pet_placeholder.png";
 import { BsGeoAltFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
+import useAuth from "../auth/useAuth";
 
 export default function EditView({ posts, setDataPost }) {
   const [title, setTitle] = useState("");
+  const auth = useAuth();
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [hashtags, setHashtags] = useState([]);
@@ -47,6 +49,7 @@ export default function EditView({ posts, setDataPost }) {
   };
   // TODO: create object from Form and send to db
   const newPost = {
+    username: "paocastg",
     id: Math.random() * 100,
     characteristics: {
       name: "Fido",
@@ -119,9 +122,11 @@ export default function EditView({ posts, setDataPost }) {
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    console.log(e.target.elements);
+
     if (ValidateForm(e) === true) {
+      newPost.username = auth.userLogin.username;
       newPost.id = Math.random() * 100;
+
       newPost.title = title;
 
       newPost.type = type;
@@ -139,12 +144,10 @@ export default function EditView({ posts, setDataPost }) {
       newPost.location.reference = ubication;
       newPost.location.coordinates = [-78.52001851957706, -9.127000168554577];
 
-      console.log("este es mi nuevo post", newPost);
       axios
         .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
         .then((response) => {
           if (response.status === 201) {
-            console.log("response");
             setDataPost(posts.concat(response.data.data));
             navigate(`/post/${response.data.data.id}`);
           } else {
@@ -159,7 +162,7 @@ export default function EditView({ posts, setDataPost }) {
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
-        <h2>Publicación</h2>
+        <h2>{auth.userLogin.username}, crea una publicación </h2>
 
         <Col lg={7} className="mt-5">
           <Form onSubmit={onSubmitForm}>
@@ -259,11 +262,11 @@ export default function EditView({ posts, setDataPost }) {
                   <Col sm="8">
                     <Form.Select onChange={(e) => setSize(e.target.value)}>
                       <option></option>
-                      <option value="XS">xs</option>
-                      <option value="S">s</option>
-                      <option value="M">m</option>
-                      <option value="L">l</option>
-                      <option value="XL">xl</option>
+                      <option value="XS">petite</option>
+                      <option value="S">pequeño</option>
+                      <option value="M">mediano</option>
+                      <option value="L">grande</option>
+                      <option value="XL">extra grande</option>
                     </Form.Select>
                   </Col>
                 </Form.Group>

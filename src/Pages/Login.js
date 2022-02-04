@@ -42,6 +42,7 @@ export default function Login() {
           const user = {
             token: `${data.token}`,
             username: `${data.username}`,
+            email: `${data.email}`,
           };
           sessionStorage.setItem("jwt", JSON.stringify(user));
           navigate("/");
