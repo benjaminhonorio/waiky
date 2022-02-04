@@ -1,19 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import profileIcon from "../blank-profile.png";
+import useAuth from "../auth/useAuth";
 
 export default function ProfileEdit() {
+  const auth = useAuth();
   const [name, setName] = useState("");
-  const [correo, setCorreo] = useState("");
   const [telephone, setTelephone] = useState("");
   const [bio, setBio] = useState("");
-  const [nick, setNick] = useState("");
+  const [email, setEmail] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
   const [userInfo, setuserInfo] = useState({
     file: [],
     filepreview: null,
   });
+
+  useEffect(() => {
+    if (auth && auth.userLogin && auth.userLogin.token) {
+      axios
+        .get(
+          `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.token}`
+        )
+        .then((response) => {
+          if (response.data.data.name) {
+            setName(response.data.data.name);
+          }
+          if (response.data.data.number) {
+            setTelephone(response.data.data.number);
+          }
+          if (response.data.data.bio) {
+            setBio(response.data.data.bio);
+          }
+          if (response.data.data.email) {
+            setEmail(response.data.data.email);
+          }
+        });
+    }
+  }, []);
 
   const handleInputChange = (event) => {
     setIsUploaded(true);
@@ -26,66 +50,39 @@ export default function ProfileEdit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let isValid = true;
-
-    if (nick === "") {
-      isValid = false;
-      alert("prueba");
-    }
-    if (name === "") {
-      isValid = false;
-    }
-    if (correo === "") {
-      isValid = false;
-    }
-    if (telephone === "") {
-      isValid = false;
-    }
-    if (bio === "") {
-      isValid = false;
-    }
-    if (!isValid) return;
-
-    try {
-      const response = await axios.post("/contacto/", {
-        id: Math.random() * 100,
-        nick: nick,
-        nombre: name,
-        correo: correo,
-        telefono: telephone,
-        bio: bio,
+    const newProfile = {
+      username: auth.userLogin.username,
+      name: name,
+      email: auth.userLogin.email,
+      telephone: telephone,
+      bio: bio,
+      token: auth.userLogin.token,
+    };
+    axios
+      .put(
+        `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile`,
+        newProfile
+      )
+      .then((response) => {
+        alert("se guardó exitosamente");
       });
-      console.log("response", response);
-      setNick("");
-      setName("");
-      setCorreo("");
-      setTelephone("");
-      setBio("");
-    } catch (error) {
-      console.error("error", error);
-    }
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2>Mi Perfil</h2>
+      <h2>Hello {auth.userLogin.username}</h2>
       <br />
       <Row className="align-items-center my-4 sm-8 ">
         <Col lg={6} md={12} xs={12}>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm="2">
-              Nick:
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control onChange={(e) => setNick(e.target.value)} />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm="2">
               Nombre:
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={(e) => setName(e.target.value)} />
+              <Form.Control
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -93,7 +90,7 @@ export default function ProfileEdit() {
               Correo:
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={(e) => setCorreo(e.target.value)} />
+              <Form.Control value={email} disabled />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -101,7 +98,10 @@ export default function ProfileEdit() {
               Teléfono:
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={(e) => setTelephone(e.target.value)} />
+              <Form.Control
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -110,6 +110,7 @@ export default function ProfileEdit() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
+                value={bio}
                 as="textarea"
                 rows={3}
                 onChange={(e) => setBio(e.target.value)}
@@ -142,7 +143,7 @@ export default function ProfileEdit() {
               </>
             ) : (
               <img
-                class="img-circle"
+                className="img-circle"
                 width={300}
                 height={300}
                 draggable={"false"}
@@ -153,7 +154,7 @@ export default function ProfileEdit() {
           </figure>
         </Col>
       </Row>
-      <Button class="btn btn-dark mb-6" variant="primary" type="submit">
+      <Button className="btn btn-dark mb-6" variant="primary" type="submit">
         Guardar
       </Button>
       <br />

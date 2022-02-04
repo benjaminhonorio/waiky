@@ -1,12 +1,32 @@
 import React from "react";
 import { Col, Button } from "react-bootstrap";
+import { BsPencilFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 export default function InfoPostDetails({ data }) {
+  const navigate = useNavigate();
+  const redirect = () => {
+    navigate("/edit");
+  };
   return (
     <>
       <Col className="jumbotron">
-        <h2>{data.title}</h2>
-        <h4> {data.type} </h4>
+        <h2>
+          {data.title}
+          <Button variant="light" onSubmit={redirect}>
+            <BsPencilFill className="mx-2 d-inline-block  align-baseline" />
+          </Button>
+        </h2>
+
+        <h5> {data.type} </h5>
+        <h6>
+          {data.tags &&
+            data.tags.map((d) => (
+              <span className="badge rounded-pill bg-secondary m-1" key={d}>
+                {d}
+              </span>
+            ))}
+        </h6>
         <div className="d-inline">
           <span>
             <strong> Sexo: </strong>

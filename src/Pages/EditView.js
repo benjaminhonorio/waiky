@@ -9,14 +9,16 @@ import {
   Image,
 } from "react-bootstrap";
 import axios from "axios";
-import profileIcon from "../blank-profile.png";
 import { BsGeoAltFill } from "react-icons/bs"; // will be used in location input
+import profileIcon from "../pet_placeholder.png";
 import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
+import useAuth from "../auth/useAuth";
 
 export default function EditView({ posts, setDataPost }) {
   const [location, setLocation] = useState(""); // will be receive location from map
+  const auth = useAuth();
   const [showMap, setShowMap] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const handleMap = () => setShowMap(!showMap);
@@ -44,7 +46,6 @@ export default function EditView({ posts, setDataPost }) {
 
   const handleInputChange = ({ target }) => {
     setFormValues((state) => ({ ...state, [target.name]: target.value }));
-  };
 
   // Upload images and display them
   const handlePhotoChange = ({ target }) => {
@@ -68,7 +69,6 @@ export default function EditView({ posts, setDataPost }) {
   // TODO: Submit to backend
   const onSubmitForm = (e) => {
     e.preventDefault();
-    console.log(e.target.elements);
     // TODO: Build object
     const newPost = {};
     axios
@@ -82,12 +82,12 @@ export default function EditView({ posts, setDataPost }) {
           alert("La publicacion no se guardó, intentelo nuevamente");
         }
       });
-  };
+    };
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
         {/* TODO: Change title if its creation or edition of info */}
-        <h2>Publicación</h2>
+        <h2>{auth.userLogin.username}, crea una publicación </h2>
 
         <Col lg={7} className="mt-5">
           <Form onSubmit={onSubmitForm} noValidate autoComplete="off">
@@ -200,7 +200,7 @@ export default function EditView({ posts, setDataPost }) {
                       value={formValues.size}
                     >
                       <option value="">Selecciona una opción</option>
-                      <option value="XS">extra-pequeño</option>
+                      <option value="XS">petite</option>
                       <option value="S">pequeño</option>
                       <option value="M">mediano</option>
                       <option value="L">grande</option>

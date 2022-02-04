@@ -55,7 +55,7 @@ export default function AppNavBar() {
                         Mi Perfil
                       </Dropdown.Item>
                       {/* TODO: publications page */}
-                      <Dropdown.Item as={Link} to="">
+                      <Dropdown.Item as={Link} to="/myposts">
                         Mis Publicaciones
                       </Dropdown.Item>
                       {/* TODO: favorites page */}

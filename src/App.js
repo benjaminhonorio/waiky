@@ -19,6 +19,7 @@ import PasswordChanged from "./Pages/PasswordChanged";
 import PrivateRoute from "./Pages/PrivateRoute";
 import RedirectUser from "./Pages/RedirectUser";
 import AuthProvider from "./auth/AuthProvider";
+import PublicationView from "./Pages/PublicationView";
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
@@ -92,6 +93,14 @@ function App() {
             }
           />
           <Route path="*" element={<NotFound />} />
+          <Route
+            path="/myposts"
+            element={
+              <PrivateRoute>
+                <PublicationView />
+              </PrivateRoute>
+            }
+          />
         </Routes>
         <AppFooter />
       </AuthProvider>
