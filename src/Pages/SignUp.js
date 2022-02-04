@@ -45,7 +45,6 @@ export default function SignUp() {
           if (data.error) {
             setMessage(data.message);
             setAlert(data.error);
-            console.log(data);
           } else {
             auth.login(data.id, data.username, data.email);
             const user = {
@@ -97,7 +96,7 @@ export default function SignUp() {
       <Row className="justify-content-center text-center">
         <Col lg={6}>
           <img alt="logo" src={WaykiLogo} className="w-50" />
-          <Form onSubmit={handleForm}>
+          <Form onSubmit={handleForm} noValidate autoComplete="off">
             <Form.Group>
               <FloatingLabel
                 controlId="floatingInput"
