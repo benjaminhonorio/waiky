@@ -5,9 +5,6 @@ import WaykiLogo from "../logo.png";
 import useAuth from "../auth/useAuth";
 
 export default function AppNavBar() {
-  // Por defecto false si el usuario no esta logueado
-  // Temporalmente asigno true al dar click en boton Login (para efectos de visualizar la barra de navegacion con el usuario logueado)
-  // Asi mismo al dar click en salir (al final del dropdown del Usuario) se asigna false
   const auth = useAuth();
   const { userLogin } = auth;
 
@@ -57,13 +54,8 @@ export default function AppNavBar() {
                       <Dropdown.Item as={Link} to="/profile">
                         Mi Perfil
                       </Dropdown.Item>
-                      {/* TODO: publications page */}
-                      <Dropdown.Item as={Link} to="">
+                      <Dropdown.Item as={Link} to="/myposts">
                         Mis Publicaciones
-                      </Dropdown.Item>
-                      {/* TODO: favorites page */}
-                      <Dropdown.Item as={Link} to="">
-                        Mis Favoritos
                       </Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item onClick={handleLogOut}>
