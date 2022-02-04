@@ -12,6 +12,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import WaykiLogo from "../logoH.png";
 import useAuth from "../auth/useAuth";
+import { setSession, setToken } from "../user/session";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -38,13 +39,14 @@ export default function Login() {
           setData(data);
           setAlert(data.error);
         } else {
-          auth.login(data.token, data.username);
+          auth.login(data.id, data.username, data.email);
           const user = {
-            token: `${data.token}`,
+            id: `${data.id}`,
             username: `${data.username}`,
             email: `${data.email}`,
           };
-          sessionStorage.setItem("jwt", JSON.stringify(user));
+          setToken(data.token);
+          setSession(JSON.stringify(user));
           navigate("/");
         }
       });

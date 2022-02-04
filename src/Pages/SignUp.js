@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setSession, setToken } from "../user/session";
 
 import axios from "axios";
 
@@ -44,14 +45,15 @@ export default function SignUp() {
           if (data.error) {
             setMessage(data.message);
             setAlert(data.error);
-            console.log(data);
           } else {
-            auth.login(data.token, data.username);
+            auth.login(data.id, data.username, data.email);
             const user = {
-              token: `${data.token}`,
+              id: `${data.id}`,
               username: `${data.username}`,
+              email: `${data.email}`,
             };
-            sessionStorage.setItem("jwt", JSON.stringify(user));
+            setToken(data.token);
+            setSession(JSON.stringify(user));
             navigate("/profile");
           }
         });
@@ -94,7 +96,7 @@ export default function SignUp() {
       <Row className="justify-content-center text-center">
         <Col lg={6}>
           <img alt="logo" src={WaykiLogo} className="w-50" />
-          <Form onSubmit={handleForm}>
+          <Form onSubmit={handleForm} noValidate autoComplete="off">
             <Form.Group>
               <FloatingLabel
                 controlId="floatingInput"
