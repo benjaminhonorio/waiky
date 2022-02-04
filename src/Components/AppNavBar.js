@@ -1,4 +1,3 @@
-import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Container, Nav, Navbar, Button, Dropdown } from "react-bootstrap";
 import { BsHouse, BsMap, BsPersonCircle } from "react-icons/bs";
@@ -10,8 +9,12 @@ export default function AppNavBar() {
   // Temporalmente asigno true al dar click en boton Login (para efectos de visualizar la barra de navegacion con el usuario logueado)
   // Asi mismo al dar click en salir (al final del dropdown del Usuario) se asigna false
   const auth = useAuth();
+  const { userLogin } = auth;
 
-  const [isLoggedIn, setIsLoggedIn] = useState(!!auth.userLogin);
+  const handleLogOut = (e) => {
+    e.preventDefault();
+    auth.logout();
+  };
 
   return (
     <>
@@ -38,7 +41,7 @@ export default function AppNavBar() {
                 <BsMap className="mx-2 d-inline-block  align-baseline" />
                 Mapa
               </Nav.Link>
-              {!!auth.userLogin ? (
+              {userLogin?.username ? (
                 <>
                   <Dropdown>
                     <Dropdown.Toggle
@@ -47,7 +50,7 @@ export default function AppNavBar() {
                       className="nav-link border-0"
                     >
                       <BsPersonCircle className="mx-2 d-inline-block  align-baseline" />
-                      Usuario
+                      {userLogin?.username}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu variant="dark">
@@ -63,12 +66,7 @@ export default function AppNavBar() {
                         Mis Favoritos
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item
-                        onClick={() => {
-                          setIsLoggedIn(auth.logout());
-                          sessionStorage.clear();
-                        }}
-                      >
+                      <Dropdown.Item onClick={handleLogOut}>
                         Cerrar Sesión
                       </Dropdown.Item>
                     </Dropdown.Menu>

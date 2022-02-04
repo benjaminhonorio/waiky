@@ -4,5 +4,7 @@ import useAuth from "../auth/useAuth";
 
 export default function PrivateRoute({ children }) {
   const auth = useAuth();
-  return auth.userLogin ? children : <Navigate to="/login" />;
+  const { userLogin } = auth;
+
+  return userLogin?.username ? children : <Navigate to="/login" />;
 }

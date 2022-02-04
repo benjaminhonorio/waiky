@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setSession, setToken } from "../user/session";
 
 import axios from "axios";
 
@@ -46,12 +47,14 @@ export default function SignUp() {
             setAlert(data.error);
             console.log(data);
           } else {
-            auth.login(data.token, data.username);
+            auth.login(data.id, data.username, data.email);
             const user = {
-              token: `${data.token}`,
+              id: `${data.id}`,
               username: `${data.username}`,
+              email: `${data.email}`,
             };
-            sessionStorage.setItem("jwt", JSON.stringify(user));
+            setToken(data.token);
+            setSession(JSON.stringify(user));
             navigate("/profile");
           }
         });

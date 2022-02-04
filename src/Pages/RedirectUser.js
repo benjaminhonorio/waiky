@@ -4,5 +4,7 @@ import useAuth from "../auth/useAuth";
 
 export default function RedirectUser({ children }) {
   const auth = useAuth();
-  return auth.userLogin ? <Navigate to="/profile" /> : children;
+  const { userLogin } = auth;
+  
+  return userLogin?.username ? <Navigate to="/profile" /> : children;
 }
