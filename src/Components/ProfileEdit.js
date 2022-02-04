@@ -37,7 +37,7 @@ export default function ProfileEdit() {
           }
         });
     }
-  }, [auth]);
+  }, []);
 
   const handleInputChange = (event) => {
     setIsUploaded(true);
@@ -49,7 +49,6 @@ export default function ProfileEdit() {
   };
 
   const handleSubmit = async (e) => {
-    console.log(name);
     e.preventDefault();
     const newProfile = {
       username: auth.userLogin.username,
@@ -59,13 +58,14 @@ export default function ProfileEdit() {
       bio: bio,
       token: auth.userLogin.token,
     };
-    console.log(auth.userLogin);
     axios
       .put(
         `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile`,
         newProfile
       )
-      .then((response) => console.log(response.data));
+      .then((response) => {
+        alert("se guardó exitosamente");
+      });
   };
 
   return (
@@ -143,7 +143,7 @@ export default function ProfileEdit() {
               </>
             ) : (
               <img
-                class="img-circle"
+                className="img-circle"
                 width={300}
                 height={300}
                 draggable={"false"}
