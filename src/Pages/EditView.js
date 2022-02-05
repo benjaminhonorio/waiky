@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Button,
@@ -17,17 +17,25 @@ import config from "../config";
 import useAuth from "../auth/useAuth";
 import { getToken } from "../user/session";
 
-// TODO: move consts to config
-const PET_TYPES = config.PET_TYPES;
-
 export default function EditView({ posts, setDataPost }) {
   const [coordinates, setCoordinates] = useState(null);
-  const [address, setAddress] = useState(null); // TODO: Use Geolocation to save the address
+  const [center, setCenter] = useState([]);
+  const [userLocation, setUserLocation] = useState([]); //TODO: let the user find their location with a search box and move the location (if geolocation is not possible)
+  const [address, setAddress] = useState(null); // TODO: Use Geolocation to save the address to the post object
   const [petType, setPetType] = useState("pet");
   const [showMap, setShowMap] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const auth = useAuth();
   let navigate = useNavigate();
+
+  // Get user Location with geolocation API
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setCenter([latitude, longitude]);
+      }
+    );
+  }, []);
 
   const handleMap = () => setShowMap(!showMap);
   const handleCancel = () => {
@@ -48,11 +56,6 @@ export default function EditView({ posts, setDataPost }) {
     photos: [],
   });
   const token = getToken();
-  // TODO: move to configs
-  const uploadURL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL;
-  const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
-
-  // const MAPS_API_KEY = config.GOOGLE_MAPS_API_KEY;
 
   const handleInputChange = ({ target }) => {
     setFormValues((state) => ({ ...state, [target.name]: target.value }));
@@ -65,8 +68,8 @@ export default function EditView({ posts, setDataPost }) {
     for (let i = 0; i < files.length; i++) {
       let file = files[i];
       formData.append("file", file);
-      formData.append("upload_preset", uploadPreset);
-      axios.post(uploadURL, formData).then((response) => {
+      formData.append("upload_preset", config.CLOUDINARY_UPLOAD_PRESET);
+      axios.post(config.CLOUDINARY_UPLOAD_URL, formData).then((response) => {
         console.log(response);
         setFormValues((previousFormValues) => ({
           ...previousFormValues,
@@ -101,7 +104,7 @@ export default function EditView({ posts, setDataPost }) {
       photos: formValues.photos,
     };
     axios
-      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost, {
+      .post(`${config.GOOGLE_MAPS_API_KEY}/api/v1/posts`, newPost, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -359,7 +362,7 @@ export default function EditView({ posts, setDataPost }) {
           <Modal.Title>Ubica la mascota</Modal.Title>
           <div style={{ marginLeft: "auto" }}>
             <strong>Elige un icono: </strong>
-            {PET_TYPES.map((pet) => {
+            {config.PET_TYPES.map((pet) => {
               return (
                 <img
                   key={pet}
@@ -378,6 +381,8 @@ export default function EditView({ posts, setDataPost }) {
             setCoordinates={setCoordinates}
             setPetType={setPetType}
             petType={petType}
+            center={center}
+            setCenter={setCenter}
           />
         </Modal.Body>
         <Modal.Footer>

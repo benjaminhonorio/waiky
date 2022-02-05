@@ -30,9 +30,10 @@ const mapOptions = {
 const Marker = ({ children }) => children;
 
 // TODO: move to styles prop later to make reusable
-function Map({ coordinates, setCoordinates, petType }) {
+function Map({ coordinates, setCoordinates, petType, center, setCenter }) {
   const onMapClick = (e) => {
     setCoordinates([e.lng, e.lat]);
+    setCenter([e.lat, e.lng]);
   };
   return (
     <div style={mapContainerStyle}>
@@ -41,6 +42,7 @@ function Map({ coordinates, setCoordinates, petType }) {
           key: config.GOOGLE_MAPS_API_KEY,
         }}
         defaultCenter={defaults.center}
+        center={(center.length && center) || defaults.center}
         defaultZoom={defaults.zoom}
         onClick={onMapClick}
         options={mapOptions}
