@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
-import Comments from "../Components/Comments";
+// import Comments from "../Components/Comments";
 import Gallery from "../Components/Gallery";
 import InfoPostDetails from "../Components/InfoPostDetails";
 
@@ -51,13 +51,13 @@ export default function DetailPost({ dataPost }) {
             </Col>
           </Row>
         </Row>
-        <Row>
+        {/* <Row>
           <h2 className="text-dark"> Comentarios </h2>
           <Container>
             <Comments />
             <Comments />
           </Container>
-        </Row>
+        </Row> */}
 
         <Modal show={show} onHide={handleClose} fullscreen={true}>
           <Modal.Header closeButton>
