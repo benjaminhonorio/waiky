@@ -99,7 +99,7 @@ export default function SignUp() {
           <Form onSubmit={handleForm} noValidate autoComplete="off">
             <Form.Group>
               <FloatingLabel
-                controlId="floatingInput"
+                controlId="floatingInput1"
                 label="Ingresa tu nuevo nombre de usuario"
               >
                 <Form.Control
@@ -109,7 +109,7 @@ export default function SignUp() {
                 />
               </FloatingLabel>
               <FloatingLabel
-                controlId="floatingInput"
+                controlId="floatingInput2"
                 label="Ingresa tu correo electronico"
                 className="my-3"
               >
@@ -120,7 +120,7 @@ export default function SignUp() {
                 />
               </FloatingLabel>
               <FloatingLabel
-                controlId="floatingPassword"
+                controlId="floatingPassword1"
                 label="Ingresa tu contraseña"
                 className="my-3"
               >
@@ -131,7 +131,7 @@ export default function SignUp() {
                 />
               </FloatingLabel>
               <FloatingLabel
-                controlId="floatingPassword"
+                controlId="floatingPassword2"
                 label="Ingresa tu contraseña nuevamente "
               >
                 <Form.Control
