@@ -73,14 +73,24 @@ export default function AppNavBar() {
                   </Button>
                 </>
               ) : (
-                <Button
-                  className="mx-2"
-                  variant="primary"
-                  as={Link}
-                  to="/login"
-                >
-                  Login
-                </Button>
+                <div>
+                  <Button
+                    className="mx-2"
+                    variant="primary"
+                    as={Link}
+                    to="/login"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    className="mx-2"
+                    variant="light"
+                    as={Link}
+                    to="/signup"
+                  >
+                    Sign Up
+                  </Button>
+                </div>
               )}
             </Nav>
           </Navbar.Collapse>

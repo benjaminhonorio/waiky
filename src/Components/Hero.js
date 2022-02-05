@@ -1,4 +1,5 @@
-import { Col, Image } from "react-bootstrap";
+import { Col, Image, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import WaykiLogo from "../logoH.png";
 
@@ -14,6 +15,15 @@ export default function Hero() {
       <p className="h4 fw-light">
         Ayudemos a las mascotas a volver a sus hogares
       </p>
+      <Button
+        className="mx-2 my-4"
+        variant="primary"
+        as={Link}
+        to="/map"
+        size="lg"
+      >
+        Ir al mapa
+      </Button>
     </Col>
   );
 }
