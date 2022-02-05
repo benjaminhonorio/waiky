@@ -3,41 +3,46 @@ import axios from "axios";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import profileIcon from "../blank-profile.png";
 import useAuth from "../auth/useAuth";
+import { getToken } from "../user/session";
 
 export default function ProfileEdit() {
   const auth = useAuth();
   const [name, setName] = useState("");
-  const [telephone, setTelephone] = useState("");
+  const [number, setNumber] = useState("");
   const [bio, setBio] = useState("");
-  const [email, setEmail] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
   const [userInfo, setuserInfo] = useState({
     file: [],
     filepreview: null,
   });
 
+  const token = getToken();
   useEffect(() => {
-    if (auth && auth.userLogin && auth.userLogin.token) {
+    if (token) {
       axios
-        .get(
-          `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile/${auth.userLogin.token}`
-        )
+        .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
-          if (response.data.data.name) {
-            setName(response.data.data.name);
-          }
-          if (response.data.data.number) {
-            setTelephone(response.data.data.number);
-          }
-          if (response.data.data.bio) {
-            setBio(response.data.data.bio);
-          }
-          if (response.data.data.email) {
-            setEmail(response.data.data.email);
-          }
+          setNumber(response.data.number);
+          setBio(response.data.bio);
+          setName(response.data.name);
+          // if (response.data.data.name) {
+          // }
+          // if (response.data.data.number) {
+          //   setTelephone(response.data.data.number);
+          // }
+          // if (response.data.data.bio) {
+          //   setBio(response.data.data.bio);
+          // }
+          // if (response.data.data.email) {
+          //   setEmail(response.data.data.email);
+          // }
         });
     }
-  }, []);
+  }, [token]);
 
   const handleInputChange = (event) => {
     setIsUploaded(true);
@@ -50,18 +55,21 @@ export default function ProfileEdit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newProfile = {
-      username: auth.userLogin.username,
+    const updatedProfile = {
       name: name,
-      email: auth.userLogin.email,
-      telephone: telephone,
+      number: number,
       bio: bio,
-      token: auth.userLogin.token,
     };
+    console.log(updatedProfile);
     axios
       .put(
         `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile`,
-        newProfile
+        updatedProfile,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       .then((response) => {
         alert("se guardó exitosamente");
@@ -90,7 +98,7 @@ export default function ProfileEdit() {
               Correo:
             </Form.Label>
             <Col sm="10">
-              <Form.Control value={email} disabled />
+              <Form.Control value={auth.userLogin.email} disabled />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -99,8 +107,8 @@ export default function ProfileEdit() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
-                value={telephone}
-                onChange={(e) => setTelephone(e.target.value)}
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
               />
             </Col>
           </Form.Group>

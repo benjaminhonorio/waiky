@@ -7,9 +7,6 @@ const AuthProvider = ({ children }) => {
   const [userLogin, setUserLogin] = useState(() =>
     JSON.parse(sessionStorage.getItem("user"))
   );
-  // getSession()
-  // JSON.parse(getSession));
-
   const contextValue = {
     userLogin,
     login(id, username, email) {

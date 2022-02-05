@@ -1,13 +1,13 @@
 export function setSession(payload) {
-  sessionStorage.setItem("user", payload);
+  return sessionStorage.setItem("user", payload);
 }
 
 export function setToken(payload) {
-  sessionStorage.setItem("token", payload);
+  return sessionStorage.setItem("token", payload);
 }
 
 export function getToken() {
-  sessionStorage.getItem("token");
+  return sessionStorage.getItem("token");
 }
 
 export function clearSession() {

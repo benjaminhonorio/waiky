@@ -41,9 +41,9 @@ export default function Login() {
         } else {
           auth.login(data.id, data.username, data.email);
           const user = {
-            id: `${data.id}`,
-            username: `${data.username}`,
-            email: `${data.email}`,
+            id: data.id,
+            username: data.username,
+            email: data.email,
           };
           setToken(data.token);
           setSession(JSON.stringify(user));
