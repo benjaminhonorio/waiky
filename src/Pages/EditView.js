@@ -15,13 +15,13 @@ import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
 import credentials from "../Components/credentials";
 import useAuth from "../auth/useAuth";
-
+import { getToken } from "../user/session";
 export default function EditView({ posts, setDataPost }) {
-  const [location, setLocation] = useState(""); // will be receive location from map
-  const auth = useAuth();
+  const [location, setLocation] = useState(""); // will be received location from map
   const [showMap, setShowMap] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const handleMap = () => setShowMap(!showMap);
+  const auth = useAuth();
 
   let navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export default function EditView({ posts, setDataPost }) {
     title: "",
     name: "",
     type: "",
-    hashtags: "",
+    tags: "",
     sex: "",
     color: "",
     size: "",
@@ -38,7 +38,7 @@ export default function EditView({ posts, setDataPost }) {
     description: "",
     photos: [],
   });
-
+  const token = getToken();
   // TODO: move to configs
   const uploadURL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL;
   const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
@@ -71,12 +71,35 @@ export default function EditView({ posts, setDataPost }) {
   const onSubmitForm = (e) => {
     e.preventDefault();
     // TODO: Build object
-    const newPost = {};
+    const newPost = {
+      characteristics: {
+        name: formValues.name,
+        age: formValues.age,
+        color: formValues.color,
+        sex: formValues.sex,
+        size: formValues.size,
+      },
+      location: {
+        type: "Point",
+        address: "Geolocated",
+        reference: "Plaza Mayor de Nuevo Chimbote",
+        coordinates: [-78.52001851957706, -9.127000168554577],
+      },
+      title: formValues.title,
+      type: formValues.type,
+      tags: formValues.tags.split(" "),
+      description: formValues.description,
+      mainPhoto: 0,
+      photos: formValues.photos,
+    };
     axios
-      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost)
+      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status === 201) {
-          console.log("response");
           setDataPost(posts.concat(response.data.data));
           navigate(`/post/${response.data.data.id}`);
         } else {
@@ -301,7 +324,7 @@ export default function EditView({ posts, setDataPost }) {
                 />
               </>
             ) : (
-              formValues.photos.mapw((photo) => {
+              formValues.photos.map((photo) => {
                 return (
                   <img
                     key={photo.match(/([a-zA-Z0-9]+.jpg)/)[0]}
