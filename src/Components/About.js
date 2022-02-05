@@ -1,4 +1,5 @@
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Image } from "react-bootstrap";
+import FindYourPet from "../findurpet.jpg";
 
 export default function About() {
   return (
@@ -11,6 +12,9 @@ export default function About() {
             perdiste tu mascota, publica tu anuncio, sino, ayuda a otras
             personas a ubicar sus mascotas.
           </Col>
+        </Row>
+        <Row xs={10} sm={8}>
+          <Image src={FindYourPet} alt="Find your pet" />
         </Row>
       </Col>
     </Row>

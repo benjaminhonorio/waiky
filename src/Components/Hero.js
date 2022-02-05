@@ -2,11 +2,16 @@ import { Col, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import WaykiLogo from "../logoH.png";
+import BackgroundImage from "../pets.jpg";
 
 export default function Hero() {
   return (
     <Col
-      style={{ marginTop: "-56px" }}
+      style={{
+        marginTop: "-56px",
+        backgroundImage: `url(${BackgroundImage})`,
+        backgroundSize: "cover",
+      }}
       className="d-flex flex-column justify-content-center align-items-center vh-100"
     >
       <Col xs={10} sm={8}>
