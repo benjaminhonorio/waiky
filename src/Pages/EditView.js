@@ -104,7 +104,7 @@ export default function EditView({ posts, setDataPost }) {
       photos: formValues.photos,
     };
     axios
-      .post(`${config.GOOGLE_MAPS_API_KEY}/api/v1/posts`, newPost, {
+      .post(`${config.BASE_API_URL}/api/v1/posts`, newPost, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
