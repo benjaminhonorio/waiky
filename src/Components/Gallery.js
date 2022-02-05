@@ -10,24 +10,14 @@ const Gallery = ({ data }) => {
 
   return (
     <Carousel activeIndex={index} onSelect={handleSelect}>
-      <Carousel.Item>
-        <img className="d-block w-100" src={data.photos[0]} alt="First slide" />
-        <Carousel.Caption></Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src={data.photos[1]}
-          alt="Second slide"
-        />
-
-        <Carousel.Caption></Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img className="d-block w-100" src={data.photos[2]} alt="Third slide" />
-
-        <Carousel.Caption></Carousel.Caption>
-      </Carousel.Item>
+      {data.photos.map((photo, i) => {
+        return (
+          <Carousel.Item key={`${photo}${i}`}>
+            <img className="d-block w-100" src={photo} alt={"foto"} />
+            <Carousel.Caption></Carousel.Caption>
+          </Carousel.Item>
+        );
+      })}
     </Carousel>
   );
 };
