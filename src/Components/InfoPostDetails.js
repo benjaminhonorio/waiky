@@ -16,6 +16,7 @@ export default function InfoPostDetails({ data }) {
   return (
     <>
       <Col className="jumbotron">
+        <h6>Creado por: {data.user?.username} </h6>
         <h2>
           {data.title}
           {auth.userLogin?.id === data.user?.id && (
@@ -24,8 +25,6 @@ export default function InfoPostDetails({ data }) {
             </Button>
           )}
         </h2>
-        <h5> Post creado por: {data.user?.username} </h5>
-        <h5> {data.type} </h5>
         <h6>
           {data.tags &&
             data.tags.map((d) => (
@@ -34,30 +33,26 @@ export default function InfoPostDetails({ data }) {
               </span>
             ))}
         </h6>
-        <h5> {data.type} </h5>
-
-        <div className="d-inline">
+        <div className="d-flex gap-4 py-2">
           <span>
             <strong> Nombre: </strong>
             {data.characteristics["name"]}
           </span>
-        </div>
-        <div className="d-inline px-4">
           <span>
             <strong> Color: </strong>
             {data.characteristics["color"]}
           </span>
-        </div>
-        <div className="d-inline">
           <span>
             <strong> Sexo: </strong>
             {data.characteristics["sex"] === "M" ? "Macho" : "Hembra"}
           </span>
-        </div>
-        <div className="d-inline px-4">
           <span>
             <strong> Tamaño: </strong>
             {data.characteristics["size"]}
+          </span>
+          <span>
+            <strong> Especie: </strong>
+            {data.type}
           </span>
         </div>
         <p>

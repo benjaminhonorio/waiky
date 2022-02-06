@@ -9,7 +9,6 @@ import config from "../config";
 export default function ProfileEdit() {
   const auth = useAuth();
   const token = getToken();
-  const [isUploaded, setIsUploaded] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     number: "",
@@ -27,9 +26,6 @@ export default function ProfileEdit() {
         })
         .then((response) => {
           setFormValues(response.data);
-          if (response.data.photo) {
-            setIsUploaded(true);
-          }
         });
     }
   }, [token]);
@@ -40,19 +36,15 @@ export default function ProfileEdit() {
 
   const handlePhotoChange = ({ target }) => {
     const formData = new FormData();
-    let files = target.files;
-    for (let i = 0; i < files.length; i++) {
-      let file = files[i];
-      formData.append("file", file);
-      formData.append("upload_preset", config.CLOUDINARY_UPLOAD_PRESET);
-      axios.post(config.CLOUDINARY_UPLOAD_URL, formData).then((response) => {
-        setFormValues((previousFormValues) => ({
-          ...previousFormValues,
-          photo: response.data.url,
-        }));
-        setIsUploaded(true);
-      });
-    }
+    let file = target.files[0];
+    formData.append("file", file);
+    formData.append("upload_preset", config.CLOUDINARY_UPLOAD_PRESET);
+    axios.post(config.CLOUDINARY_UPLOAD_URL, formData).then((response) => {
+      setFormValues((previousFormValues) => ({
+        ...previousFormValues,
+        photo: response.data.url,
+      }));
+    });
   };
 
   const handleSubmitForm = (e) => {
@@ -139,10 +131,9 @@ export default function ProfileEdit() {
 
         <Col md={{ span: 1, offset: 1 }}>
           <figure className="figure">
-            {!isUploaded ? (
+            {!formValues.photo ? (
               <>
                 <Image
-                  width={300}
                   height={300}
                   draggable={"false"}
                   src={profileIcon}
@@ -152,7 +143,7 @@ export default function ProfileEdit() {
                 <Form.Group as={Row} className="mb-3">
                   <input
                     type="file"
-                    name="photos"
+                    name="photo"
                     accept=".jpg,.jpeg,.gif,.png"
                     onChange={handlePhotoChange}
                   />
@@ -160,8 +151,6 @@ export default function ProfileEdit() {
               </>
             ) : (
               <img
-                key={formValues.photo.match(/([a-zA-Z0-9]+.jpg)/)}
-                width={300}
                 height={300}
                 draggable={"false"}
                 src={formValues.photo}
