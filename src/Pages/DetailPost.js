@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 // import Comments from "../Components/Comments";
 import Gallery from "../Components/Gallery";
 import InfoPostDetails from "../Components/InfoPostDetails";

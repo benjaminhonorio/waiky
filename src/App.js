@@ -23,12 +23,27 @@ import PublicationView from "./Pages/PublicationView";
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
+  const [bounds, setBounds] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`)
-      .then((response) => setDataPost(response.data.data));
-  }, []);
+    if (!bounds.length) {
+      axios
+        .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts?limit=100`)
+        .then((response) => setDataPost(response.data.data))
+        .catch((error) => console.log(error));
+    } else {
+      axios
+        .get(
+          `${
+            process.env.REACT_APP_BASE_API_URL
+          }/api/v1/posts${`?limit=100&neLat=${bounds[3]}&neLng=${bounds[0]}&swLat=${bounds[1]}&swLng=${bounds[2]}`}`
+        )
+        .then((response) => {
+          setDataPost(response.data.data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [bounds]);
 
   return (
     <>
@@ -64,7 +79,16 @@ function App() {
               </RedirectUser>
             }
           />
-          <Route path="/map" element={<MapView posts={dataPost} />} />
+          <Route
+            path="/map"
+            element={
+              <MapView
+                dataPoints={dataPost}
+                bounds={bounds}
+                setBounds={setBounds}
+              />
+            }
+          />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
           <Route path="/password_reset/:id" element={<PasswordReset />} />
           <Route
