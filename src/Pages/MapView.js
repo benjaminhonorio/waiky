@@ -1,7 +1,6 @@
-import React from "react";
 import { Card, Container, Col, Row, Button } from "react-bootstrap";
 import Map from "../Components/Map";
-import credentials from "../Components/credentials";
+import config from "../config";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -37,7 +36,7 @@ export default function MapView({ posts }) {
   // Set position to current user position if possible
   position();
 
-  const mapURL = credentials.mapsKey;
+  const mapURL = config.GOOGLE_MAPS_API_KEY;
 
   return (
     <Container className="my-3" fluid>
@@ -99,15 +98,18 @@ export default function MapView({ posts }) {
             Ir a mi ubicacion
           </Button>
           <span>(Activa la ubicacion para que funcione)</span>
-
-          <Map
+          {/* TODO */}
+          <div style={{ height: "100vh", width: "100%" }}>
+            TODO: Make fully functional map
+          </div>
+          {/* <Map
             googleMapURL={mapURL}
             containerElement={<div style={{ height: "100vh" }} />}
             mapElement={<div style={{ height: "100%" }} />}
             loadingElement={<div style={{ height: `100%` }} />}
             posts={posts}
             center={center}
-          />
+          /> */}
         </Col>
       </Row>
     </Container>
