@@ -15,11 +15,11 @@ import useAuth from "../auth/useAuth";
 import { setSession, setToken } from "../user/session";
 
 export default function Login() {
-  const userRemember = JSON.parse(localStorage.getItem("remember"));
+  const usernameLocal = JSON.parse(localStorage.getItem("remember"));
   const navigate = useNavigate();
   const auth = useAuth();
-  const [username, setUsername] = useState(() => userRemember?.username || "");
-  const [password, setPassword] = useState(() => userRemember?.pwd || "");
+  const [username, setUsername] = useState(() => usernameLocal || "");
+  const [password, setPassword] = useState();
   const [data, setData] = useState({});
   const [alert, setAlert] = useState();
   const [check, setCheck] = useState();
@@ -36,7 +36,7 @@ export default function Login() {
     };
 
     check === "on" &&
-      localStorage.setItem("remember", JSON.stringify(newUserLogin));
+      localStorage.setItem("remember", JSON.stringify(username));
 
     axios
       .post(
@@ -102,7 +102,6 @@ export default function Login() {
                   type="password"
                   placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)}
-                  value={password}
                 />
               </FloatingLabel>
             </Form.Group>
