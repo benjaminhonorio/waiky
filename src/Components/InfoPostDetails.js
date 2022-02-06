@@ -25,7 +25,6 @@ export default function InfoPostDetails({ data }) {
           )}
         </h2>
         <h5> Post creado por: {data.user?.username} </h5>
-
         <h5> {data.type} </h5>
         <h6>
           {data.tags &&
@@ -35,6 +34,20 @@ export default function InfoPostDetails({ data }) {
               </span>
             ))}
         </h6>
+        <h5> {data.type} </h5>
+
+        <div className="d-inline">
+          <span>
+            <strong> Nombre: </strong>
+            {data.characteristics["name"]}
+          </span>
+        </div>
+        <div className="d-inline px-4">
+          <span>
+            <strong> Color: </strong>
+            {data.characteristics["color"]}
+          </span>
+        </div>
         <div className="d-inline">
           <span>
             <strong> Sexo: </strong>
@@ -43,8 +56,8 @@ export default function InfoPostDetails({ data }) {
         </div>
         <div className="d-inline px-4">
           <span>
-            <strong> Color: </strong>
-            {data.characteristics["color"]}
+            <strong> Tamaño: </strong>
+            {data.characteristics["size"]}
           </span>
         </div>
         <p>

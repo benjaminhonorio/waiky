@@ -70,7 +70,6 @@ export default function EditView({ posts, setDataPost }) {
       formData.append("file", file);
       formData.append("upload_preset", config.CLOUDINARY_UPLOAD_PRESET);
       axios.post(config.CLOUDINARY_UPLOAD_URL, formData).then((response) => {
-        console.log(response);
         setFormValues((previousFormValues) => ({
           ...previousFormValues,
           photos: previousFormValues.photos.concat(response.data.url),

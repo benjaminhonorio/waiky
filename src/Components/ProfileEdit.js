@@ -4,19 +4,19 @@ import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import profileIcon from "../blank-profile.png";
 import useAuth from "../auth/useAuth";
 import { getToken } from "../user/session";
+import config from "../config";
 
 export default function ProfileEdit() {
   const auth = useAuth();
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-  const [bio, setBio] = useState("");
+  const token = getToken();
   const [isUploaded, setIsUploaded] = useState(false);
-  const [userInfo, setuserInfo] = useState({
-    file: [],
-    filepreview: null,
+  const [formValues, setFormValues] = useState({
+    name: "",
+    number: "",
+    bio: "",
+    photo: "",
   });
 
-  const token = getToken();
   useEffect(() => {
     if (token) {
       axios
@@ -26,41 +26,44 @@ export default function ProfileEdit() {
           },
         })
         .then((response) => {
-          setNumber(response.data.number);
-          setBio(response.data.bio);
-          setName(response.data.name);
-          // if (response.data.data.name) {
-          // }
-          // if (response.data.data.number) {
-          //   setTelephone(response.data.data.number);
-          // }
-          // if (response.data.data.bio) {
-          //   setBio(response.data.data.bio);
-          // }
-          // if (response.data.data.email) {
-          //   setEmail(response.data.data.email);
-          // }
+          setFormValues(response.data);
+          if (response.data.photo) {
+            setIsUploaded(true);
+          }
         });
     }
   }, [token]);
 
-  const handleInputChange = (event) => {
-    setIsUploaded(true);
-    setuserInfo({
-      ...userInfo,
-      file: event.target.files[0],
-      filepreview: URL.createObjectURL(event.target.files[0]),
-    });
+  const handleInputChange = ({ target }) => {
+    setFormValues((state) => ({ ...state, [target.name]: target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handlePhotoChange = ({ target }) => {
+    const formData = new FormData();
+    let files = target.files;
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      formData.append("file", file);
+      formData.append("upload_preset", config.CLOUDINARY_UPLOAD_PRESET);
+      axios.post(config.CLOUDINARY_UPLOAD_URL, formData).then((response) => {
+        setFormValues((previousFormValues) => ({
+          ...previousFormValues,
+          photo: response.data.url,
+        }));
+        setIsUploaded(true);
+      });
+    }
+  };
+
+  const handleSubmitForm = (e) => {
     e.preventDefault();
     const updatedProfile = {
-      name: name,
-      number: number,
-      bio: bio,
+      name: formValues.name,
+      number: formValues.number,
+      bio: formValues.bio,
+      photo: formValues.photo,
     };
-    console.log(updatedProfile);
+
     axios
       .put(
         `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/profile`,
@@ -77,7 +80,7 @@ export default function ProfileEdit() {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmitForm}>
       <h2>Hello {auth.userLogin.username}</h2>
       <br />
       <Row className="align-items-center my-4 sm-8 ">
@@ -88,8 +91,10 @@ export default function ProfileEdit() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formValues.name}
+                onChange={handleInputChange}
+                type="text"
+                name="name"
               />
             </Col>
           </Form.Group>
@@ -107,9 +112,11 @@ export default function ProfileEdit() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
-                value={number}
+                value={formValues.number}
+                onChange={handleInputChange}
+                type="text"
+                name="number"
                 placeholder="Porfavor agregar el indicativo segun el País y el numero todo junto"
-                onChange={(e) => setNumber(e.target.value)}
               />
             </Col>
           </Form.Group>
@@ -119,44 +126,45 @@ export default function ProfileEdit() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
-                value={bio}
+                value={formValues.bio}
                 as="textarea"
                 rows={3}
-                onChange={(e) => setBio(e.target.value)}
+                onChange={handleInputChange}
+                type="text"
+                name="bio"
               />
             </Col>
           </Form.Group>
-          <Form.Group as={Row} className="mb-3"></Form.Group>
         </Col>
 
         <Col md={{ span: 1, offset: 1 }}>
           <figure className="figure">
             {!isUploaded ? (
               <>
-                <label htmlFor="upload-input">
-                  <Image
-                    width={300}
-                    height={300}
-                    draggable={"false"}
-                    src={profileIcon}
-                    alt="UploadImage"
-                  />
-                </label>
-                <figcaption className="figure-caption text-center">
+                <Image
+                  width={300}
+                  height={300}
+                  draggable={"false"}
+                  src={profileIcon}
+                  alt="UploadImage"
+                />
+
+                <Form.Group as={Row} className="mb-3">
                   <input
                     type="file"
+                    name="photos"
                     accept=".jpg,.jpeg,.gif,.png"
-                    onChange={handleInputChange}
+                    onChange={handlePhotoChange}
                   />
-                </figcaption>
+                </Form.Group>
               </>
             ) : (
               <img
-                className="img-circle"
+                key={formValues.photo.match(/([a-zA-Z0-9]+.jpg)/)}
                 width={300}
                 height={300}
                 draggable={"false"}
-                src={userInfo.filepreview}
+                src={formValues.photo}
                 alt="UploadImage"
               />
             )}
