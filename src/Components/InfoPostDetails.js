@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Button } from "react-bootstrap";
 import { BsPencilFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ export default function InfoPostDetails({ data }) {
   const redirect = () => {
     navigate("/edit");
   };
+
   return (
     <>
       <Col className="jumbotron">
@@ -17,6 +18,7 @@ export default function InfoPostDetails({ data }) {
             <BsPencilFill className="mx-2 d-inline-block  align-baseline" />
           </Button>
         </h2>
+        <h5> Post creado por: {data.user?.username} </h5>
 
         <h5> {data.type} </h5>
         <h6>
