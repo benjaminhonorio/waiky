@@ -14,7 +14,7 @@ export default function ProfileEdit() {
     name: "",
     number: "",
     bio: "",
-    photos: [],
+    photo: "",
   });
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function ProfileEdit() {
         })
         .then((response) => {
           setFormValues(response.data);
-          if (response.data.photos.length) {
+          if (response.data.photo) {
             setIsUploaded(true);
           }
         });
@@ -48,7 +48,7 @@ export default function ProfileEdit() {
       axios.post(config.CLOUDINARY_UPLOAD_URL, formData).then((response) => {
         setFormValues((previousFormValues) => ({
           ...previousFormValues,
-          photos: previousFormValues.photos.concat(response.data.url),
+          photo: response.data.url,
         }));
         setIsUploaded(true);
       });
@@ -61,8 +61,7 @@ export default function ProfileEdit() {
       name: formValues.name,
       number: formValues.number,
       bio: formValues.bio,
-      mainPhoto: 0,
-      photos: formValues.photos,
+      photo: formValues.photo,
     };
 
     axios
@@ -159,18 +158,14 @@ export default function ProfileEdit() {
                 </Form.Group>
               </>
             ) : (
-              formValues.photos.map((photo) => {
-                return (
-                  <img
-                    key={photo.match(/([a-zA-Z0-9]+.jpg)/)}
-                    width={300}
-                    height={300}
-                    draggable={"false"}
-                    src={photo}
-                    alt="UploadImage"
-                  />
-                );
-              })
+              <img
+                key={formValues.photo.match(/([a-zA-Z0-9]+.jpg)/)}
+                width={300}
+                height={300}
+                draggable={"false"}
+                src={formValues.photo}
+                alt="UploadImage"
+              />
             )}
           </figure>
         </Col>
