@@ -67,7 +67,6 @@ export default function ProfileEdit() {
         }
       )
       .then((response) => {
-        console.log(response.photo);
         alert("se guardó exitosamente");
       });
   };
