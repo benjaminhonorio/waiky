@@ -41,7 +41,13 @@ export default function MapView({ posts }) {
   return (
     <Container className="my-3" fluid>
       <Row>
-        <Col lg={4}>
+        <Col
+          lg={4}
+          style={{
+            maxHeight: "100vh",
+            overflowY: "auto",
+          }}
+        >
           {posts &&
             posts.map((post) => {
               return (
