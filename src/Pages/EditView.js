@@ -112,8 +112,7 @@ export default function EditView({ posts, setDataPost }) {
       .then((response) => {
         if (response.status === 201) {
           setDataPost(posts.concat(response.data.data));
-          // navigate(`/post/${response.data.data.id}`);
-          navigate("/");
+          navigate(`/post/${response.data.data.id}`);
         } else {
           alert("La publicacion no se guardó, intentelo nuevamente");
         }

@@ -108,6 +108,7 @@ export default function ProfileEdit() {
             <Col sm="10">
               <Form.Control
                 value={number}
+                placeholder="Porfavor agregar el indicativo segun el País y el numero todo junto"
                 onChange={(e) => setNumber(e.target.value)}
               />
             </Col>
