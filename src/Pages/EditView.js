@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Button,
@@ -13,18 +13,35 @@ import { BsGeoAltFill } from "react-icons/bs"; // will be used in location input
 import profileIcon from "../pet_placeholder.png";
 import { useNavigate } from "react-router-dom";
 import Map from "../Components/Map";
-import credentials from "../Components/credentials";
+import config from "../config";
 import useAuth from "../auth/useAuth";
 import { getToken } from "../user/session";
+
 export default function EditView({ posts, setDataPost }) {
-  const [location, setLocation] = useState(""); // will be received location from map
+  const [coordinates, setCoordinates] = useState(null);
+  const [center, setCenter] = useState([]);
+  const [userLocation, setUserLocation] = useState([]); //TODO: let the user find their location with a search box and move the location (if geolocation is not possible)
+  const [address, setAddress] = useState(null); // TODO: Use Geolocation to save the address to the post object
+  const [petType, setPetType] = useState("pet");
   const [showMap, setShowMap] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
-  const handleMap = () => setShowMap(!showMap);
   const auth = useAuth();
-
   let navigate = useNavigate();
 
+  // Get user Location with geolocation API
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setCenter([latitude, longitude]);
+      }
+    );
+  }, []);
+
+  const handleMap = () => setShowMap(!showMap);
+  const handleCancel = () => {
+    setCoordinates(null);
+    setShowMap(!showMap);
+  };
   const [formValues, setFormValues] = useState({
     title: "",
     name: "",
@@ -39,10 +56,6 @@ export default function EditView({ posts, setDataPost }) {
     photos: [],
   });
   const token = getToken();
-  // TODO: move to configs
-  const uploadURL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL;
-  const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
-  const mapURL = credentials.mapsKey;
 
   const handleInputChange = ({ target }) => {
     setFormValues((state) => ({ ...state, [target.name]: target.value }));
@@ -55,8 +68,8 @@ export default function EditView({ posts, setDataPost }) {
     for (let i = 0; i < files.length; i++) {
       let file = files[i];
       formData.append("file", file);
-      formData.append("upload_preset", uploadPreset);
-      axios.post(uploadURL, formData).then((response) => {
+      formData.append("upload_preset", config.CLOUDINARY_UPLOAD_PRESET);
+      axios.post(config.CLOUDINARY_UPLOAD_URL, formData).then((response) => {
         console.log(response);
         setFormValues((previousFormValues) => ({
           ...previousFormValues,
@@ -67,10 +80,8 @@ export default function EditView({ posts, setDataPost }) {
     }
   };
 
-  // TODO: Submit to backend
   const onSubmitForm = (e) => {
     e.preventDefault();
-    // TODO: Build object
     const newPost = {
       characteristics: {
         name: formValues.name,
@@ -81,9 +92,9 @@ export default function EditView({ posts, setDataPost }) {
       },
       location: {
         type: "Point",
-        address: "Geolocated",
-        reference: "Plaza Mayor de Nuevo Chimbote",
-        coordinates: [-78.52001851957706, -9.127000168554577],
+        address,
+        reference: formValues.reference,
+        coordinates,
       },
       title: formValues.title,
       type: formValues.type,
@@ -93,7 +104,7 @@ export default function EditView({ posts, setDataPost }) {
       photos: formValues.photos,
     };
     axios
-      .post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`, newPost, {
+      .post(`${config.BASE_API_URL}/api/v1/posts`, newPost, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -107,6 +118,14 @@ export default function EditView({ posts, setDataPost }) {
         }
       });
   };
+
+  // TODO: refactor styles
+  const iconStyle = {
+    height: "35px",
+    cursor: "pointer",
+    margin: "0 5px",
+  };
+
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
@@ -262,16 +281,15 @@ export default function EditView({ posts, setDataPost }) {
                   onChange={handleInputChange}
                   value={formValues.reference}
                 />
-                {/* TODO: Change libraries and allow the user to pin a location on map show */}
-                {/* <Form.Text id="opcion" muted>
+                <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
                   (o{" "}
                   {
-                    <Button variant="link" onClick={handleShowMap}>
+                    <Button variant="link" onClick={handleMap}>
                       ubicar en el mapa)
                     </Button>
                   }
-                </Form.Text> */}
+                </Form.Text>
               </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
@@ -339,27 +357,40 @@ export default function EditView({ posts, setDataPost }) {
           </figure>
         </Col>
       </Row>
-      <Modal show={showMap} onHide={handleMap}>
+      <Modal fullscreen={true} show={showMap} onHide={handleMap}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Ubica un punto referencial donde se extravió tu mascota
-          </Modal.Title>
+          <Modal.Title>Ubica la mascota</Modal.Title>
+          <div style={{ marginLeft: "auto" }}>
+            <strong>Elige un icono: </strong>
+            {config.PET_TYPES.map((pet) => {
+              return (
+                <img
+                  key={pet}
+                  style={iconStyle}
+                  onClick={() => setPetType(pet)}
+                  src={`/assets/${pet}.svg`}
+                  alt={pet}
+                />
+              );
+            })}
+          </div>
         </Modal.Header>
         <Modal.Body>
-          {/* TODO: Replace map from another library */}
           <Map
-            googleMapURL={mapURL}
-            containerElement={<div style={{ height: "350px" }} />}
-            mapElement={<div style={{ height: "100%" }} />}
-            loadingElement={<div style={{ height: `100%` }} />}
+            coordinates={coordinates}
+            setCoordinates={setCoordinates}
+            setPetType={setPetType}
+            petType={petType}
+            center={center}
+            setCenter={setCenter}
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleMap}>
-            Close
-          </Button>
           <Button variant="primary" onClick={handleMap}>
-            Save Changes
+            Save and Close
+          </Button>
+          <Button variant="danger" onClick={handleCancel}>
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>
