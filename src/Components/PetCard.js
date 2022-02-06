@@ -36,7 +36,7 @@ export default function PetCard({ id, photos, title, date }) {
               : ""}
           </Card.Text>
           <Button as={Link} to={`/post/${id}`} variant="primary">
-            Contactarse
+            Ver Más
           </Button>
         </Card.Body>
       </div>
