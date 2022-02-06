@@ -15,12 +15,18 @@ import useAuth from "../auth/useAuth";
 import { setSession, setToken } from "../user/session";
 
 export default function Login() {
+  const usernameLocal = JSON.parse(localStorage.getItem("remember"));
   const navigate = useNavigate();
   const auth = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(() => usernameLocal || "");
+  const [password, setPassword] = useState();
   const [data, setData] = useState({});
   const [alert, setAlert] = useState();
+  const [check, setCheck] = useState();
+
+  const handleCheckbox = (e) => {
+    setCheck(e.target.value);
+  };
 
   const handleForm = (e) => {
     e.preventDefault();
@@ -28,6 +34,9 @@ export default function Login() {
       username: username,
       pwd: password,
     };
+
+    check === "on" &&
+      localStorage.setItem("remember", JSON.stringify(username));
 
     axios
       .post(
@@ -50,14 +59,6 @@ export default function Login() {
           navigate("/");
         }
       });
-  };
-
-  const handleUsername = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
   };
 
   return (
@@ -87,20 +88,23 @@ export default function Login() {
                 <Form.Control
                   type="name"
                   placeholder="Username"
-                  onChange={handleUsername}
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
                 />
               </FloatingLabel>
             </Form.Group>
-            <FloatingLabel
-              controlId="floatingPassword"
-              label="Escribe tu contraseña"
-            >
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                onChange={handlePassword}
-              />
-            </FloatingLabel>
+            <Form.Group>
+              <FloatingLabel
+                controlId="floatingPassword"
+                label="Escribe tu contraseña"
+              >
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </FloatingLabel>
+            </Form.Group>
             <div className="my-3">
               <Col
                 className="text-decoration-none text-primary"
@@ -128,7 +132,12 @@ export default function Login() {
         className="mb-3 d-flex justify-content-center"
         id="formGridCheckbox"
       >
-        <Form.Check type="checkbox" label="Recuerdame" />
+        <Form.Check
+          type="checkbox"
+          label="Recuerdame"
+          onChange={handleCheckbox}
+          check={check}
+        />
       </Form.Group>
     </Container>
   );

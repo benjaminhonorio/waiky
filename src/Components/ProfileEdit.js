@@ -116,6 +116,7 @@ export default function ProfileEdit() {
                 onChange={handleInputChange}
                 type="text"
                 name="number"
+                placeholder="Porfavor agregar el indicativo segun el País y el numero todo junto"
               />
             </Col>
           </Form.Group>

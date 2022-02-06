@@ -2,21 +2,30 @@ import React from "react";
 import { Col, Button } from "react-bootstrap";
 import { BsPencilFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../auth/useAuth";
 
 export default function InfoPostDetails({ data }) {
   const navigate = useNavigate();
-  const redirect = () => {
+  const auth = useAuth();
+  const url = `https://api.whatsapp.com/send?phone=${data.user?.number}&text=Hola,%20quisiera%20conocer%20m%C3%A1s%20detalles%20acerca%20del%20post%20que%20publicaste%20en%20Wayki%20App.`;
+
+  const handleRedirect = () => {
     navigate("/edit");
   };
+
   return (
     <>
       <Col className="jumbotron">
         <h2>
           {data.title}
-          <Button variant="light" onSubmit={redirect}>
-            <BsPencilFill className="mx-2 d-inline-block  align-baseline" />
-          </Button>
+          {auth.userLogin?.id === data.user?.id && (
+            <Button variant="light" onClick={handleRedirect}>
+              <BsPencilFill className="mx-2 d-inline-block align-baseline" />
+            </Button>
+          )}
         </h2>
+        <h5> Post creado por: {data.user?.username} </h5>
+        <h5> {data.type} </h5>
         <h6>
           {data.tags &&
             data.tags.map((d) => (
@@ -60,9 +69,19 @@ export default function InfoPostDetails({ data }) {
         <p className="text-secondary">{data.description}</p>
         <hr className="my-4" />
         <p>
-          <Button variant="primary" size="lg">
-            Contactarse ahora
-          </Button>
+          {data.user?.number ? (
+            <Button variant="primary" size="lg" href={url}>
+              Contactarse ahora Via Whatsapp
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              size="lg"
+              href={`mailto:${data.user?.email}`}
+            >
+              Contactarse ahora Via Email
+            </Button>
+          )}
         </p>
       </Col>
     </>
