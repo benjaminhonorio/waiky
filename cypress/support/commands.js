@@ -113,3 +113,22 @@ Cypress.Commands.add("login", ({ username, pwd }) => {
   cy.get('[type="checkbox"]').check();
   cy.get('[id="button-login-form"]').click();
 });
+
+Cypress.Commands.add("emailrecovery", ({ email }) => {
+  cy.get('[data-test-id="email-recovery-input"]')
+    .type(email)
+    .should("have.value", email);
+  cy.get('[id="email-recovery-button"]').click();
+});
+
+Cypress.Commands.add("changepassword", ({ pwd1, pwd2 }) => {
+  cy.get('[data-test-id="passwordreset1-form"]')
+    .type(pwd1)
+    .should("have.value", pwd1);
+
+  cy.get('[data-test-id="passwordreset2-form"]')
+    .type(pwd2)
+    .should("have.value", pwd2);
+
+  cy.get('[id="button-newpwd-form"]').click();
+});

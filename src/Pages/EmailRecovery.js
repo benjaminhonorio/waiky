@@ -53,7 +53,12 @@ export default function PasswordRecovery() {
       )}
       <h1 className="text-center">Recuperación de contraseña</h1>
       <Col className="text-center">
-        <Form className="col-md-4 mx-auto" onSubmit={handleForm}>
+        <Form
+          className="col-md-4 mx-auto"
+          onSubmit={handleForm}
+          noValidate
+          autoComplete="off"
+        >
           <Form.Group>
             <FloatingLabel
               controlId="floatingInput"
@@ -64,9 +69,10 @@ export default function PasswordRecovery() {
                 type="email"
                 placeholder="name@example.com"
                 onChange={handleEmail}
+                data-test-id="email-recovery-input"
               />
             </FloatingLabel>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" id="email-recovery-button">
               Enviar email de recuperación
             </Button>
           </Form.Group>

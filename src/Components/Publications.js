@@ -52,7 +52,7 @@ export default function Publications({ id, title, date, photos }) {
                 })
               : ""}
           </Card.Text>
-          <Button as={Link} to={`/post/${id}`} variant="primary">
+          <Button as={Link} to={`/post/${id}`} variant="primary" id="see-post">
             Ver
           </Button>
         </Card.Body>

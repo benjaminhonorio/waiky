@@ -121,6 +121,7 @@ export default function Login() {
                 className="text-decoration-none text-primary"
                 as={Link}
                 to="/email_recovery"
+                id="forget-password-button"
               >
                 ¿Olvidaste tu contraseña?
               </Col>

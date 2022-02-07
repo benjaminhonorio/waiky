@@ -42,11 +42,11 @@ describe("Test Sign Up", () => {
     });
   });
 
-  it("Successful signup", () => {
+  it.only("Successful signup", () => {
     cy.request("DELETE", "http://localhost:3003/api/v1/cleanusers");
     cy.signup({
       username: "waykiprueba",
-      email: "prueba@wayki.com",
+      email: "maicolsana12@gmail.com",
       pwd: "wayki123",
       validpwd: "wayki123",
     });

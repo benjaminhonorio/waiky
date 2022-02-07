@@ -10,6 +10,7 @@ describe("Test Create Post", () => {
   });
 
   it("profile edit", () => {
+    cy.request("DELETE", "http://localhost:3003/api/v1/cleanposts");
     cy.contains("Publicar").click();
 
     cy.create_post({
@@ -28,6 +29,6 @@ describe("Test Create Post", () => {
     cy.visit("http://localhost:3000/");
     cy.url().should("include", "/");
     cy.get('[id="dropdown-basic"]').click();
-    cy.get('[id="my-posts-button"]').click();
+    cy.get('[id="see-post"]').click();
   });
 });

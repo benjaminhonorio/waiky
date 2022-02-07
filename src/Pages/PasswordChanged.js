@@ -16,6 +16,7 @@ export default function PasswordChanged() {
           className="mx-3"
           variant="primary"
           onClick={() => navigate("/")}
+          id="home-button"
         >
           Ir al home
         </Button>
@@ -24,6 +25,7 @@ export default function PasswordChanged() {
           className="mx-3"
           variant="primary"
           onClick={() => navigate("/login")}
+          id="login-button"
         >
           Ir al Login
         </Button>
