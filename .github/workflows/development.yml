@@ -1,9 +1,11 @@
 name: Development workflow
 
 on:
-  pull_request:
+  pull_request_target:
+    types:
+      - opened
     branches:
-      - dev
+      - "dev"
 
 jobs:
   deploy:
