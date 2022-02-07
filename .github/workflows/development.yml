@@ -36,9 +36,5 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}
-          REACT_APP_CLOUDINARY_UPLOAD_URL: ${{ secrets.REACT_APP_CLOUDINARY_UPLOAD_URL }}
-          REACT_APP_CLOUDINARY_UPLOAD_PRESET: ${{ secrets.REACT_APP_CLOUDINARY_UPLOAD_PRESET }}
-          REACT_APP_BASE_API_URL: ${{ secrets.REACT_APP_BASE_API_URL }}
         with:
           args: deploy --dir=build --prod
