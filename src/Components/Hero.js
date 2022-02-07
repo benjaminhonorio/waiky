@@ -4,15 +4,18 @@ import { Link } from "react-router-dom";
 import WaykiLogo from "../logoH.png";
 import BackgroundImage from "../pets.jpg";
 
+const backgroundStyle = {
+  marginTop: "-56px",
+  backgroundImage: `url(${BackgroundImage})`,
+  backgroundSize: "cover",
+};
+
 export default function Hero() {
   return (
     <Col
-      style={{
-        marginTop: "-56px",
-        backgroundImage: `url(${BackgroundImage})`,
-        backgroundSize: "cover",
-      }}
+      style={{ backgroundStyle }}
       className="d-flex flex-column justify-content-center align-items-center vh-100"
+      id="background"
     >
       <Col xs={10} sm={8}>
         <Image src={WaykiLogo} alt="logo" fluid />

@@ -90,6 +90,7 @@ export default function Login() {
                   placeholder="Username"
                   onChange={(e) => setUsername(e.target.value)}
                   value={username}
+                  data-test-id="username-login-form"
                 />
               </FloatingLabel>
             </Form.Group>
@@ -102,6 +103,7 @@ export default function Login() {
                   type="password"
                   placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)}
+                  data-test-id="password-login-form"
                 />
               </FloatingLabel>
             </Form.Group>
@@ -122,7 +124,13 @@ export default function Login() {
                 ¿Olvidaste tu contraseña?
               </Col>
             </div>
-            <Button variant="primary" type="submit" className="my-4" size="lg">
+            <Button
+              variant="primary"
+              type="submit"
+              className="my-4"
+              size="lg"
+              id="button-login-form"
+            >
               Iniciar sesión
             </Button>
           </Form>

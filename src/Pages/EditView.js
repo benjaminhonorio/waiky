@@ -144,6 +144,7 @@ export default function EditView({ posts, setDataPost }) {
                   name="title"
                   onChange={handleInputChange}
                   value={formValues.title}
+                  data-test-id="title-post-form"
                 />
               </Col>
             </Form.Group>
@@ -158,6 +159,7 @@ export default function EditView({ posts, setDataPost }) {
                   name="name"
                   onChange={handleInputChange}
                   value={formValues.name}
+                  data-test-id="name-post-form"
                 />
               </Col>
             </Form.Group>
@@ -173,6 +175,7 @@ export default function EditView({ posts, setDataPost }) {
                   name="type"
                   onChange={handleInputChange}
                   value={formValues.type}
+                  data-test-id="specie-post-form"
                 />
               </Col>
             </Form.Group>
@@ -188,6 +191,7 @@ export default function EditView({ posts, setDataPost }) {
                   name="tags"
                   onChange={handleInputChange}
                   value={formValues.tags}
+                  data-test-id="tags-post-form"
                 />
               </Col>
             </Form.Group>
@@ -203,6 +207,7 @@ export default function EditView({ posts, setDataPost }) {
                       name="sex"
                       onChange={handleInputChange}
                       value={formValues.sex}
+                      data-test-id="sex-select-form"
                     >
                       <option value="">Selecciona una opción</option>
                       <option value="H">Hembra</option>
@@ -223,6 +228,7 @@ export default function EditView({ posts, setDataPost }) {
                       name="color"
                       onChange={handleInputChange}
                       value={formValues.color}
+                      data-test-id="color-post-form"
                     />
                   </Col>
                 </Form.Group>
@@ -240,6 +246,7 @@ export default function EditView({ posts, setDataPost }) {
                       name="size"
                       onChange={handleInputChange}
                       value={formValues.size}
+                      data-test-id="size-select-form"
                     >
                       <option value="">Selecciona una opción</option>
                       <option value="XS">petite</option>
@@ -263,6 +270,7 @@ export default function EditView({ posts, setDataPost }) {
                       name="age"
                       onChange={handleInputChange}
                       value={formValues.age}
+                      data-test-id="age-post-form"
                     />
                   </Col>
                 </Form.Group>
@@ -279,12 +287,13 @@ export default function EditView({ posts, setDataPost }) {
                   name="reference"
                   onChange={handleInputChange}
                   value={formValues.reference}
+                  data-test-id="location-post-form"
                 />
                 <Form.Text id="opcion" muted>
                   <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
                   (o{" "}
                   {
-                    <Button variant="link" onClick={handleMap}>
+                    <Button variant="link" onClick={handleMap} id="map-button">
                       ubicar en el mapa)
                     </Button>
                   }
@@ -303,6 +312,7 @@ export default function EditView({ posts, setDataPost }) {
                   name="description"
                   onChange={handleInputChange}
                   value={formValues.description}
+                  data-test-id="description-post-form"
                 />
               </Col>
             </Form.Group>
@@ -319,12 +329,13 @@ export default function EditView({ posts, setDataPost }) {
                     accept=".jpg,.jpeg,.gif,.png"
                     onChange={handlePhotoChange}
                     multiple
+                    data-test-id="photos-post-form"
                   />
                 </Form.Group>
               </Col>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" id="button-login-form">
               Guardar
             </Button>
           </Form>
@@ -374,7 +385,7 @@ export default function EditView({ posts, setDataPost }) {
             })}
           </div>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body data-test-id="modal-body">
           <Map
             coordinates={coordinates}
             setCoordinates={setCoordinates}
@@ -385,7 +396,7 @@ export default function EditView({ posts, setDataPost }) {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleMap}>
+          <Button variant="primary" onClick={handleMap} id="save-modal-button">
             Save and Close
           </Button>
           <Button variant="danger" onClick={handleCancel}>
