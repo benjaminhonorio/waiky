@@ -1,11 +1,8 @@
-describe("Test Login", () => {
-  beforeEach(() => {
-    cy.visit("http://localhost:3000/login");
-  });
-
+describe("Test Create Post", () => {
   afterEach(() => cy.pause());
 
-  it("Successful login", () => {
+  it.only("Successful login", () => {
+    cy.visit("http://localhost:3000/login");
     cy.login({
       username: "waykiprueba",
       pwd: "wayki123",
@@ -25,5 +22,12 @@ describe("Test Login", () => {
       location: "Lima",
       description: "Es tierna, se deja acariciar. Porfavor ayuda !",
     });
+  });
+
+  it.only("view my posts", () => {
+    cy.visit("http://localhost:3000/");
+    cy.url().should("include", "/");
+    cy.get('[id="dropdown-basic"]').click();
+    cy.get('[id="my-posts-button"]').click();
   });
 });

@@ -69,15 +69,17 @@ Cypress.Commands.add(
       .should("have.value", description);
 
     cy.get('[id="map-button"]').click();
-    // Este cy.pause se debe a que cuando abro el mapa me sale un alert.
+    // Este boton de Aceptar en caso de que salga un alert al abrir el modal de google maps. Cerciorarse de que esto no salga.
+    cy.contains("Aceptar").click();
     cy.pause();
-    cy.get('[data-test-id="modal-body"]').click();
+    // ------------------
+    cy.get('[data-test-id="map-body"]').click();
     cy.get('[id="save-modal-button"]').click();
 
     cy.get('[data-test-id="photos-post-form"]').attachFile(fixtureFile);
-    cy.pause();
 
     cy.get('[id="button-login-form"]').click();
+    cy.pause();
   }
 );
 

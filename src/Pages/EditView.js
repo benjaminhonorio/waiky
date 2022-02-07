@@ -385,7 +385,7 @@ export default function EditView({ posts, setDataPost }) {
             })}
           </div>
         </Modal.Header>
-        <Modal.Body data-test-id="modal-body">
+        <Modal.Body data-test-id="map-body">
           <Map
             coordinates={coordinates}
             setCoordinates={setCoordinates}

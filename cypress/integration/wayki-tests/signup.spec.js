@@ -43,7 +43,7 @@ describe("Test Sign Up", () => {
   });
 
   it("Successful signup", () => {
-    cy.request("POST", "http://localhost:3003/cleandb");
+    cy.request("DELETE", "http://localhost:3003/api/v1/cleanusers");
     cy.signup({
       username: "waykiprueba",
       email: "prueba@wayki.com",

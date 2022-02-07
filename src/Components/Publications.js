@@ -1,10 +1,17 @@
 import React from "react";
-import { Card, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Row, Card, Col, Button } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDistance } from "date-fns";
 import { es } from "date-fns/locale";
+import { BsPencilFill } from "react-icons/bs";
 
 export default function Publications({ id, title, date, photos }) {
+  // const navigate = useNavigate();
+
+  // const handleRedirect = () => {
+  //   navigate("/edit");
+  // };
+
   return (
     <Col key={id} className="py-2">
       <div
@@ -27,7 +34,16 @@ export default function Publications({ id, title, date, photos }) {
           src={photos[0]}
         />
         <Card.Body className="d-flex flex-column justify-content-center">
-          <Card.Title>{title}</Card.Title>
+          <Row>
+            <Col>
+              <Card.Title>{title}</Card.Title>{" "}
+            </Col>
+            {/* <Col>
+              <Button variant="light" onClick={handleRedirect}>
+                <BsPencilFill className="mx-2 d-inline-block align-baseline" />
+              </Button>
+            </Col> */}
+          </Row>
           <Card.Text>
             Hace{" "}
             {date
