@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Container, Col, Row } from "react-bootstrap";
-
+import { Container, Col, Row, Spinner } from "react-bootstrap";
+import axios from "axios";
 import config from "../config";
 import GoogleMapReact from "google-map-react";
 import useSupercluster from "use-supercluster";
@@ -32,11 +32,14 @@ const mapOptions = {
 
 const Marker = ({ children }) => children;
 
-export default function MapView({ bounds, setBounds, dataPoints }) {
+export default function MapView() {
   const [permissionAllowed, setPermissionAllowed] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [center, setCenter] = useState([]);
   const [zoom, setZoom] = useState(12);
+  const [dataPoints, setDataPoints] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [bounds, setBounds] = useState([]);
   const mapRef = useRef();
 
   const defaults = {
@@ -46,6 +49,22 @@ export default function MapView({ bounds, setBounds, dataPoints }) {
     },
     zoom: 12,
   };
+
+  useEffect(() => {
+    if (bounds.length) {
+      axios
+        .get(
+          `${
+            process.env.REACT_APP_BASE_API_URL
+          }/api/v1/posts${`?limit=100&neLat=${bounds[3]}&neLng=${bounds[0]}&swLat=${bounds[1]}&swLng=${bounds[2]}`}`
+        )
+        .then((response) => {
+          setDataPoints(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [bounds]);
 
   useEffect(() => {
     const positionDenied = function () {
@@ -163,10 +182,10 @@ export default function MapView({ bounds, setBounds, dataPoints }) {
                         style={{
                           ...clusterMakerStyle,
                           width: `${
-                            10 + cluster.properties.point_count / points.length
+                            35 + cluster.properties.point_count / points.length
                           }px`,
                           height: `${
-                            10 + cluster.properties.point_count / points.length
+                            35 + cluster.properties.point_count / points.length
                           }px`,
                           zIndex: 10,
                         }}
@@ -205,7 +224,13 @@ export default function MapView({ bounds, setBounds, dataPoints }) {
           </div>
         </Col>
         <Col lg={4} style={{ maxHeight: "90vh", overflowY: "auto" }}>
-          <PostList posts={dataPoints} />
+          {!loading ? (
+            <PostList posts={dataPoints} />
+          ) : (
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          )}
         </Col>
       </Row>
     </Container>
