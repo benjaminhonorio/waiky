@@ -1,0 +1,44 @@
+name: Development workflow
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      # Get code from repo
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Install NodeJS
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
+      # Run yarn install and build on our code
+      - run: yarn install --immutable --immutable-cache --check-cache
+
+      - run: yarn build
+
+      # Deploy to Netlify using our dev secrets
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}
+          REACT_APP_CLOUDINARY_UPLOAD_URL: ${{ secrets.REACT_APP_CLOUDINARY_UPLOAD_URL }}
+          REACT_APP_CLOUDINARY_UPLOAD_PRESET: ${{ secrets.REACT_APP_CLOUDINARY_UPLOAD_PRESET }}
+          REACT_APP_BASE_API_URL: ${{ secrets.REACT_APP_BASE_API_URL }}
+        with:
+          args: deploy --dir=build --prod
