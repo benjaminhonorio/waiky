@@ -23,7 +23,7 @@ describe("Test Sign Up", () => {
   it("Email exist", () => {
     cy.signup({
       username: "wayki-prueba",
-      email: "prueba@wayki.com",
+      email: "maicolsana12@gmail.com",
       pwd: "prueba123",
       validpwd: "prueba123",
     });

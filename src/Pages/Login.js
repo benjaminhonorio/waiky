@@ -48,12 +48,11 @@ export default function Login() {
           setData(data);
           setAlert(data.error);
         } else {
-          auth.login(data.id, data.username, data.email, data.posts);
+          auth.login(data.id, data.username, data.email);
           const user = {
             id: data.id,
             username: data.username,
             email: data.email,
-            posts: data.posts,
           };
           setToken(data.token);
           setSession(JSON.stringify(user));

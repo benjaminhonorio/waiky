@@ -1,12 +1,9 @@
 describe("Test Sign Up", () => {
-  beforeEach(() => {
-    cy.visit("http://localhost:3000/signup");
-    cy.url().should("include", "/signup");
-  });
-
   afterEach(() => cy.pause());
 
   it("Username not valid", () => {
+    cy.visit("http://localhost:3000/signup");
+    cy.url().should("include", "/signup");
     cy.signup({
       username: "xxx",
       email: "prueba@hotmail.com",
@@ -16,6 +13,8 @@ describe("Test Sign Up", () => {
   });
 
   it("Email not valid", () => {
+    cy.visit("http://localhost:3000/signup");
+    cy.url().should("include", "/signup");
     cy.signup({
       username: "waykiprueba",
       email: "prueba",
@@ -25,6 +24,8 @@ describe("Test Sign Up", () => {
   });
 
   it("Password doesnt match", () => {
+    cy.visit("http://localhost:3000/signup");
+    cy.url().should("include", "/signup");
     cy.signup({
       username: "waykiprueba",
       email: "prueba@wayki.com",
@@ -34,6 +35,8 @@ describe("Test Sign Up", () => {
   });
 
   it("Password doesnt match 2", () => {
+    cy.visit("http://localhost:3000/signup");
+    cy.url().should("include", "/signup");
     cy.signup({
       username: "waykiprueba",
       email: "prueba@wayki.com",
@@ -42,7 +45,9 @@ describe("Test Sign Up", () => {
     });
   });
 
-  it.only("Successful signup", () => {
+  it("Successful signup", () => {
+    cy.visit("http://localhost:3000/signup");
+    cy.url().should("include", "/signup");
     cy.request("DELETE", "http://localhost:3003/api/v1/cleanusers");
     cy.signup({
       username: "waykiprueba",
@@ -55,6 +60,6 @@ describe("Test Sign Up", () => {
   it("log out", () => {
     cy.get('[id="username-menu"]').click();
     // my profile and my posts - button
-    cy.get('[id="log-out-button"]').click();
+    cy.get('[id="logout-button"]').click();
   });
 });

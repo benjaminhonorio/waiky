@@ -29,7 +29,7 @@ describe("Test Change Password", () => {
   });
 
   it("Password not match", () => {
-    cy.visit("http://localhost:3000/password_reset/620157bfd09e0ca6a9cbb733");
+    cy.visit("http://localhost:3000/password_reset/6201948e1e5a9185ba4cf266");
     cy.changepassword({
       pwd1: "prueba123",
       pwd2: "prueb",
@@ -37,7 +37,7 @@ describe("Test Change Password", () => {
   });
 
   it("Password not match 2", () => {
-    cy.visit("http://localhost:3000/password_reset/620157bfd09e0ca6a9cbb733");
+    cy.visit("http://localhost:3000/password_reset/6201948e1e5a9185ba4cf266");
     cy.changepassword({
       pwd1: "prueba",
       pwd2: "prueba123",
@@ -45,17 +45,18 @@ describe("Test Change Password", () => {
   });
 
   it("Password match", () => {
-    cy.visit("http://localhost:3000/password_reset/620157bfd09e0ca6a9cbb733");
+    cy.visit("http://localhost:3000/password_reset/6201948e1e5a9185ba4cf266");
     cy.changepassword({
       pwd1: "prueba123",
       pwd2: "prueba123",
     });
+
     cy.url().should("include", "/password_changed");
     cy.get('[id="login-button"]').click();
     cy.url().should("include", "/login");
     cy.login({
       username: "waykiprueba",
-      pwd: "prueba123",
+      pwd: "prueba1234",
     });
   });
 });
