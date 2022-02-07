@@ -1,7 +1,7 @@
 import { Row } from "react-bootstrap";
 import PetCard from "./PetCard";
 
-export default function Publicaciones({ posts }) {
+export default function Posts({ posts }) {
   return (
     <Row className="row d-flex justify-content-center py-3">
       <h2 className="p-4">Publicaciones</h2>
