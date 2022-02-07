@@ -5,11 +5,19 @@ const PostList = ({ posts }) => {
   return posts.length ? (
     <>
       <h5>
-        Se encontraron {posts.length && `${posts.length} mascotas`} en esta zona
+        Se encontró{" "}
+        {posts.length &&
+          `${posts.length} mascota${
+            posts.length === 1 ? "" : "s"
+          } en esta zona`}
       </h5>
       {posts.map((post) => (
-        <Card key={post.id} style={{ flexDirection: "row" }}>
-          <Col lg={6}>
+        <Card
+          md={6}
+          key={post.id}
+          className="d-flex flex-row justify-content-center"
+        >
+          <Col md={4} lg={6}>
             <Card.Body>
               <Card.Title>{post.title}</Card.Title>
               <Card.Text>
@@ -24,7 +32,7 @@ const PostList = ({ posts }) => {
               </Button>
             </Card.Body>
           </Col>
-          <Col lg={6}>
+          <Col md={4} lg={6}>
             <Card.Img variant="top" src={post.photos[post.mainPhoto]} />
           </Col>
         </Card>
