@@ -30,7 +30,7 @@ jobs:
       # Run yarn install and build on our code
       - run: yarn install --immutable --immutable-cache --check-cache
 
-      - run: yarn build
+      - run: CI="" yarn build
 
       # Deploy to Netlify using our dev secrets
       - name: Deploy to Netlify
