@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import config from "../config";
 import { Col, Button, Alert } from "react-bootstrap";
-import { BsPencilFill } from "react-icons/bs";
+import { AiFillDelete } from "react-icons/ai";
 import useAuth from "../auth/useAuth";
 import { useParams, useNavigate } from "react-router-dom";
 import { getToken } from "../user/session";
@@ -77,7 +77,7 @@ export default function InfoPostDetails({ data }) {
           {data.title}
           {auth.userLogin?.id === data.user?.id && (
             <Button variant="light" onClick={() => setAlert(true)}>
-              <BsPencilFill className="mx-2 d-inline-block align-baseline" />
+              <AiFillDelete className="mx-2 d-inline-block align-baseline" />
             </Button>
           )}
         </h2>
