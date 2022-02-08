@@ -1,14 +1,21 @@
 import React from "react";
-import { Card, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Row, Card, Col, Button } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDistance } from "date-fns";
 import { es } from "date-fns/locale";
+import { BsPencilFill } from "react-icons/bs";
 
 export default function Publications({ id, title, date, photos }) {
+  // const navigate = useNavigate();
+
+  // const handleRedirect = () => {
+  //   navigate("/edit");
+  // };
+
   return (
-    <Col key={id} className="py-2">
+    <Col key={id} className="py-2 text-center" lg={3} md={6} xs={12}>
       <div
-        className="d-flex flex-row flex-md-column"
+        className="d-flex flex-column"
         style={{
           wordWrap: "break-word",
           backgroundColor: "#fff",
@@ -26,8 +33,14 @@ export default function Publications({ id, title, date, photos }) {
           variant="top"
           src={photos[0]}
         />
+
         <Card.Body className="d-flex flex-column justify-content-center">
-          <Card.Title>{title}</Card.Title>
+          <Card.Title>{title}</Card.Title>{" "}
+          {/* 
+              <Button variant="light" onClick={handleRedirect}>
+                <BsPencilFill className="mx-2 d-inline-block align-baseline" />
+              </Button>
+             */}
           <Card.Text>
             Hace{" "}
             {date
@@ -36,7 +49,7 @@ export default function Publications({ id, title, date, photos }) {
                 })
               : ""}
           </Card.Text>
-          <Button as={Link} to={`/post/${id}`} variant="primary">
+          <Button as={Link} to={`/post/${id}`} variant="primary" id="see-post">
             Ver
           </Button>
         </Card.Body>

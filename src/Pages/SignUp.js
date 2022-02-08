@@ -106,6 +106,7 @@ export default function SignUp() {
                   type="name"
                   placeholder="name@example.com"
                   onChange={handleNewUsername}
+                  data-test-id="newusername-login-form"
                 />
               </FloatingLabel>
               <FloatingLabel
@@ -117,6 +118,7 @@ export default function SignUp() {
                   type="email"
                   placeholder="name@example.com"
                   onChange={handleEmail}
+                  data-test-id="email-login-form"
                 />
               </FloatingLabel>
               <FloatingLabel
@@ -128,6 +130,7 @@ export default function SignUp() {
                   type="password"
                   placeholder="Password"
                   onChange={handleNewPassword}
+                  data-test-id="password-login-form"
                 />
               </FloatingLabel>
               <FloatingLabel
@@ -138,6 +141,7 @@ export default function SignUp() {
                   type="password"
                   placeholder="Password"
                   onChange={handleValidPassword}
+                  data-test-id="validpassword-login-form"
                 />
               </FloatingLabel>
               <Button
@@ -145,6 +149,7 @@ export default function SignUp() {
                 type="submit"
                 className="my-4"
                 size="lg"
+                id="button-login-form"
               >
                 Regístrate
               </Button>

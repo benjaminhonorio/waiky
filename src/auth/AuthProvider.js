@@ -9,11 +9,12 @@ const AuthProvider = ({ children }) => {
   );
   const contextValue = {
     userLogin,
-    login(id, username, email) {
+    login(id, username, email, posts) {
       setUserLogin({
         id: id,
         username: username,
         email: email,
+        posts: posts,
       });
     },
     logout() {

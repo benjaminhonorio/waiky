@@ -67,6 +67,7 @@ export default function PasswordReset() {
             type="password"
             placeholder=""
             onChange={handleNewPassword}
+            data-test-id="passwordreset1-form"
           />
         </Form.Group>
 
@@ -76,9 +77,10 @@ export default function PasswordReset() {
             type="password"
             placeholder=""
             onChange={handleValidNewPassword}
+            data-test-id="passwordreset2-form"
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" id="button-newpwd-form">
           Guardar
         </Button>
       </Form>

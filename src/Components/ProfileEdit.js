@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Col, Form, Button, Image } from "react-bootstrap";
+import { Row, Col, Form, Button, Image, Alert } from "react-bootstrap";
 import profileIcon from "../blank-profile.png";
 import useAuth from "../auth/useAuth";
 import { getToken } from "../user/session";
@@ -15,6 +15,7 @@ export default function ProfileEdit() {
     bio: "",
     photo: "",
   });
+  const [alert, setAlert] = useState();
 
   useEffect(() => {
     if (token) {
@@ -67,12 +68,23 @@ export default function ProfileEdit() {
         }
       )
       .then((response) => {
-        alert("se guardó exitosamente");
+        setAlert(true);
       });
   };
 
   return (
     <Form onSubmit={handleSubmitForm}>
+      {alert && (
+        <Alert
+          variant="success"
+          onClose={() => {
+            setAlert(false);
+          }}
+          dismissible
+        >
+          <p>El usuario se ha guardado exitosamente</p>
+        </Alert>
+      )}
       <h2>Hello {auth.userLogin.username}</h2>
       <br />
       <Row className="align-items-center my-4 sm-8 ">
@@ -87,6 +99,7 @@ export default function ProfileEdit() {
                 onChange={handleInputChange}
                 type="text"
                 name="name"
+                data-test-id="name-profile-form"
               />
             </Col>
           </Form.Group>
@@ -109,6 +122,7 @@ export default function ProfileEdit() {
                 type="text"
                 name="number"
                 placeholder="Porfavor agregar el indicativo segun el País y el numero todo junto"
+                data-test-id="telephone-profile-form"
               />
             </Col>
           </Form.Group>
@@ -124,6 +138,7 @@ export default function ProfileEdit() {
                 onChange={handleInputChange}
                 type="text"
                 name="bio"
+                data-test-id="bio-profile-form"
               />
             </Col>
           </Form.Group>
@@ -160,7 +175,12 @@ export default function ProfileEdit() {
           </figure>
         </Col>
       </Row>
-      <Button className="btn btn-dark mb-6" variant="primary" type="submit">
+      <Button
+        className="btn btn-dark mb-6"
+        variant="primary"
+        type="submit"
+        id="profileupdate-button"
+      >
         Guardar
       </Button>
       <br />

@@ -46,19 +46,30 @@ export default function AppNavBar() {
                       id="dropdown-basic"
                       className="nav-link border-0"
                     >
-                      <BsPersonCircle className="mx-2 d-inline-block  align-baseline" />
+                      <BsPersonCircle
+                        className="mx-2 d-inline-block  align-baseline"
+                        id="username-menu"
+                      />
                       {userLogin?.username}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu variant="dark">
-                      <Dropdown.Item as={Link} to="/profile">
+                      <Dropdown.Item
+                        as={Link}
+                        to="/profile"
+                        id="my-profile-button"
+                      >
                         Mi Perfil
                       </Dropdown.Item>
-                      <Dropdown.Item as={Link} to="/myposts">
+                      <Dropdown.Item
+                        as={Link}
+                        to="/myposts"
+                        id="my-posts-button"
+                      >
                         Mis Publicaciones
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item onClick={handleLogOut}>
+                      <Dropdown.Item onClick={handleLogOut} id="logout-button">
                         Cerrar Sesión
                       </Dropdown.Item>
                     </Dropdown.Menu>
