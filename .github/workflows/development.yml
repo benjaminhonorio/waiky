@@ -1,0 +1,40 @@
+name: Development workflow
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      # Get code from repo
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Install NodeJS
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
+      # Run yarn install and build on our code
+      - run: yarn install --immutable --immutable-cache --check-cache
+
+      - run: CI="" yarn build
+
+      # Deploy to Netlify using our dev secrets
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=build --prod

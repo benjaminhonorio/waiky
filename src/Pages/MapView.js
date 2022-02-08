@@ -1,115 +1,236 @@
-import { Card, Container, Col, Row, Button } from "react-bootstrap";
-import Map from "../Components/Map";
+import { useState, useEffect, useRef } from "react";
+import { Container, Col, Row, Spinner } from "react-bootstrap";
+import axios from "axios";
 import config from "../config";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import GoogleMapReact from "google-map-react";
+import useSupercluster from "use-supercluster";
+import mapStyles from "../Components/mapStyles";
+import AlertDismissible from "../Components/AlertDismissible";
+import PostList from "../Components/PostList";
+import LocateMeIcon from "../Components/LocateMeIcon";
+import PetMarkerIcon from "../Components/PetMarkerIcon";
 
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
+//  TODO: refactor styles
+const mapContainerStyle = {
+  width: "100%",
+  height: "90vh",
 };
 
-const getPosition = (options) => {
-  if (navigator.geolocation) {
-    return new Promise((resolve, reject) =>
-      navigator.geolocation.getCurrentPosition(resolve, reject, options)
-    );
-  } else {
-    console.log("Your browser does not support Geolocation");
-  }
+const clusterMakerStyle = {
+  color: "#fff",
+  backgroundColor: "#1978c8",
+  borderRadius: "50%",
+  padding: "10px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
-export default function MapView({ posts }) {
-  const [center, setCenter] = useState({ lat: -12.046374, lng: -77.042793 }); // initial position
+const mapOptions = {
+  styles: mapStyles,
+};
 
-  const position = () => {
-    getPosition(options)
-      .then((pos) => {
-        const crd = pos.coords;
-        setCenter({ lat: crd.latitude, lng: crd.longitude }); // move the center to approximate position based on geolocation
-      })
-      .catch((error) => {
-        console.warn("ERROR(" + error.code + "): " + error.message);
-      });
+const Marker = ({ children }) => children;
+
+export default function MapView() {
+  const [permissionAllowed, setPermissionAllowed] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
+  const [center, setCenter] = useState([]);
+  const [zoom, setZoom] = useState(12);
+  const [dataPoints, setDataPoints] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [bounds, setBounds] = useState([]);
+  const mapRef = useRef();
+
+  const defaults = {
+    center: {
+      lat: 40.662942,
+      lng: -73.961704,
+    },
+    zoom: 12,
   };
-  // Set position to current user position if possible
-  position();
 
-  const mapURL = config.GOOGLE_MAPS_API_KEY;
+  useEffect(() => {
+    if (bounds.length) {
+      axios
+        .get(
+          `${
+            process.env.REACT_APP_BASE_API_URL
+          }/api/v1/posts${`?limit=100&neLat=${bounds[3]}&neLng=${bounds[0]}&swLat=${bounds[1]}&swLng=${bounds[2]}`}`
+        )
+        .then((response) => {
+          setDataPoints(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [bounds]);
+
+  useEffect(() => {
+    const positionDenied = function () {
+      setShowAlert(true);
+      setCenter([-12.04318, -77.02824]);
+      setPermissionAllowed(false);
+    };
+
+    function revealPosition() {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) => {
+          setCenter([latitude, longitude]);
+        }
+      );
+    }
+
+    function handlePermission() {
+      navigator.permissions
+        .query({ name: "geolocation" })
+        .then(function (result) {
+          if (result.state === "granted") {
+            setShowAlert(false);
+            revealPosition();
+          } else if (result.state === "prompt") {
+            navigator.geolocation.getCurrentPosition(
+              revealPosition,
+              positionDenied
+            );
+            setPermissionAllowed(true);
+          } else if (result.state === "denied") {
+            setShowAlert(true);
+            setCenter([-12.04318, -77.02824]);
+            setPermissionAllowed(false);
+          }
+        });
+    }
+
+    handlePermission();
+  }, []);
+
+  const points = dataPoints.map((dataPoint) => ({
+    type: "Feature",
+    properties: {
+      cluster: false,
+      markerId: dataPoint.id,
+      type: dataPoint.type,
+    },
+    geometry: {
+      type: "Point",
+      coordinates: [
+        dataPoint.location.coordinates[0],
+        dataPoint.location.coordinates[1],
+      ],
+    },
+  }));
+
+  const { clusters, supercluster } = useSupercluster({
+    points,
+    bounds,
+    zoom,
+    options: { radius: 40, maxZoom: 16 },
+  });
 
   return (
     <Container className="my-3" fluid>
       <Row>
-        <Col
-          lg={4}
-          style={{
-            maxHeight: "100vh",
-            overflowY: "auto",
-          }}
-        >
-          {posts &&
-            posts.map((post) => {
-              return (
-                <Card key={post.id} style={{ flexDirection: "row" }}>
-                  <Col lg={6}>
-                    <Card.Body>
-                      <Card.Title>{post.title}</Card.Title>
-                      <Card.Text>
-                        {post.description.length > 80
-                          ? `${post.description.slice(0, 80)}...`
-                          : ""}
-                      </Card.Text>
-                    </Card.Body>
-                    <Card.Body>
-                      <Button
-                        variant="primary"
-                        as={Link}
-                        to={`/post/${post.id}`}
-                      >
-                        Contactarse
-                      </Button>
-                    </Card.Body>
-                  </Col>
-                  <Col lg={6}>
-                    <Card.Img variant="top" src={post.photos[post.mainPhoto]} />
-                  </Col>
-                </Card>
-              );
-            })}
-        </Col>
         <Col lg={8}>
-          {/* <Form>
-            <div className="input-group mb-3">
-            <input
-            type="text"
-            className="form-control"
-            placeholder="Search by name, location, color, etc"
-            aria-label="Search bar"
-            aria-describedby="basic-addon2"
-            />
-            <button className="btn btn-outline-secondary" type="button">
-            Search
-            </button>
-            </div>
-            <br />
-          </Form> */}
-          <Button variant="success" onClick={() => setCenter(position)}>
-            Ir a mi ubicacion
-          </Button>
-          <span>(Activa la ubicacion para que funcione)</span>
-          {/* TODO */}
-          <div style={{ height: "100vh", width: "100%" }}>
-            TODO: Make fully functional map
+          <Row xs="auto" style={{ display: "block", position: "relative" }}>
+            {permissionAllowed ? (
+              <div style={{ position: "relative" }}>
+                <LocateMeIcon
+                  setCenter={setCenter}
+                  setZoom={setZoom}
+                  map={mapRef}
+                />
+              </div>
+            ) : (
+              <AlertDismissible
+                showAlert={showAlert}
+                setShowAlert={setShowAlert}
+              />
+            )}
+          </Row>
+          <div style={mapContainerStyle}>
+            <GoogleMapReact
+              bootstrapURLKeys={{
+                key: config.GOOGLE_MAPS_API_KEY,
+              }}
+              defaultCenter={defaults.center}
+              center={center}
+              defaultZoom={defaults.zoom}
+              zoom={zoom}
+              options={mapOptions}
+              onChange={({ zoom, bounds }) => {
+                setZoom(zoom);
+                setBounds([
+                  bounds.nw.lng,
+                  bounds.se.lat,
+                  bounds.se.lng,
+                  bounds.nw.lat,
+                ]);
+              }}
+              yesIWantToUseGoogleMapApiInternals
+              onGoogleApiLoaded={({ map }) => {
+                mapRef.current = map;
+              }}
+            >
+              {clusters.map((cluster) => {
+                const [longitude, latitude] = cluster.geometry.coordinates;
+                const { cluster: isCluster } = cluster.properties;
+                if (isCluster) {
+                  return (
+                    <Marker key={cluster.id} lat={latitude} lng={longitude}>
+                      <div
+                        style={{
+                          ...clusterMakerStyle,
+                          width: `${
+                            35 + cluster.properties.point_count / points.length
+                          }px`,
+                          height: `${
+                            35 + cluster.properties.point_count / points.length
+                          }px`,
+                          zIndex: 10,
+                        }}
+                        onClick={() => {
+                          const expansionZoom = Math.min(
+                            supercluster.getClusterExpansionZoom(cluster.id),
+                            20
+                          );
+                          mapRef.current.setZoom(expansionZoom);
+                          mapRef.current.panTo({
+                            lat: latitude,
+                            lng: longitude,
+                          });
+                        }}
+                      >
+                        {cluster.properties.point_count}
+                      </div>
+                    </Marker>
+                  );
+                }
+                return (
+                  <Marker
+                    key={cluster.properties.markerId}
+                    lat={latitude}
+                    lng={longitude}
+                    onClick={() => {
+                      mapRef.current.setZoom(9);
+                      mapRef.current.panTo({ lat: latitude, lng: longitude });
+                    }}
+                  >
+                    <PetMarkerIcon marker={cluster} />
+                  </Marker>
+                );
+              })}
+            </GoogleMapReact>
           </div>
-          {/* <Map
-            googleMapURL={mapURL}
-            containerElement={<div style={{ height: "100vh" }} />}
-            mapElement={<div style={{ height: "100%" }} />}
-            loadingElement={<div style={{ height: `100%` }} />}
-            posts={posts}
-            center={center}
-          /> */}
+        </Col>
+        <Col lg={4} style={{ maxHeight: "90vh", overflowY: "auto" }}>
+          {!loading ? (
+            <PostList posts={dataPoints} />
+          ) : (
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          )}
         </Col>
       </Row>
     </Container>

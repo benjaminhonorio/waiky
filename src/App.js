@@ -23,11 +23,18 @@ import PublicationView from "./Pages/PublicationView";
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts`)
-      .then((response) => setDataPost(response.data.data));
+      .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts?limit=100`)
+      .then((response) => {
+        setDataPost(response.data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   return (
@@ -64,7 +71,7 @@ function App() {
               </RedirectUser>
             }
           />
-          <Route path="/map" element={<MapView posts={dataPost} />} />
+          <Route path="/map" element={<MapView />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
           <Route path="/password_reset/:id" element={<PasswordReset />} />
           <Route
