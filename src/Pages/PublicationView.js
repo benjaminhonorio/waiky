@@ -11,6 +11,10 @@ export default function Publicaciones() {
   const token = getToken();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     axios
       .get(
         `${process.env.REACT_APP_BASE_API_URL}/api/v1/users/myposts/${auth.userLogin.id}`,

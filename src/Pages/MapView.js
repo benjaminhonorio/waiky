@@ -51,6 +51,10 @@ export default function MapView() {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     if (bounds.length) {
       axios
         .get(
