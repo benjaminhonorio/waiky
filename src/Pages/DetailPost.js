@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 // import Comments from "../Components/Comments";
 import Gallery from "../Components/Gallery";
 import InfoPostDetails from "../Components/InfoPostDetails";
@@ -38,7 +38,7 @@ const mapOptions = {
 
 const Marker = ({ children }) => children;
 
-export default function DetailPost({ dataPost }) {
+export default function DetailPost({ dataPost, loading }) {
   const [center, setCenter] = useState([]);
   const [petIcon, setPetIcon] = useState("pet");
 
@@ -53,14 +53,17 @@ export default function DetailPost({ dataPost }) {
   const data = dataPost?.find((p) => p.id === id);
 
   useEffect(() => {
-    const {
-      location: { coordinates },
-      type,
-    } = data;
-    if (type === "gato") setPetIcon("cat");
-    else if (type === "perro") setPetIcon("dog");
-    else setPetIcon(petIcon);
-    setCenter([coordinates[1], coordinates[0]]);
+    if (!loading) {
+      const {
+        location: { coordinates },
+        type,
+      } = data;
+      if (type === "gato") setPetIcon("cat");
+      else if (type === "perro") setPetIcon("dog");
+      else setPetIcon(petIcon);
+      setCenter([coordinates[1], coordinates[0]]);
+    } else {
+    }
   }, []);
 
   useEffect(() => {
@@ -69,59 +72,65 @@ export default function DetailPost({ dataPost }) {
 
   return (
     <div>
-      <Container className="container-fluid my-4">
-        <Row>
+      {loading ? (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      ) : (
+        <Container className="container-fluid my-4">
           <Row>
-            <Col lg={6} md={12} xs={12}>
-              <Gallery data={data} />
-            </Col>
-            <Col lg={6} md={12} xs={12}>
-              <InfoPostDetails data={data} />
-            </Col>
-          </Row>
+            <Row>
+              <Col lg={6} md={12} xs={12}>
+                <Gallery data={data} />
+              </Col>
+              <Col lg={6} md={12} xs={12}>
+                <InfoPostDetails data={data} />
+              </Col>
+            </Row>
 
-          <Row className="align-items-center my-4 border p-3">
-            <Col lg={6} md={12} xs={12}>
-              <h4> Ultima ubicacion </h4>
-              <p className="text-secondary">{data.location.reference}</p>
-              <Button onClick={handleFullscreen} className="my-3">
-                Ver mapa en detalle
-              </Button>
-            </Col>
-            <Col>
-              <div style={mapContainerStyle}>
-                <GoogleMapReact
-                  bootstrapURLKeys={{
-                    key: config.GOOGLE_MAPS_API_KEY,
-                  }}
-                  defaultCenter={defaults.center}
-                  center={(center.length && center) || defaults.center}
-                  defaultZoom={defaults.zoom}
-                  options={mapOptions}
-                >
-                  {center && (
-                    <Marker lat={center[0]} lng={center[1]}>
-                      <img
-                        style={markerStyle}
-                        src={`/assets/${petIcon}.svg`}
-                        alt={`${petIcon} icon`}
-                      />
-                    </Marker>
-                  )}
-                </GoogleMapReact>
-              </div>
-            </Col>
+            <Row className="align-items-center my-4 border p-3">
+              <Col lg={6} md={12} xs={12}>
+                <h4> Ultima ubicacion </h4>
+                <p className="text-secondary">{data.location.reference}</p>
+                <Button onClick={handleFullscreen} className="my-3">
+                  Ver mapa en detalle
+                </Button>
+              </Col>
+              <Col>
+                <div style={mapContainerStyle}>
+                  <GoogleMapReact
+                    bootstrapURLKeys={{
+                      key: config.GOOGLE_MAPS_API_KEY,
+                    }}
+                    defaultCenter={defaults.center}
+                    center={(center.length && center) || defaults.center}
+                    defaultZoom={defaults.zoom}
+                    options={mapOptions}
+                  >
+                    {center && (
+                      <Marker lat={center[0]} lng={center[1]}>
+                        <img
+                          style={markerStyle}
+                          src={`/assets/${petIcon}.svg`}
+                          alt={`${petIcon} icon`}
+                        />
+                      </Marker>
+                    )}
+                  </GoogleMapReact>
+                </div>
+              </Col>
+            </Row>
           </Row>
-        </Row>
-        {/* TODO: finish comments section */}
-        {/* <Row>
+          {/* TODO: finish comments section */}
+          {/* <Row>
           <h2 className="text-dark"> Comentarios </h2>
           <Container>
             <Comments />
             <Comments />
           </Container>
         </Row> */}
-      </Container>
+        </Container>
+      )}
     </div>
   );
 }
