@@ -2,7 +2,7 @@ describe("Test Change Password", () => {
   afterEach(() => cy.pause());
 
   it("Email not valid", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.get('[id="forget-password-button"]').click();
     cy.url().should("include", "/email_recovery");
     cy.emailrecovery({
@@ -11,7 +11,7 @@ describe("Test Change Password", () => {
   });
 
   it("Email not exist", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.get('[id="forget-password-button"]').click();
     cy.url().should("include", "/email_recovery");
     cy.emailrecovery({
@@ -20,7 +20,7 @@ describe("Test Change Password", () => {
   });
 
   it("Email valid", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.get('[id="forget-password-button"]').click();
     cy.url().should("include", "/email_recovery");
     cy.emailrecovery({
@@ -29,7 +29,9 @@ describe("Test Change Password", () => {
   });
 
   it("Password not match", () => {
-    cy.visit("http://localhost:3000/password_reset/6201948e1e5a9185ba4cf266");
+    cy.visit(
+      `${Cypress.env("client_url")}/password_reset/6201948e1e5a9185ba4cf266`
+    );
     cy.changepassword({
       pwd1: "prueba123",
       pwd2: "prueb",
@@ -37,7 +39,9 @@ describe("Test Change Password", () => {
   });
 
   it("Password not match 2", () => {
-    cy.visit("http://localhost:3000/password_reset/6201948e1e5a9185ba4cf266");
+    cy.visit(
+      `${Cypress.env("client_url")}/password_reset/6201948e1e5a9185ba4cf266`
+    );
     cy.changepassword({
       pwd1: "prueba",
       pwd2: "prueba123",
@@ -45,7 +49,9 @@ describe("Test Change Password", () => {
   });
 
   it("Password match", () => {
-    cy.visit("http://localhost:3000/password_reset/6201948e1e5a9185ba4cf266");
+    cy.visit(
+      `${Cypress.env("client_url")}/password_reset/6201948e1e5a9185ba4cf266`
+    );
     cy.changepassword({
       pwd1: "prueba123",
       pwd2: "prueba123",

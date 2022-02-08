@@ -77,6 +77,7 @@ Cypress.Commands.add(
     cy.get('[id="save-modal-button"]').click();
 
     cy.get('[data-test-id="photos-post-form"]').attachFile(fixtureFile);
+    cy.pause();
 
     cy.get('[id="button-login-form"]').click();
     cy.pause();

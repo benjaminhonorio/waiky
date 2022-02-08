@@ -2,7 +2,7 @@ describe("Test Login", () => {
   afterEach(() => cy.pause());
 
   it("Username not valid", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.url().should("include", "/login");
     cy.login({
       username: "xxx",
@@ -11,7 +11,7 @@ describe("Test Login", () => {
   });
 
   it("Password not valid", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.url().should("include", "/login");
     cy.login({
       username: "waykiprueba",
@@ -20,7 +20,7 @@ describe("Test Login", () => {
   });
 
   it("Username not exist", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.url().should("include", "/login");
     cy.login({
       username: "waykixxx",
@@ -29,7 +29,7 @@ describe("Test Login", () => {
   });
 
   it("Username not match", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.url().should("include", "/login");
     cy.login({
       username: "waykiprueba",
@@ -38,7 +38,7 @@ describe("Test Login", () => {
   });
 
   it("Successful login", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.url().should("include", "/login");
     cy.login({
       username: "waykiprueba",

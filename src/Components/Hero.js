@@ -24,7 +24,7 @@ export default function Hero() {
       className="backimage d-flex flex-column justify-content-center align-items-center vh-100"
       id="backimage"
     >
-      <style scoped>{css}</style>;
+      <style scoped>{css}</style>
       <Col xs={10} sm={8}>
         <Image src={WaykiLogo} alt="logo" fluid />
       </Col>

@@ -1,11 +1,11 @@
 describe("Test Sign Up", () => {
   before(() => {
-    cy.visit("http://localhost:3000/");
+    cy.visit(Cypress.env("client_url"));
     cy.contains("Sign Up").click();
   });
 
   beforeEach(() => {
-    cy.visit("http://localhost:3000/signup");
+    cy.visit(`${Cypress.env("client_url")}/signup`);
     cy.url().should("include", "/signup");
   });
 

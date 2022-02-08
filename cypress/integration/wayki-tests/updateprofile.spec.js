@@ -1,6 +1,6 @@
 describe("Test Login", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
   });
 
   afterEach(() => cy.pause());

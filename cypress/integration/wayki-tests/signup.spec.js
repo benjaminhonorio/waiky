@@ -2,7 +2,7 @@ describe("Test Sign Up", () => {
   afterEach(() => cy.pause());
 
   it("Username not valid", () => {
-    cy.visit("http://localhost:3000/signup");
+    cy.visit(`${Cypress.env("client_url")}/signup`);
     cy.url().should("include", "/signup");
     cy.signup({
       username: "xxx",
@@ -13,7 +13,7 @@ describe("Test Sign Up", () => {
   });
 
   it("Email not valid", () => {
-    cy.visit("http://localhost:3000/signup");
+    cy.visit(`${Cypress.env("client_url")}/signup`);
     cy.url().should("include", "/signup");
     cy.signup({
       username: "waykiprueba",
@@ -24,7 +24,7 @@ describe("Test Sign Up", () => {
   });
 
   it("Password doesnt match", () => {
-    cy.visit("http://localhost:3000/signup");
+    cy.visit(`${Cypress.env("client_url")}/signup`);
     cy.url().should("include", "/signup");
     cy.signup({
       username: "waykiprueba",
@@ -35,7 +35,7 @@ describe("Test Sign Up", () => {
   });
 
   it("Password doesnt match 2", () => {
-    cy.visit("http://localhost:3000/signup");
+    cy.visit(`${Cypress.env("client_url")}/signup`);
     cy.url().should("include", "/signup");
     cy.signup({
       username: "waykiprueba",
@@ -46,9 +46,9 @@ describe("Test Sign Up", () => {
   });
 
   it("Successful signup", () => {
-    cy.visit("http://localhost:3000/signup");
+    cy.visit(`${Cypress.env("client_url")}/signup`);
     cy.url().should("include", "/signup");
-    cy.request("DELETE", "http://localhost:3003/api/v1/cleanusers");
+    cy.request("DELETE", `${Cypress.env("api_url")}/cleanusers`);
     cy.signup({
       username: "waykiprueba",
       email: "maicolsana12@gmail.com",

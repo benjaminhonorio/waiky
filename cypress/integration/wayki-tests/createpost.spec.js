@@ -2,7 +2,7 @@ describe("Test Create Post", () => {
   afterEach(() => cy.pause());
 
   it("Successful login", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${Cypress.env("client_url")}/login`);
     cy.login({
       username: "waykiprueba",
       pwd: "wayki123",
@@ -10,7 +10,7 @@ describe("Test Create Post", () => {
   });
 
   it("profile edit", () => {
-    cy.request("DELETE", "http://localhost:3003/api/v1/cleanposts");
+    cy.request("DELETE", `${Cypress.env("api_url")}/cleanposts`);
     cy.contains("Publicar").click();
 
     cy.create_post({
@@ -26,7 +26,7 @@ describe("Test Create Post", () => {
   });
 
   it("view my posts", () => {
-    cy.visit("http://localhost:3000/");
+    cy.visit(Cypress.env("client_url"));
     cy.url().should("include", "/");
     cy.get('[id="dropdown-basic"]').click();
     cy.get('[id="my-posts-button"]').click();
