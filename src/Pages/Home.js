@@ -9,10 +9,10 @@ import { useLocation } from "react-router-dom";
 export default function Home({ posts, setPosts }) {
   const location = useLocation();
   useEffect(() => {
-    if (!(location?.hash === "#about")) {
+    if (!(location?.hash === "#about" || location?.hash === "#publications")) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [location]);
+  }, [location.hash]);
 
   return (
     <Container className="text-center" fluid>

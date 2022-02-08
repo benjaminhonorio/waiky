@@ -30,15 +30,14 @@ export default function Hero() {
         <Image style={{ minWidth: "300px" }} src={WaykiLogo} alt="logo" fluid />
       </Col>
       <p className="h4">Ayudemos a las mascotas a volver a sus hogares</p>
-      <Button
-        className="mx-2 my-4"
-        variant="primary"
-        as={Link}
-        to="/map"
-        size="lg"
-      >
-        Ir al mapa
-      </Button>
+      <div>
+        <Button className="mx-2 my-4" variant="primary" as={Link} to="/map">
+          Ir al mapa
+        </Button>
+        <Button className="mx-2 my-4" variant="secondary" href="#publications">
+          Ver Publicaciones
+        </Button>
+      </div>
     </Col>
   );
 }
