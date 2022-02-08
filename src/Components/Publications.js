@@ -13,9 +13,9 @@ export default function Publications({ id, title, date, photos }) {
   // };
 
   return (
-    <Col key={id} className="py-2">
+    <Col key={id} className="py-2 text-center" lg={3} md={6} xs={12}>
       <div
-        className="d-flex flex-row flex-md-column"
+        className="d-flex flex-column"
         style={{
           wordWrap: "break-word",
           backgroundColor: "#fff",
@@ -33,17 +33,14 @@ export default function Publications({ id, title, date, photos }) {
           variant="top"
           src={photos[0]}
         />
+
         <Card.Body className="d-flex flex-column justify-content-center">
-          <Row>
-            <Col>
-              <Card.Title>{title}</Card.Title>{" "}
-            </Col>
-            {/* <Col>
+          <Card.Title>{title}</Card.Title>{" "}
+          {/* 
               <Button variant="light" onClick={handleRedirect}>
                 <BsPencilFill className="mx-2 d-inline-block align-baseline" />
               </Button>
-            </Col> */}
-          </Row>
+             */}
           <Card.Text>
             Hace{" "}
             {date
