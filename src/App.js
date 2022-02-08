@@ -23,15 +23,18 @@ import PublicationView from "./Pages/PublicationView";
 
 function App() {
   const [dataPost, setDataPost] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASE_API_URL}/api/v1/posts?limit=100`)
       .then((response) => {
         setDataPost(response.data.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(true);
       });
   }, []);
 
@@ -54,7 +57,11 @@ function App() {
           />
           <Route
             path="/post/:id"
-            element={dataPost.length && <DetailPost dataPost={dataPost} />}
+            element={
+              dataPost.length && (
+                <DetailPost dataPost={dataPost} loading={loading} />
+              )
+            }
           />
           <Route
             path="/login"

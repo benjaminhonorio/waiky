@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Container } from "react-bootstrap";
+import { Row, Container, Spinner } from "react-bootstrap";
 import axios from "axios";
 import Publications from "../Components/Publications";
 import useAuth from "../auth/useAuth";
@@ -8,6 +8,7 @@ import { getToken } from "../user/session";
 export default function Publicaciones() {
   const auth = useAuth();
   const [postById, setPostById] = useState([]);
+  const [loading, setLoading] = useState(true);
   const token = getToken();
 
   useEffect(() => {
@@ -26,13 +27,18 @@ export default function Publicaciones() {
       )
       .then((response) => {
         setPostById(response.data);
+        setLoading(false);
       });
   }, []);
 
   return (
     <Container className="my-5">
       <h2 className="pt-4">Mis Publicaciones</h2>
-      {postById.length ? (
+      {loading ? (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      ) : postById.length ? (
         <Row className="align-items-center my-4 sm-8" lg={12} md={12} xs={12}>
           {postById.map(({ id, title, createdAt: date, photos }) => {
             return (

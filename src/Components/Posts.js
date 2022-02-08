@@ -62,7 +62,9 @@ export default function Posts({ posts, setPosts }) {
 
   return (
     <Row className="row d-flex justify-content-center py-3">
-      <h2 className="p-4">Publicaciones</h2>
+      <h2 className="p-4" id="publications">
+        Publicaciones
+      </h2>
       <p>
         Estas son las publicaciones más recientes de la comunidad. ¡Ayudemos a
         encontrarlos!

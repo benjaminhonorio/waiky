@@ -379,9 +379,20 @@ export default function EditView({ posts, setDataPost }) {
               </Col>
             </Form.Group>
 
-            <Button variant="primary" type="submit" id="button-login-form">
+            <Button
+              variant="primary"
+              type="submit"
+              id="button-login-form"
+              disabled={!isUploaded}
+            >
               Guardar
             </Button>
+            {!isUploaded && (
+              <span className="px-4 fw-lighter">
+                (Cuando se haya cargado la imagen se habilitará el botón de
+                guardado)
+              </span>
+            )}
           </Form>
         </Col>
         <Col lg={4} className="mt-5">
