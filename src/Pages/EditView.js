@@ -7,6 +7,7 @@ import {
   Row,
   Modal,
   Image,
+  Alert,
 } from "react-bootstrap";
 import axios from "axios";
 import { BsGeoAltFill } from "react-icons/bs"; // will be used in location input
@@ -24,6 +25,7 @@ export default function EditView({ posts, setDataPost }) {
   const [address, setAddress] = useState(null); // TODO: Use Geolocation to save the address to the post object
   const [petType, setPetType] = useState("pet");
   const [showMap, setShowMap] = useState(false);
+  const [alert, setAlert] = useState({ status: false, message: "", type: "" });
   const [isUploaded, setIsUploaded] = useState(false);
   const auth = useAuth();
   let navigate = useNavigate();
@@ -36,6 +38,34 @@ export default function EditView({ posts, setDataPost }) {
       }
     );
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    if (coordinates) {
+      const reverseGeocoding = ([lng, lat]) => {
+        axios
+          .get(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.GOOGLE_MAPS_API_KEY}`
+          )
+          .then((response) => {
+            const formattedAddress =
+              response.data?.results[1]["formatted_address"];
+            setAddress(formattedAddress);
+            setFormValues((state) => ({
+              ...state,
+              reference: formattedAddress,
+            }));
+          })
+          .catch((error) => {
+            setAlert({ status: true, message: error.message, type: "danger" });
+          });
+      };
+      reverseGeocoding(coordinates);
+    }
+  }, [coordinates]);
 
   const handleMap = () => setShowMap(!showMap);
   const handleCancel = () => {
@@ -69,13 +99,18 @@ export default function EditView({ posts, setDataPost }) {
       let file = files[i];
       formData.append("file", file);
       formData.append("upload_preset", config.CLOUDINARY_UPLOAD_PRESET);
-      axios.post(config.CLOUDINARY_UPLOAD_URL, formData).then((response) => {
-        setFormValues((previousFormValues) => ({
-          ...previousFormValues,
-          photos: previousFormValues.photos.concat(response.data.url),
-        }));
-        setIsUploaded(true);
-      });
+      axios
+        .post(config.CLOUDINARY_UPLOAD_URL, formData)
+        .then((response) => {
+          setFormValues((previousFormValues) => ({
+            ...previousFormValues,
+            photos: previousFormValues.photos.concat(response.data.url),
+          }));
+          setIsUploaded(true);
+        })
+        .catch((error) => {
+          setAlert({ status: true, message: error.message, type: "danger" });
+        });
     }
   };
 
@@ -112,9 +147,10 @@ export default function EditView({ posts, setDataPost }) {
         if (response.status === 201) {
           setDataPost(posts.concat(response.data.data));
           navigate(`/post/${response.data.data.id}`);
-        } else {
-          alert("La publicacion no se guardó, intentelo nuevamente");
         }
+      })
+      .catch((error) => {
+        setAlert({ status: true, message: error.message, type: "danger" });
       });
   };
 
@@ -129,6 +165,17 @@ export default function EditView({ posts, setDataPost }) {
     <Container className="my-5">
       <Row className="justify-content-center">
         {/* TODO: Change title if its creation or edition of info */}
+        {alert.status && (
+          <Alert
+            variant={alert.type}
+            onClose={() => {
+              setAlert({ status: false, message: "", type: "" });
+            }}
+            dismissible
+          >
+            <p>{alert.message}</p>
+          </Alert>
+        )}
         <h2>{auth.userLogin.username}, crea una publicación </h2>
 
         <Col lg={7} className="mt-5">
@@ -290,13 +337,10 @@ export default function EditView({ posts, setDataPost }) {
                   data-test-id="location-post-form"
                 />
                 <Form.Text id="opcion" muted>
-                  <BsGeoAltFill className="mx-2 d-inline-block  align-baseline" />
-                  (o{" "}
-                  {
-                    <Button variant="link" onClick={handleMap} id="map-button">
-                      ubicar en el mapa)
-                    </Button>
-                  }
+                  <BsGeoAltFill className="d-inline-block  align-baseline" />
+                  <Button variant="link" onClick={handleMap} id="map-button">
+                    Ubicar en el mapa
+                  </Button>
                 </Form.Text>
               </Col>
             </Form.Group>
@@ -340,7 +384,7 @@ export default function EditView({ posts, setDataPost }) {
             </Button>
           </Form>
         </Col>
-        <Col lg={4} md={{ span: 1, offset: 1 }} className="mt-5">
+        <Col lg={4} className="mt-5">
           <figure>
             {!isUploaded ? (
               <>
@@ -354,7 +398,7 @@ export default function EditView({ posts, setDataPost }) {
             ) : (
               formValues.photos.map((photo) => {
                 return (
-                  <img
+                  <Image
                     key={photo.match(/([a-zA-Z0-9]+.jpg)/)[0]}
                     width={200}
                     draggable={"false"}
