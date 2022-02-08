@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Alert,
@@ -23,6 +23,10 @@ export default function Login() {
   const [data, setData] = useState({});
   const [alert, setAlert] = useState();
   const [check, setCheck] = useState();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleCheckbox = (e) => {
     setCheck(e.target.value);
