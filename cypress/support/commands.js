@@ -60,9 +60,9 @@ Cypress.Commands.add(
       .type(age)
       .should("have.value", age);
 
-    cy.get('[data-test-id="location-post-form"]')
-      .type(location)
-      .should("have.value", location);
+    // cy.get('[data-test-id="location-post-form"]')
+    //   .type(location)
+    //   .should("have.value", location);
 
     cy.get('[data-test-id="description-post-form"]')
       .type(description)
@@ -70,8 +70,8 @@ Cypress.Commands.add(
 
     cy.get('[id="map-button"]').click();
     // Este boton de Aceptar en caso de que salga un alert al abrir el modal de google maps. Cerciorarse de que esto no salga.
-    cy.contains("Aceptar").click();
-    cy.pause();
+    // cy.contains("Aceptar").click();
+    // cy.pause();
     // ------------------
     cy.get('[data-test-id="map-body"]').click();
     cy.get('[id="save-modal-button"]').click();
