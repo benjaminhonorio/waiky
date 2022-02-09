@@ -62,7 +62,6 @@ export default function DetailPost({ dataPost, loading }) {
       else if (type === "perro") setPetIcon("dog");
       else setPetIcon(petIcon);
       setCenter([coordinates[1], coordinates[0]]);
-    } else {
     }
   }, []);
 
@@ -91,7 +90,7 @@ export default function DetailPost({ dataPost, loading }) {
             <Row className="align-items-center my-4 border p-3">
               <Col lg={6} md={12} xs={12}>
                 <h4> Ultima ubicacion </h4>
-                <p className="text-secondary">{data.location.reference}</p>
+                <p className="text-secondary">{data.location?.reference}</p>
                 <Button onClick={handleFullscreen} className="my-3">
                   Ver mapa en detalle
                 </Button>
