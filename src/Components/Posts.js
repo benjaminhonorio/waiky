@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import PetCard from "./PetCard";
 
-export default function Posts({ posts, setPosts }) {
+export default function Posts({ posts }) {
   const [queryParams, setQueryParams] = useState({
     type: "",
     limit: "10",
@@ -50,7 +50,6 @@ export default function Posts({ posts, setPosts }) {
           const response = await axios.get(
             `${process.env.REACT_APP_BASE_API_URL}/api/v1/posts?${queryString}`
           );
-          setPosts(response.data.data);
           setFilteredPosts(response.data.data);
         } catch (error) {
           console.log(error);

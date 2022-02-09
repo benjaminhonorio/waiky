@@ -43,10 +43,7 @@ function App() {
       <AuthProvider>
         <AppNavBar />
         <Routes>
-          <Route
-            path="/"
-            element={<Home posts={dataPost} setPosts={setDataPost} />}
-          />
+          <Route path="/" element={<Home posts={dataPost} />} />
           <Route
             path="/edit"
             element={
